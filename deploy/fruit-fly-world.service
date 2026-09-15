@@ -1,0 +1,21 @@
+[Unit]
+Description=Fruit Fly World
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=fruitfly
+Group=fruitfly
+WorkingDirectory=/srv/fruit-fly-world/current
+EnvironmentFile=/etc/fruit-fly-world.env
+ExecStart=/usr/local/bin/node node_modules/next/dist/bin/next start -H 127.0.0.1 -p 3210
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/fruit-fly-world
+
+[Install]
+WantedBy=multi-user.target

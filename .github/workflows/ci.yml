@@ -1,0 +1,53 @@
+# Fruit Fly World CI.
+#
+# The point of this file is a reproducible build: anyone with the repo can see that the app
+# compiles, the types hold, the rules pass their parity checks, and the contract passes its
+# suite — without a single secret. If a job here ever needs an env file, that is a bug in the
+# code, not a reason to add a secret: a clean checkout with no .env at all must build.
+# (Verified locally: `mv .env.local /tmp && rm -rf .next && npm run build` exits 0.)
+#
+# Ordering note: `npm run build` rewrites the generated next-env.d.ts, so build MUST run before
+# the typecheck. Reversing them fails on a fresh checkout with a missing-module error that has
+# nothing to do with the code.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  app:
+    name: build, types, test suites
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run typecheck
+      # Includes arena-parity, which fails if app/lib/arena.ts and the agent skill's
+      # public/skill/ffw-arena/lib/arena.mjs have drifted apart in the same commit.
+      - run: npm test
+
+  contracts:
+    name: contracts compile and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: foundry-rs/foundry-toolchain@v1
+      # The contract and its test are self-contained: no OpenZeppelin, no forge-std, no
+      # contracts/lib. Nothing to install — a plain `forge test` compiles from scratch.
+      - run: forge test -vv
+        working-directory: contracts

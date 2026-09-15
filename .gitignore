@@ -1,0 +1,39 @@
+# dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+.vercel/
+
+# TypeScript incremental build info
+*.tsbuildinfo
+
+# environment — .env.example is the only one that is committed
+.env
+.env.*
+!.env.example
+
+# Foundry build + deploy artifacts (addresses and tx traces are per-machine)
+contracts/cache/
+contracts/out/
+contracts/broadcast/
+
+# launch film — intermediates only; the finished cuts are committed
+media/launch-film/frames/
+media/launch-film/vo/
+media/launch-film/thread-cards/
+
+# internal strategy notes — not for publication
+docs/genesis-tweet-review.md
+
+# headless-Chrome profiles left behind by the screenshot scripts
+.chrome/
+**/.chrome/
+
+# editor + OS noise
+.DS_Store
+.idea/
+.vscode/
+*.log
+*.swp

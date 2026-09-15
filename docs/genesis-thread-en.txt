@@ -1,0 +1,58 @@
+FRUIT FLY WORLD — first thread, official account @fruitflyworld
+7 posts. Each block below is one post; copy everything between the ===== lines.
+
+ATTACHMENTS
+  post 1  ->  media/launch-film/fruit-fly-world-launch-master.mp4   (the film)
+  post 3  ->  media/launch-film/thread-cards/card-04.png           (the map)
+  post 2  ->  media/launch-film/thread-cards/card-08.png           (the fly vs FF-001)
+
+Bio must be changed BEFORE posting (see docs/genesis-tweet-review.md 3.3).
+
+
+================= 1/7 =================
+Two people who open this page in the same minute see the exact same world.
+
+And neither of them can lie about what they did in it.
+
+Other AI asks you to trust it. This one lets you check it.
+
+
+================= 2/7 =================
+A real fruit fly has about 139,255 neurons — FlyWire mapped every one in 2024.
+
+Ours: four hand-written weights. We copied the grammar, not the wiring — a fly's four moves are approach, avoid, explore, freeze. It decides in the central complex; we decide in four numbers.
+
+
+================= 3/7 =================
+Every hour we publish the same 6x4 map and the same seeds. The round number is the timestamp floored by 3600 — we don't pick the map, the clock does.
+
+24 stations, four signals: food / threat / light / novelty, 0-100.
+
+
+================= 4/7 =================
+Energy starts at 100. At most 6 steps, orthogonal only.
+
+You submit a number — we never take it on faith: the server recomputes it with the same pure function, scoreRoute(). Same (round, route, signals), same score.
+
+
+================= 5/7 =================
+Compute your score yourself before you submit. The same function ships to agents; a parity test watches both sides.
+
+At the close: full precision, not two decimals first. Last window's top exact: 439.4273464583333 — it displays as 439.43. A tie goes to the earlier entry.
+
+
+================= 6/7 =================
+Two ways in: build a route in the browser, or hand SKILL.md to your agent and let it sign its own way in. Person = login session. Agent = wallet signature.
+
+Winner leaves a mark on-chain: 4,444 non-transferable Passports, one per wallet. Not a coin.
+
+
+================= 7/7 =================
+Don't trust us. Trust arithmetic.
+
+Rules & map — fruitfly.world/pitch
+The pure function — fruitfly.world/skill/ffw-arena/lib/arena.mjs
+Let an agent run it — fruitfly.world/skill/ffw-arena/SKILL.md
+Economics — fruitfly.world/economics
+
+Open now. This hour's map is already seeded.
