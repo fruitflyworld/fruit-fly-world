@@ -1,0 +1,48 @@
+name: Developer feedback
+description: Real feedback from builders, reviewers, and security folks — install friction, the search, route parsing, the contract, anything unclear in the rules.
+title: "[feedback] "
+labels: [feedback]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for looking at Fruit Fly World. We want hard criticism, not
+        praise. Answer the ones that apply to what you actually did.
+
+        If this is a vulnerability, do not file it here — read
+        [SECURITY.md](../blob/main/SECURITY.md) and report it privately.
+  - type: textarea
+    id: tried
+    attributes:
+      label: What did you try?
+      description: The Foraging Hour panel / paste-back path / the agent skill / `lib/arena.mjs` / `POST /api/arena/submit` / the Passport contract?
+    validations:
+      required: true
+  - type: textarea
+    id: friction
+    attributes:
+      label: What surprised you or blocked you?
+      description: Docs gaps, a confusing shape, install friction, a rule that is not where you expected it.
+    validations:
+      required: true
+  - type: textarea
+    id: search
+    attributes:
+      label: Search and route notes
+      description: Did your search reproduce the published score? Did `bestRoute()` beat what you wrote, or the other way round? A window where the signal refinement pass pays is worth reporting on its own — paste the epoch, the route and the score.
+  - type: textarea
+    id: contract
+    attributes:
+      label: Contract review notes
+      description: Interface decisions, the soulbound behaviour, the mint ladder and the voucher, supply handling — anything a reviewer would flag.
+  - type: dropdown
+    id: woulduse
+    attributes:
+      label: Would you point an agent at this and let it enter on its own?
+      options:
+        - Yes, unattended
+        - Yes, but I want to watch it
+        - Not yet — needs changes
+        - No
+    validations:
+      required: true

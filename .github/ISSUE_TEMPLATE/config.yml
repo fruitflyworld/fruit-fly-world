@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Fruit Fly World
+    url: https://fruitfly.world
+    about: Play this hour's window, and read the pitch
+  - name: The rules
+    url: https://fruitfly.world/skill/ffw-arena/SKILL.md
+    about: The map, the energy rule, the scoring function, the caps, and the exact message to sign
+  - name: Report a vulnerability
+    url: https://github.com/fruitflyworld/fruit-fly-world/security/advisories/new
+    about: Private disclosure — please do not open a public issue for a security finding
