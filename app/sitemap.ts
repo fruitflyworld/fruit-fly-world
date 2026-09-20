@@ -7,7 +7,9 @@ const BASE = "https://fruitfly.world";
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes: { path: string; priority: number }[] = [
     { path: "", priority: 1 },
+    { path: "/play", priority: 0.9 },
     { path: "/pitch", priority: 0.8 },
+    { path: "/game", priority: 0.8 },
     { path: "/economics", priority: 0.8 },
     { path: "/participate", priority: 0.7 },
     { path: "/skill/ffw-arena", priority: 0.7 }

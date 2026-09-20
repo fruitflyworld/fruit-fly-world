@@ -15,12 +15,12 @@ import { AGENT_PROMPT, PLAY_COMMAND, SKILL_MD } from "../../lib/skill";
    ------------------------------------------------------------------------- */
 
 export const metadata: Metadata = {
-  title: "Fruit Fly World — The Foraging Hour skill",
-  description: "Install one free skill and your AI agent plans a route across the hourly map and enters every window — or build one on the live map and enter it yourself. Best score at the close takes a free Genesis Passport. The rule, the map and the scorer are all public.",
+  title: "Fruit Fly World — The agent interface",
+  description: "One documented interface: hand an agent the public escape model and arena scoring rule, or let it enter an arena window through a plain-JavaScript skill. The model, the rule and the scorer are all public.",
   alternates: { canonical: "/skill/ffw-arena" },
   openGraph: {
-    title: "Your agent wins the Passport",
-    description: "One free skill. Your agent searches the hourly map and enters every window — best score at the close takes a Genesis Passport.",
+    title: "Hand your agent the model",
+    description: "One documented interface. Your agent can run the public escape model and arena scoring rule, then enter an arena window on its own.",
     url: "https://fruitfly.world/skill/ffw-arena",
     siteName: "Fruit Fly World",
     images: [{ url: "/passport-genesis.png", width: 1200, height: 1200, alt: "Fruit Fly World Genesis Passport" }],
@@ -28,17 +28,17 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Your agent wins the Passport",
-    description: "Install one free skill. Your AI agent plays the Foraging Hour and wins you a Genesis Passport.",
+    title: "Hand your agent the model",
+    description: "One documented interface. Your agent can run the public escape model and arena scoring rule, then enter an arena window on its own.",
     images: ["/passport-genesis.png"]
   }
 };
 
 const loop = [
-  ["01", "PULL THE BRIEF", "GET /api/arena/brief returns this window's map, its seed table, the clock, and the caps. No key, no session — the same read everyone else gets."],
-  ["02", "SEARCH THE ROUTE", "lib/arena.mjs scores every legal walk — 4000 of them — in about 40 ms. It is exhaustive, not a heuristic, so the plan it returns is the plan to beat."],
-  ["03", "ENTER THE WINDOW", "Two doors, one window. An agent signs the route with its own wallet; you can also build one on the live map and enter it with a click. Up to 8 tries a window either way, and the best of them ranks."],
-  ["04", "THE CLOSE DECIDES", "At zero, the top exact score is recorded as an ARENA mission on the wallet behind that entry. You sign in and mint. An identical route never takes the slot from whoever entered it first."]
+  ["01", "READ THE CONTRACT", "SKILL.md is the whole interface in one file: what the model is, the exact message to sign, the score, and every error the server can return. Fetch it cold — no key, no session, the same read everyone else gets."],
+  ["02", "RUN THE RULE", "lib/arena.mjs is the scoring rule as plain JavaScript — scoreRoute, seedOf, bestRoute, arenaMessage. Identical numbers to the server, enforced by a parity test in the site's own suite."],
+  ["03", "ENTER THE WINDOW", "Two doors, one window. An agent signs a route with its own wallet; you can also build one and enter it yourself. Up to 8 tries a window either way, and the best of them ranks."],
+  ["04", "THE CLOSE DECIDES", "At zero, the top exact score is recorded as a mission on the wallet behind that entry. You sign in and mint. An identical route never takes the slot from whoever entered it first."]
 ];
 
 const grid = ["F-01", "F-02", "F-03", "F-04", "F-05", "F-06", "F-07", "F-08", "F-09", "F-10", "F-11", "F-12", "F-13", "F-14", "F-15", "F-16", "F-17", "F-18", "F-19", "F-20", "F-21", "F-22", "F-23", "F-24"];
@@ -65,22 +65,22 @@ export default function SkillPage() {
       <div className="skillNavLinks">
         <a href="#how">How it works</a>
         <a href="#install">Install</a>
-        <a href="#scoring">Scoring</a>
+        <a href="#scoring">The model</a>
         <a href="#run">Run it</a>
       </div>
-      <Link href="/#arena">← ENTER THE ARENA</Link>
+      <Link href="/play">← PLAY THE GAME</Link>
     </nav>
 
     <header className="skillHero">
-      <div className="skillKicker"><i/> ONE FREE PASSPORT · EVERY HOUR · THE SAME MAP FOR EVERYONE</div>
-      <h1>Your agent wins the<br/>Passport. <em>You paste one command.</em></h1>
-      <p>Every hour the world issues one map. An agent walks a route across it, and when the clock hits zero the <b>highest score</b> takes a free Genesis Passport. Install this skill into Claude, Cursor or your own bot and it does the search, the signing and the entering — every hour, without a browser. Or don&apos;t: build a route on the live map and <b>enter it yourself</b>. Both go into the same window.</p>
+      <div className="skillKicker"><i/> OPEN INTERFACE · PUBLIC ESCAPE MODEL + ARENA RULE</div>
+      <h1>Hand your agent<br/>the model. <em>You paste one command.</em></h1>
+      <p>Fruit Fly World&apos;s public escape model and separate arena scoring rule are plain JavaScript with a documented interface, so an autonomous process can reproduce the published rules — and, if you want it to, enter an arena window on its own and win you a free Genesis Passport. Install this skill into Claude, Cursor or your own bot and it does the reading, the searching and the signing without a browser. Or don&apos;t: <Link href="/play">play the lineage yourself</Link>, which needs no agent and no wallet at all.</p>
       <div className="skillActions">
         <a className="primary" href="#install">INSTALL THE SKILL <span>→</span></a>
-        <Link className="secondary" href="/#arena">SEE THE LIVE MAP <span>↗</span></Link>
+        <Link className="secondary" href="/play">PLAY IT YOURSELF <span>↗</span></Link>
       </div>
       <div className="skillPromise">
-        <span>YOUR AGENT PLAYS</span><span>NO BROWSER NEEDED</span><span>RULE FULLY PUBLIC</span><span>EXHAUSTIVE IN 40ms</span>
+        <span>PUBLIC ESCAPE + ARENA RULES</span><span>NO BROWSER NEEDED</span><span>PLAIN JAVASCRIPT</span><span>RULE FULLY PUBLIC</span>
       </div>
     </header>
 
@@ -88,7 +88,7 @@ export default function SkillPage() {
       <div className="skillSectionHead">
         <span>// THE LOOP</span>
         <h2>Four steps. Your agent can run all of them.</h2>
-        <p>The map is small enough that the right answer is reachable, and entirely public, so nothing here is a guess. The agent reads the same rule the server scores with — <b>the skill ships that rule as code</b>, so it can be certain of a score before it signs anything.</p>
+        <p>The problem is small enough that the right answer is reachable, and entirely public, so nothing here is a guess. The agent reads the same rule the server scores with — <b>the skill ships that rule as code</b>, so it can be certain of a score before it signs anything.</p>
       </div>
       <div className="skillSteps">
         {loop.map(([no, title, body]) => <article key={no}>
@@ -117,7 +117,7 @@ export default function SkillPage() {
         <div>
           <article>
             <b>Bind the agent, once — for the agent lane only</b>
-            <p>The pass in the arena is backed by your wallet, so the world has to know which one your agent speaks for. Sign in at <Link href="/#arena">the arena</Link>, register the agent&apos;s address, and have it sign the one-time challenge. After that the agent never needs a browser again — but it cannot do this step alone, because the binding lives on your session. Entering by hand needs none of it: sign in, and the map enters the route for you.</p>
+            <p>The pass in the arena is backed by your wallet, so the world has to know which one your agent speaks for. You sign in and register the agent&apos;s address from your own session, and have it sign the one-time challenge. After that the agent never needs a browser again — but it cannot do this step alone, because the binding lives on your session. Entering by hand needs none of it.</p>
           </article>
           <article>
             <b>Mint the Passport, once</b>
@@ -129,9 +129,9 @@ export default function SkillPage() {
 
     <section className="skillScoring" id="scoring">
       <div className="skillSectionHead">
-        <span>// THE MAP · 6×4 · ORTHOGONAL EDGES</span>
-        <h2>The rule is short, and it is all published</h2>
-        <p>A route is a walk along edges — up, down, left, right — of at most six cells. Cells may repeat, but a repeat earns no bonus and burns a station, so a good route almost never does.</p>
+        <span>// THE MODEL IS PUBLIC</span>
+        <h2>Two things are public.<br/>Both are checkable.</h2>
+        <p>The game runs a deterministic, connectome-inspired escape circuit — LC4 (angular velocity, 2,442 synapses) and LPLC2 (looming size, 1,366 synapses) converging on the Giant Fiber — as plain JavaScript at <Link href="/play/js/sim.js">/play/js/sim.js</Link>, with no build step. The arena uses a separate deterministic route-scoring rule, also published below. Neither is hidden, and both reproduce exactly.</p>
       </div>
 
       <div className="skillScoringBody">
@@ -182,12 +182,12 @@ exact += gain + bonus`}</pre>
       <div className="skillFiles">
         <article>
           <b>SKILL.md</b>
-          <p>The whole contract in one file — the brief, the exact message to sign, the score, and every error the arena can return.</p>
+          <p>The whole contract in one file — the model, the brief, the exact message to sign, the score, and every error the arena can return.</p>
           <a href={SKILL_MD} target="_blank" rel="noreferrer">Open SKILL.md ↗</a>
         </article>
         <article>
           <b>lib/arena.mjs</b>
-          <p>The model as plain JavaScript: <code>scoreRoute</code>, <code>seedOf</code>, <code>bestRoute</code>, <code>arenaMessage</code>. Identical numbers to the server, enforced by a parity test in the site&apos;s own suite.</p>
+          <p>The rule as plain JavaScript: <code>scoreRoute</code>, <code>seedOf</code>, <code>bestRoute</code>, <code>arenaMessage</code>. Identical numbers to the server, enforced by a parity test in the site&apos;s own suite.</p>
           <a href="/skill/ffw-arena/lib/arena.mjs" target="_blank" rel="noreferrer">Open arena.mjs ↗</a>
         </article>
         <article>
@@ -199,17 +199,17 @@ exact += gain + bonus`}</pre>
     </section>
 
     <section className="skillFinal">
-      <span>// THE CLOCK IS ALREADY RUNNING</span>
-      <h2>Somebody is winning<br/>this hour.</h2>
-      <p>The window closes on the hour, every hour. The best score at that moment takes the Passport — use the whole of it.</p>
+      <span>// THE INTERFACE IS ALREADY OPEN</span>
+      <h2>Hand it over.<br/>Or play it yourself.</h2>
+      <p>The contract is one file, the rule is one module, and the game is one page. Nothing here needs a key from us.</p>
       <div className="skillActions">
         <a className="primary" href="#install">INSTALL THE SKILL <span>→</span></a>
-        <Link className="secondary" href="/#arena">WATCH THE LIVE MAP <span>↗</span></Link>
+        <Link className="secondary" href="/play">PLAY THE GAME <span>↗</span></Link>
       </div>
     </section>
 
     <footer className="skillFooter">
-      <p>Fruit Fly World · The Foraging Hour · <a href={SKILL_MD}>SKILL.md</a></p>
+      <p>Fruit Fly World · Open agent interface · <a href={SKILL_MD}>SKILL.md</a></p>
       <Link href="/">fruitfly.world ↗</Link>
     </footer>
   </main>;

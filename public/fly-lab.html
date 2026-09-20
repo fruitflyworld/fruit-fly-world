@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FLY LAB · 果蝇进化沙盒</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0b0f0a; --dish:#1b2415; --dish-edge:#303c22; --panel:#12160d; --panel-line:#2c3620;
+    --text:#eee3c8; --text-dim:#a39d86; --gold:#e3ac3d; --teal:#5fa89c; --lavender:#8a7ab8;
+    --threat:#a8394a; --food:#8bbf5a; --focus:#e3ac3d;
+    --font-display:'Space Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --void:#0b0f0a; --dish:#1b2415; --dish-edge:#303c22; --panel:#12160d; --panel-line:#2c3620;
+      --text:#eee3c8; --text-dim:#a39d86; --gold:#e3ac3d; --teal:#5fa89c; --lavender:#8a7ab8;
+      --threat:#a8394a; --food:#8bbf5a; --focus:#e3ac3d;
+    }
+  }
+  :root[data-theme="dark"]{
+    --void:#0b0f0a; --dish:#1b2415; --dish-edge:#303c22; --panel:#12160d; --panel-line:#2c3620;
+    --text:#eee3c8; --text-dim:#a39d86; --gold:#e3ac3d; --teal:#5fa89c; --lavender:#8a7ab8;
+    --threat:#a8394a; --food:#8bbf5a; --focus:#e3ac3d;
+  }
+  :root[data-theme="light"]{
+    --void:#eef0e2; --dish:#d8e0c4; --dish-edge:#b9c69c; --panel:#e4e8d4; --panel-line:#c3cbab;
+    --text:#232819; --text-dim:#5b6148; --gold:#a8761f; --teal:#2f7268; --lavender:#6b5a99;
+    --threat:#8a2536; --food:#4f7a2c; --focus:#a8761f;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--void);color:var(--text);font-family:var(--font-display);}
+  a{color:var(--gold);}
+  .app{max-width:1180px;margin:0 auto;padding:20px 20px 40px;}
+  header.top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;
+    border-bottom:1px solid var(--panel-line);padding-bottom:16px;margin-bottom:20px;}
+  header.top h1{margin:0;font-size:1.5rem;font-weight:700;letter-spacing:.01em;}
+  header.top p{margin:.35em 0 0;color:var(--text-dim);font-size:.85rem;max-width:46ch;line-height:1.5;}
+  .genbadge{font-family:var(--font-mono);text-align:right;}
+  .genbadge .num{font-size:2.1rem;font-weight:700;color:var(--gold);line-height:1;}
+  .genbadge .label{font-size:.7rem;color:var(--text-dim);letter-spacing:.04em;}
+  .layout{display:grid;grid-template-columns:minmax(280px,1fr) 320px;gap:20px;align-items:start;}
+  @media (max-width:860px){.layout{grid-template-columns:1fr;}}
+  .card{background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;padding:16px;}
+  .stage{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .dish-wrap{position:relative;width:100%;display:flex;justify-content:center;}
+  canvas#dish{border-radius:50%;box-shadow:0 0 0 1px var(--panel-line) inset;max-width:100%;touch-action:none;}
+  .hud{width:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;
+    font-family:var(--font-mono);font-size:.72rem;color:var(--text-dim);}
+  .hud .stat b{display:block;color:var(--text);font-size:.95rem;font-weight:500;}
+  .energybar{grid-column:1/-1;height:8px;border-radius:4px;background:var(--panel-line);overflow:hidden;}
+  .energybar > i{display:block;height:100%;background:var(--gold);transition:width .15s linear;}
+  .playback{display:flex;flex-wrap:wrap;gap:8px;width:100%;}
+  button{font-family:var(--font-display);font-size:.82rem;background:var(--dish);color:var(--text);
+    border:1px solid var(--panel-line);border-radius:8px;padding:8px 14px;cursor:pointer;}
+  button:hover{border-color:var(--gold);}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+  button.primary{background:var(--gold);color:var(--void);border-color:var(--gold);font-weight:600;}
+  button.small{padding:6px 10px;font-size:.74rem;}
+  .speedgroup{display:flex;gap:4px;}
+  .speedgroup button.active{background:var(--gold);color:var(--void);}
+  .modegroup{display:flex;gap:8px;flex-wrap:wrap;}
+  .modeBtn.active{background:var(--gold);color:var(--void);}
+  details#agentDocs summary{cursor:pointer;color:var(--text);}
+  details#agentDocs pre{white-space:pre-wrap;font-family:var(--font-mono);font-size:.68rem;margin:8px 0 0;line-height:1.6;}
+  .report{position:absolute;inset:0;background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;
+    display:none;flex-direction:column;justify-content:center;align-items:center;gap:8px;padding:22px;text-align:center;z-index:5;}
+  .report.show{display:flex;}
+  .report h2{margin:0 0 2px;font-size:1.15rem;}
+  .report .fitness{font-family:var(--font-mono);font-size:2rem;color:var(--gold);font-weight:700;}
+  .report .breakdown{font-family:var(--font-mono);font-size:.74rem;color:var(--text-dim);line-height:1.7;}
+  .report .unlock{margin-top:6px;padding:10px 14px;border:1px dashed var(--gold);border-radius:10px;font-size:.8rem;max-width:38ch;}
+  h3{margin:0 0 12px;font-size:.9rem;letter-spacing:.02em;color:var(--text);border-bottom:1px solid var(--panel-line);padding-bottom:8px;}
+  .gene-row{margin-bottom:12px;}
+  .gene-row label{display:flex;justify-content:space-between;font-size:.78rem;color:var(--text-dim);margin-bottom:4px;}
+  .gene-row label span.val{color:var(--gold);font-family:var(--font-mono);}
+  input[type=range]{width:100%;accent-color:var(--gold);}
+  .photo-toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;}
+  .traits{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+  .trait-item{display:flex;gap:8px;align-items:flex-start;font-size:.76rem;color:var(--text-dim);
+    background:var(--dish);border:1px solid var(--panel-line);border-radius:8px;padding:8px 10px;}
+  .trait-item b{color:var(--text);}
+  .trait-item input{margin-top:3px;}
+  .locked-hint{font-size:.72rem;color:var(--text-dim);font-style:italic;}
+  .sparkwrap{margin-top:10px;}
+  .util-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  footer.log{margin-top:20px;}
+  footer.log .loglist{max-height:150px;overflow-y:auto;font-family:var(--font-mono);font-size:.72rem;
+    color:var(--text-dim);display:flex;flex-direction:column-reverse;gap:2px;}
+  .toast{font-size:.7rem;color:var(--gold);margin-left:6px;}
+  .foot-note{margin-top:18px;font-size:.72rem;color:var(--text-dim);line-height:1.6;border-top:1px solid var(--panel-line);padding-top:14px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div>
+      <h1>FLY LAB · 果蝇进化沙盒</h1>
+      <p>给你的果蝇设定一套感知权重,放进培养皿,看它这一代能活多久、吃到多少食物、探索多大范围。这一代结束后,基因会带着一点随机突变传给下一代。</p>
+    </div>
+    <div class="genbadge">
+      <div class="num" id="genNum">1</div>
+      <div class="label">GENERATION · 世代</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <section class="stage card">
+      <div class="dish-wrap">
+        <canvas id="dish" width="520" height="520"></canvas>
+        <div class="report" id="report">
+          <h2>第 <span id="repGen"></span> 代 · 实验结束</h2>
+          <div class="fitness" id="repFitness">0</div>
+          <div class="breakdown" id="repBreakdown"></div>
+          <div class="unlock" id="repUnlock" style="display:none;"></div>
+          <button class="primary" id="hatchBtn" style="margin-top:14px;">突变并孵化下一代 →</button>
+        </div>
+      </div>
+      <div class="hud">
+        <div class="stat">能量 ENERGY<b id="statEnergy">100</b></div>
+        <div class="energybar"><i id="energyBar" style="width:100%"></i></div>
+        <div class="stat">剩余时间 TIME<b id="statTime">60.0s</b></div>
+        <div class="stat">已进食 FOOD<b id="statFood">0</b></div>
+        <div class="stat">已探索 EXPLORED<b id="statExplore">0%</b></div>
+      </div>
+      <div class="playback">
+        <button id="playBtn">⏸ 暂停</button>
+        <div class="speedgroup">
+          <button class="small speedBtn active" data-speed="1">1×</button>
+          <button class="small speedBtn" data-speed="4">4×</button>
+          <button class="small speedBtn" data-speed="8">8×</button>
+        </div>
+        <button class="small" id="copyBtn">复制这一代基因组 (JSON)<span class="toast" id="copyToast"></span></button>
+        <button class="small" id="resetBtn" style="margin-left:auto;">重置存档</button>
+      </div>
+    </section>
+
+    <aside class="controls">
+      <div class="card">
+        <h3>驾驶模式 · WHO'S DRIVING</h3>
+        <div class="modegroup">
+          <button class="small modeBtn active" data-mode="auto">自动进化(基因)</button>
+          <button class="small modeBtn" data-mode="manual">手动操作(人类)</button>
+          <button class="small modeBtn" data-mode="agent">Agent 接管(脚本/LLM)</button>
+        </div>
+        <p style="font-size:.74rem;color:var(--text-dim);margin:10px 0 6px;">三种模式共用同一套速度、能量与打分规则——人手速快慢、代码写得好不好,和基因权重一样,都在同一张表里排名。手动模式用方向键/WASD 或在培养皿上拖动来操控。</p>
+        <details id="agentDocs">
+          <summary>Agent 接管 · 控制台 API 文档</summary>
+          <pre>切到"Agent 接管"后,在浏览器控制台里调用:
+window.FlyLabAPI.getState()
+  // 读取信号、位置、能量、剩余时间、食物与威胁坐标
+window.FlyLabAPI.setControl({x, y})
+  // 每帧给一个转向向量,自动归一化;约 0.5 秒不更新会回退到基因自动驾驶
+window.FlyLabAPI.setGenes({food, threat, light, novelty, freeze, photo})
+  // 直接改写策略权重
+window.FlyLabAPI.setMode('auto' | 'manual' | 'agent')
+  // 也可以用代码切换驾驶模式</pre>
+        </details>
+      </div>
+
+      <div class="card">
+        <h3>基因编辑器 · GENE EDITOR</h3>
+        <p style="font-size:.72rem;color:var(--text-dim);margin:-6px 0 12px;">仅在「自动进化」模式下决定移动方向;手动/Agent 模式下依然用于世代突变与展示。</p>
+        <div class="gene-row">
+          <label>觅食本能 FOOD <span class="val" id="vFood">0.50</span></label>
+          <input type="range" id="sFood" min="0" max="100" value="50">
+        </div>
+        <div class="gene-row">
+          <label>威胁规避 THREAT <span class="val" id="vThreat">0.60</span></label>
+          <input type="range" id="sThreat" min="0" max="100" value="60">
+        </div>
+        <div class="gene-row">
+          <label>光信号强度 LIGHT <span class="val" id="vLight">0.30</span></label>
+          <input type="range" id="sLight" min="0" max="100" value="30">
+        </div>
+        <div class="gene-row">
+          <label>探索欲 NOVELTY <span class="val" id="vNovelty">0.40</span></label>
+          <input type="range" id="sNovelty" min="0" max="100" value="40">
+        </div>
+        <div class="gene-row">
+          <label>冻结阈值 FREEZE <span class="val" id="vFreeze">0.75</span></label>
+          <input type="range" id="sFreeze" min="0" max="100" value="75">
+        </div>
+        <div class="photo-toggle">
+          <span style="font-size:.78rem;color:var(--text-dim);">趋光性 PHOTOTAXIS</span>
+          <button class="small" id="photoBtn">趋光 →</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <h3>已解锁性状 · MUTANT TRAITS</h3>
+        <div class="traits" id="traitsList"></div>
+        <div class="locked-hint" id="lockedHint"></div>
+        <div class="sparkwrap">
+          <canvas id="spark" width="280" height="46"></canvas>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="log card">
+    <h3>公开记录 · EVENT LOG</h3>
+    <div class="loglist" id="logList" aria-live="polite"></div>
+  </footer>
+
+  <div class="foot-note">
+    灵感致敬 fruitfly.world 的 connectome-inspired agent 实验 —— 本页是一个非官方的独立小样,把"四个信号 → 一个行为"的透明决策模型,改造成一个可以跨世代积累突变的沙盒。与该项目无关联、不代表其立场。所有基因权重与打分公式都在页面上可读、可复制,不藏黑箱。
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- persistence ----------
+  var SAVE_KEY = "fruitfly_lab_save_v1";
+  function loadSave(){
+    try{
+      var raw = localStorage.getItem(SAVE_KEY);
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch(e){ return null; }
+  }
+  function saveState(){
+    try{
+      localStorage.setItem(SAVE_KEY, JSON.stringify({
+        genNumber: genNumber,
+        genes: activeGenes,
+        fitnessHistory: fitnessHistory,
+        bestFitness: bestFitness,
+        unlockedTraits: Array.from(unlockedTraits),
+        activeTraits: Array.from(activeTraits)
+      }));
+    }catch(e){ /* storage unavailable, ignore */ }
+  }
+
+  // ---------- constants ----------
+  var GEN_DURATION = 60;
+  var BASE_SPEED = 0.36;
+  var METABOLISM = 3.0;
+  var FOOD_GAIN = 20;
+  var FOOD_RADIUS = 0.055;
+  var FOOD_SENSE = 0.55;
+  var THREAT_SENSE = 0.5;
+  var THREAT_RADIUS = 0.13;
+  var THREAT_DPS = 20;
+  var NOVELTY_SENSE = 0.42;
+  var GRID_N = 9;
+  var MUTATION_RATE = 0.12;
+  var FOOD_COUNT = 7;
+  var THREAT_COUNT = 3;
+
+  var MILESTONES = {3:"white",5:"curly",8:"vestigial",12:"ebony"};
+  var TRAIT_INFO = {
+    white:{name:"白眼 white",desc:"感知范围 +25%,更容易发现食物与威胁。"},
+    curly:{name:"卷翅 curly",desc:"速度 +20%,但代谢消耗 +20%。"},
+    vestigial:{name:"残翅 vestigial",desc:"速度 −20%,但能量上限 +50。"},
+    ebony:{name:"黑檀 ebony",desc:"受到的威胁伤害 −30%,但探索感知 −15%。"}
+  };
+
+  // ---------- state ----------
+  var genNumber = 1;
+  var fitnessHistory = [];
+  var bestFitness = 0;
+  var unlockedTraits = new Set();
+  var activeTraits = new Set();
+  var activeGenes = {food:0.5, threat:0.6, light:0.3, novelty:0.4, freeze:0.75, photo:1};
+
+  var saved = loadSave();
+  if(saved){
+    genNumber = saved.genNumber || 1;
+    activeGenes = saved.genes || activeGenes;
+    fitnessHistory = saved.fitnessHistory || [];
+    bestFitness = saved.bestFitness || 0;
+    (saved.unlockedTraits||[]).forEach(function(t){ unlockedTraits.add(t); });
+    (saved.activeTraits||[]).forEach(function(t){ activeTraits.add(t); });
+  }
+
+  var running = true;
+  var ended = false;
+  var speedMultiplier = 1;
+  var simTime = 0;
+  var genTimeLeft = GEN_DURATION;
+
+  var food = [];
+  var threats = [];
+  var lightAngle = Math.random()*Math.PI*2;
+  var lightRadius = 0.5;
+  var lightPos = {x:0,y:0};
+  var visitedCells = new Set();
+  var totalValidCells = 0;
+
+  function clamp01(v){ return Math.min(1, Math.max(0, v)); }
+  function dist(a,b){ return Math.hypot(a.x-b.x, a.y-b.y); }
+  function normalize(v){
+    var m = Math.hypot(v.x, v.y);
+    if(m < 1e-6) return {x:0,y:0};
+    return {x:v.x/m, y:v.y/m};
+  }
+  function randRange(a,b){ return a + Math.random()*(b-a); }
+  function randomInDish(maxR){
+    maxR = maxR || 0.85;
+    var a = Math.random()*Math.PI*2;
+    var r = Math.sqrt(Math.random())*maxR;
+    return {x:Math.cos(a)*r, y:Math.sin(a)*r};
+  }
+
+  // precompute valid novelty cells
+  (function(){
+    var c = 0;
+    for(var i=0;i<GRID_N;i++){
+      for(var j=0;j<GRID_N;j++){
+        var cx = (i+0.5)/GRID_N*2-1;
+        var cy = (j+0.5)/GRID_N*2-1;
+        if(Math.hypot(cx,cy) <= 1) c++;
+      }
+    }
+    totalValidCells = c;
+  })();
+
+  function cellKey(i,j){ return i+","+j; }
+  function markVisited(pos){
+    var i = Math.min(GRID_N-1, Math.max(0, Math.floor((pos.x+1)/2*GRID_N)));
+    var j = Math.min(GRID_N-1, Math.max(0, Math.floor((pos.y+1)/2*GRID_N)));
+    visitedCells.add(cellKey(i,j));
+  }
+  function findNearestUnvisited(fly){
+    var best = null, bestD = Infinity;
+    for(var i=0;i<GRID_N;i++){
+      for(var j=0;j<GRID_N;j++){
+        var cx = (i+0.5)/GRID_N*2-1;
+        var cy = (j+0.5)/GRID_N*2-1;
+        if(Math.hypot(cx,cy) > 1) continue;
+        if(visitedCells.has(cellKey(i,j))) continue;
+        var d = Math.hypot(cx-fly.x, cy-fly.y);
+        if(d < bestD){ bestD = d; best = {x:cx,y:cy}; }
+      }
+    }
+    var sense = NOVELTY_SENSE * fly.stats.noveltySenseMult;
+    if(!best || bestD > sense) return null;
+    return {dir: normalize({x:best.x-fly.x, y:best.y-fly.y}), signal: 1-bestD/sense};
+  }
+
+  function findNearestFood(fly){
+    var best=null, bestD=Infinity;
+    for(var i=0;i<food.length;i++){
+      var d = dist(fly, food[i]);
+      if(d<bestD){ bestD=d; best=food[i]; }
+    }
+    var sense = FOOD_SENSE * fly.stats.foodSenseMult;
+    if(!best || bestD>sense) return null;
+    return {dir: normalize({x:best.x-fly.x,y:best.y-fly.y}), signal:1-bestD/sense, item:best};
+  }
+
+  function findNearestThreat(fly){
+    var best=null, bestD=Infinity;
+    for(var i=0;i<threats.length;i++){
+      var d = dist(fly, threats[i]);
+      if(d<bestD){ bestD=d; best=threats[i]; }
+    }
+    var sense = THREAT_SENSE * fly.stats.threatSenseMult;
+    if(!best || bestD>sense) return null;
+    return {dirAway: normalize({x:fly.x-best.x, y:fly.y-best.y}), signal:1-bestD/sense};
+  }
+
+  function lightSignal(fly){
+    var d = dist(fly, lightPos);
+    var signal = clamp01(1 - d/1.4);
+    if(d < 1e-4 || signal<=0.02) return {signal:0, dir:{x:0,y:0}};
+    var toward = normalize({x:lightPos.x-fly.x, y:lightPos.y-fly.y});
+    var dir = fly.genes.photo >= 0 ? toward : {x:-toward.x,y:-toward.y};
+    return {signal:signal, dir:dir};
+  }
+
+  // ---------- drive mode: who is steering the player fly ----------
+  var driveMode = "auto"; // 'auto' | 'manual' | 'agent'
+  var keysDown = {};
+  var pointerActive = false, pointerTarget = null;
+  var agentVec = null, agentVecTime = 0;
+
+  window.addEventListener("keydown", function(e){ keysDown[e.key.toLowerCase()] = true; });
+  window.addEventListener("keyup", function(e){ keysDown[e.key.toLowerCase()] = false; });
+
+  function computeManualVec(){
+    if(pointerActive && pointerTarget){
+      return normalize({x:pointerTarget.x-playerFly.x, y:pointerTarget.y-playerFly.y});
+    }
+    var x=0, y=0;
+    if(keysDown["arrowleft"]||keysDown["a"]) x -= 1;
+    if(keysDown["arrowright"]||keysDown["d"]) x += 1;
+    if(keysDown["arrowup"]||keysDown["w"]) y -= 1;
+    if(keysDown["arrowdown"]||keysDown["s"]) y += 1;
+    return normalize({x:x,y:y});
+  }
+
+  function getDecision(fly){
+    if(fly.isPlayer && driveMode==="manual"){
+      return {steer: computeManualVec(), freeze:false};
+    }
+    if(fly.isPlayer && driveMode==="agent"){
+      if(agentVec && (performance.now()-agentVecTime) < 500){
+        return {steer: normalize(agentVec), freeze:false};
+      }
+      return decideSteer(fly); // no fresh agent command yet: fall back to gene autopilot
+    }
+    return decideSteer(fly);
+  }
+
+  function decideSteer(fly){
+    var steer = {x:0,y:0};
+    var f = findNearestFood(fly);
+    if(f){ steer.x += f.dir.x*fly.genes.food*f.signal; steer.y += f.dir.y*fly.genes.food*f.signal; }
+    var th = findNearestThreat(fly);
+    var threatVal = th ? th.signal : 0;
+    if(th){ steer.x += th.dirAway.x*fly.genes.threat*th.signal; steer.y += th.dirAway.y*fly.genes.threat*th.signal; }
+    var l = lightSignal(fly);
+    if(l.signal>0){ steer.x += l.dir.x*fly.genes.light*l.signal; steer.y += l.dir.y*fly.genes.light*l.signal; }
+    var n = findNearestUnvisited(fly);
+    if(n){ steer.x += n.dir.x*fly.genes.novelty*n.signal; steer.y += n.dir.y*fly.genes.novelty*n.signal; }
+    fly.wanderAngle += (Math.random()-0.5)*0.5;
+    steer.x += Math.cos(fly.wanderAngle)*0.12;
+    steer.y += Math.sin(fly.wanderAngle)*0.12;
+    var freeze = threatVal>0 && threatVal > fly.genes.freeze;
+    return {steer: normalize(steer), freeze: freeze};
+  }
+
+  function recomputeStats(fly){
+    var speed=BASE_SPEED, metabolism=METABOLISM, maxEnergy=100,
+        threatDpsTakenMult=1, foodSenseMult=1, threatSenseMult=1, noveltySenseMult=1;
+    if(fly.isPlayer){
+      if(activeTraits.has("white")){ foodSenseMult*=1.25; threatSenseMult*=1.25; }
+      if(activeTraits.has("curly")){ speed*=1.2; metabolism*=1.2; }
+      if(activeTraits.has("vestigial")){ speed*=0.8; metabolism*=0.85; maxEnergy+=50; }
+      if(activeTraits.has("ebony")){ threatDpsTakenMult*=0.7; noveltySenseMult*=0.85; }
+    }
+    fly.stats = {speed:speed, metabolism:metabolism, maxEnergy:maxEnergy,
+      threatDpsTakenMult:threatDpsTakenMult, foodSenseMult:foodSenseMult,
+      threatSenseMult:threatSenseMult, noveltySenseMult:noveltySenseMult};
+    if(fly.energy > fly.stats.maxEnergy) fly.energy = fly.stats.maxEnergy;
+  }
+
+  function randomGenes(){
+    return {food:randRange(0.2,0.9), threat:randRange(0.3,0.9), light:randRange(0,0.6),
+      novelty:randRange(0.1,0.7), freeze:randRange(0.5,0.9), photo: Math.random()<0.5?1:-1};
+  }
+
+  function makeFly(isPlayer, color, genes){
+    var f = {
+      isPlayer: isPlayer, color: color, x:0, y:0, vx:0, vy:0, angle:0,
+      energy:100, alive:true, foodEaten:0, wanderAngle:Math.random()*Math.PI*2,
+      genes: genes, trail: []
+    };
+    recomputeStats(f);
+    f.energy = f.stats.maxEnergy;
+    return f;
+  }
+
+  var playerFly = makeFly(true, "gold", activeGenes);
+  var npcFlies = [ makeFly(false,"teal", randomGenes()), makeFly(false,"lavender", randomGenes()) ];
+
+  function relocateFood(item){
+    var p = randomInDish(0.85);
+    item.x = p.x; item.y = p.y;
+  }
+
+  function resetGenerationWorld(){
+    food = [];
+    for(var i=0;i<FOOD_COUNT;i++) food.push(randomInDish(0.85));
+    threats = [];
+    for(var j=0;j<THREAT_COUNT;j++){
+      var p = randomInDish(0.7);
+      threats.push({x:p.x, y:p.y, pulsePhase: Math.random()*Math.PI*2});
+    }
+    lightAngle = Math.random()*Math.PI*2;
+    visitedCells = new Set();
+    genTimeLeft = GEN_DURATION;
+
+    playerFly.genes = activeGenes;
+    playerFly.x=0; playerFly.y=0; playerFly.vx=0; playerFly.vy=0;
+    playerFly.alive=true; playerFly.foodEaten=0; playerFly.trail=[];
+    playerFly.wanderAngle = Math.random()*Math.PI*2;
+    recomputeStats(playerFly);
+    playerFly.energy = playerFly.stats.maxEnergy;
+
+    npcFlies.forEach(function(npc){
+      npc.genes = randomGenes();
+      var sp = randomInDish(0.6);
+      npc.x = sp.x; npc.y = sp.y; npc.vx=0; npc.vy=0;
+      npc.alive = true; npc.foodEaten = 0; npc.trail=[];
+      npc.wanderAngle = Math.random()*Math.PI*2;
+      recomputeStats(npc);
+      npc.energy = npc.stats.maxEnergy;
+    });
+
+    ended = false;
+    running = true;
+    document.getElementById("report").classList.remove("show");
+  }
+
+  function updateFly(fly, dtSim){
+    if(!fly.alive) return;
+    var d = getDecision(fly);
+    if(!d.freeze){
+      fly.vx = d.steer.x*fly.stats.speed;
+      fly.vy = d.steer.y*fly.stats.speed;
+      fly.x += fly.vx*dtSim;
+      fly.y += fly.vy*dtSim;
+      var r = Math.hypot(fly.x, fly.y);
+      if(r>0.96){
+        var nx=fly.x/r, ny=fly.y/r;
+        fly.x = nx*0.96; fly.y = ny*0.96;
+        fly.vx *= -0.3; fly.vy *= -0.3;
+      }
+      if(Math.hypot(fly.vx,fly.vy) > 0.01){ fly.angle = Math.atan2(fly.vy, fly.vx); }
+    } else {
+      fly.vx = 0; fly.vy = 0;
+    }
+    markVisited(fly);
+    fly.trail.push({x:fly.x, y:fly.y});
+    if(fly.trail.length>40) fly.trail.shift();
+
+    fly.energy -= fly.stats.metabolism*dtSim;
+
+    for(var i=0;i<food.length;i++){
+      if(dist(fly, food[i]) < FOOD_RADIUS){
+        fly.energy = Math.min(fly.stats.maxEnergy, fly.energy+FOOD_GAIN);
+        fly.foodEaten++;
+        if(fly.isPlayer) logEvent("捕食成功,能量 +" + FOOD_GAIN);
+        relocateFood(food[i]);
+      }
+    }
+    for(var k=0;k<threats.length;k++){
+      if(dist(fly, threats[k]) < THREAT_RADIUS){
+        var dmg = THREAT_DPS*fly.stats.threatDpsTakenMult*dtSim;
+        fly.energy -= dmg;
+        if(fly.isPlayer && !fly._warned){ logEvent("⚠ 进入威胁区,持续掉血"); fly._warned = true; }
+      } else if(fly.isPlayer){ fly._warned = false; }
+    }
+    if(fly.energy <= 0){ fly.energy = 0; fly.alive = false; if(fly.isPlayer) logEvent("能量耗尽,这一代结束了。"); }
+  }
+
+  // ---------- log ----------
+  var logEntries = [];
+  function fmtTime(t){
+    var m = Math.floor(t/60), s = Math.floor(t%60);
+    return (m>0? m+"m ":"") + s + "s";
+  }
+  function logEvent(text){
+    logEntries.push("T+" + fmtTime(GEN_DURATION-genTimeLeft) + " · " + text);
+    if(logEntries.length>40) logEntries.shift();
+    var el = document.getElementById("logList");
+    el.innerHTML = logEntries.slice().reverse().map(function(t){ return "<div>"+t+"</div>"; }).join("");
+  }
+
+  // ---------- generation end / mutation ----------
+  function mutate(genes){
+    return {
+      food: clamp01(genes.food + randRange(-MUTATION_RATE,MUTATION_RATE)),
+      threat: clamp01(genes.threat + randRange(-MUTATION_RATE,MUTATION_RATE)),
+      light: clamp01(genes.light + randRange(-MUTATION_RATE,MUTATION_RATE)),
+      novelty: clamp01(genes.novelty + randRange(-MUTATION_RATE,MUTATION_RATE)),
+      freeze: clamp01(genes.freeze + randRange(-0.08,0.08)),
+      photo: genes.photo * (Math.random()<0.06 ? -1 : 1)
+    };
+  }
+
+  function endGeneration(){
+    if(ended) return;
+    ended = true; running = false;
+    var explored = visitedCells.size/totalValidCells;
+    var survivalSeconds = GEN_DURATION - Math.max(0, genTimeLeft);
+    var fitness = Math.round(playerFly.foodEaten*12 + explored*100*0.4 + survivalSeconds*0.5);
+    fitnessHistory.push(fitness);
+    if(fitnessHistory.length>30) fitnessHistory.shift();
+    var isBest = fitness > bestFitness;
+    if(isBest) bestFitness = fitness;
+
+    var unlockedNow = null;
+    if(MILESTONES[genNumber] && !unlockedTraits.has(MILESTONES[genNumber])){
+      unlockedNow = MILESTONES[genNumber];
+      unlockedTraits.add(unlockedNow);
+      logEvent("🧬 世代 " + genNumber + ": 解锁性状 — " + TRAIT_INFO[unlockedNow].name);
+    }
+
+    document.getElementById("repGen").textContent = genNumber;
+    document.getElementById("repFitness").textContent = fitness;
+    document.getElementById("repBreakdown").innerHTML =
+      "存活 " + survivalSeconds.toFixed(1) + "s · 进食 " + playerFly.foodEaten + " 次 · 探索 " + Math.round(explored*100) + "%<br>" +
+      "公式: fitness = 12×进食 + 40×探索% + 0.5×存活秒数<br>" +
+      "历史最佳: " + bestFitness + (isBest? "  (刷新纪录!)" : "");
+    var unlockBox = document.getElementById("repUnlock");
+    if(unlockedNow){
+      unlockBox.style.display = "block";
+      unlockBox.textContent = "新性状解锁: " + TRAIT_INFO[unlockedNow].name + " — " + TRAIT_INFO[unlockedNow].desc;
+    } else { unlockBox.style.display = "none"; }
+
+    // prefill sliders with a mutated suggestion for next hatch
+    var suggestion = mutate(activeGenes);
+    setSliders(suggestion);
+    setSlidersDisabled(false);
+
+    document.getElementById("report").classList.add("show");
+    renderTraits();
+    drawSpark();
+    saveState();
+  }
+
+  function hatchNext(){
+    activeGenes = readSliders();
+    genNumber += 1;
+    document.getElementById("genNum").textContent = genNumber;
+    resetGenerationWorld();
+    setSlidersDisabled(true);
+    saveState();
+  }
+
+  // ---------- UI wiring ----------
+  function $(id){ return document.getElementById(id); }
+  var sliderIds = {food:"sFood", threat:"sThreat", light:"sLight", novelty:"sNovelty", freeze:"sFreeze"};
+  var valueIds = {food:"vFood", threat:"vThreat", light:"vLight", novelty:"vNovelty", freeze:"vFreeze"};
+
+  function setSliders(genes){
+    Object.keys(sliderIds).forEach(function(k){
+      $(sliderIds[k]).value = Math.round(genes[k]*100);
+      $(valueIds[k]).textContent = genes[k].toFixed(2);
+    });
+    $("photoBtn").textContent = genes.photo>=0 ? "趋光 →" : "避光 →";
+    pendingPhoto = genes.photo;
+  }
+  function readSliders(){
+    var g = {};
+    Object.keys(sliderIds).forEach(function(k){ g[k] = parseInt($(sliderIds[k]).value,10)/100; });
+    g.photo = pendingPhoto;
+    return g;
+  }
+  function setSlidersDisabled(disabled){
+    Object.keys(sliderIds).forEach(function(k){ $(sliderIds[k]).disabled = disabled; });
+    $("photoBtn").disabled = disabled;
+  }
+  var pendingPhoto = activeGenes.photo;
+
+  Object.keys(sliderIds).forEach(function(k){
+    $(sliderIds[k]).addEventListener("input", function(){
+      $(valueIds[k]).textContent = (parseInt(this.value,10)/100).toFixed(2);
+    });
+  });
+  $("photoBtn").addEventListener("click", function(){
+    pendingPhoto = -pendingPhoto;
+    this.textContent = pendingPhoto>=0 ? "趋光 →" : "避光 →";
+  });
+
+  $("hatchBtn").addEventListener("click", hatchNext);
+
+  $("playBtn").addEventListener("click", function(){
+    if(ended) return;
+    running = !running;
+    this.textContent = running ? "⏸ 暂停" : "▶ 继续";
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".modeBtn"), function(btn){
+    btn.addEventListener("click", function(){
+      driveMode = this.dataset.mode;
+      Array.prototype.forEach.call(document.querySelectorAll(".modeBtn"), function(b){ b.classList.remove("active"); });
+      this.classList.add("active");
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".speedBtn"), function(btn){
+    btn.addEventListener("click", function(){
+      speedMultiplier = parseInt(this.dataset.speed,10);
+      Array.prototype.forEach.call(document.querySelectorAll(".speedBtn"), function(b){ b.classList.remove("active"); });
+      this.classList.add("active");
+    });
+  });
+
+  $("copyBtn").addEventListener("click", function(){
+    var payload = JSON.stringify({generation:genNumber, genes:activeGenes,
+      unlockedTraits:Array.from(unlockedTraits), activeTraits:Array.from(activeTraits)}, null, 2);
+    var toast = $("copyToast");
+    function ok(){ toast.textContent = "已复制"; setTimeout(function(){ toast.textContent=""; }, 1500); }
+    function fail(){ toast.textContent = "复制失败"; setTimeout(function(){ toast.textContent=""; }, 1500); }
+    try{
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(payload).then(ok, fail);
+      } else { fail(); }
+    }catch(e){ fail(); }
+  });
+
+  $("resetBtn").addEventListener("click", function(){
+    if(confirm("确定要清空存档、从第 1 代重新开始吗?")){
+      try{ localStorage.removeItem(SAVE_KEY); }catch(e){}
+      location.reload();
+    }
+  });
+
+  function renderTraits(){
+    var list = $("traitsList");
+    var html = "";
+    Object.keys(TRAIT_INFO).forEach(function(key){
+      if(!unlockedTraits.has(key)) return;
+      var info = TRAIT_INFO[key];
+      var checked = activeTraits.has(key) ? "checked" : "";
+      html += '<label class="trait-item"><input type="checkbox" data-trait="'+key+'" '+checked+'>' +
+        '<span><b>'+info.name+'</b><br>'+info.desc+'</span></label>';
+    });
+    list.innerHTML = html || "";
+    Array.prototype.forEach.call(list.querySelectorAll("input[type=checkbox]"), function(cb){
+      cb.addEventListener("change", function(){
+        var key = this.dataset.trait;
+        if(this.checked) activeTraits.add(key); else activeTraits.delete(key);
+        recomputeStats(playerFly);
+        saveState();
+      });
+    });
+    var lockedCount = Object.keys(MILESTONES).filter(function(g){ return !unlockedTraits.has(MILESTONES[g]); }).length;
+    var nextGen = null;
+    Object.keys(MILESTONES).forEach(function(g){
+      g = parseInt(g,10);
+      if(!unlockedTraits.has(MILESTONES[g]) && (nextGen===null || g<nextGen)) nextGen = g;
+    });
+    $("lockedHint").textContent = nextGen ? ("下一个性状将在第 " + nextGen + " 代解锁。") : (lockedCount===0 ? "全部性状已解锁。" : "");
+  }
+
+  // ---------- sparkline ----------
+  function drawSpark(){
+    var c = $("spark"), ctx = c.getContext("2d");
+    ctx.clearRect(0,0,c.width,c.height);
+    if(fitnessHistory.length<2) return;
+    var max = Math.max.apply(null, fitnessHistory), min = Math.min.apply(null, fitnessHistory);
+    var range = Math.max(1, max-min);
+    ctx.beginPath();
+    fitnessHistory.forEach(function(v,i){
+      var x = i/(fitnessHistory.length-1)*(c.width-6)+3;
+      var y = c.height-4 - (v-min)/range*(c.height-8);
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    });
+    var css = getComputedStyle(document.documentElement);
+    ctx.strokeStyle = css.getPropertyValue("--gold").trim() || "#e3ac3d";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  // ---------- canvas rendering ----------
+  var canvas = $("dish"), ctx = canvas.getContext("2d");
+  var dishPixelRadius = 250, dishPixelCenter = {x:260,y:260};
+
+  function resizeCanvas(){
+    var wrap = canvas.parentElement;
+    var size = Math.min(wrap.clientWidth, Math.round(window.innerHeight*0.6), 560);
+    size = Math.max(size, 260);
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = size*dpr; canvas.height = size*dpr;
+    canvas.style.width = size+"px"; canvas.style.height = size+"px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    dishPixelCenter = {x:size/2, y:size/2};
+    dishPixelRadius = size/2*0.94;
+  }
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
+
+  function updatePointerTarget(e){
+    var rect = canvas.getBoundingClientRect();
+    var px = e.clientX-rect.left, py = e.clientY-rect.top;
+    pointerTarget = {x:(px-dishPixelCenter.x)/dishPixelRadius, y:(py-dishPixelCenter.y)/dishPixelRadius};
+  }
+  canvas.addEventListener("pointerdown", function(e){
+    if(driveMode!=="manual") return;
+    pointerActive = true; updatePointerTarget(e);
+  });
+  canvas.addEventListener("pointermove", function(e){
+    if(driveMode!=="manual" || !pointerActive) return;
+    updatePointerTarget(e);
+  });
+  window.addEventListener("pointerup", function(){ pointerActive = false; pointerTarget = null; });
+
+  function toCanvas(p){
+    return {x: dishPixelCenter.x + p.x*dishPixelRadius, y: dishPixelCenter.y + p.y*dishPixelRadius};
+  }
+
+  function css(varName){ return getComputedStyle(document.documentElement).getPropertyValue(varName).trim(); }
+
+  function drawFlyShape(fly){
+    if(fly.trail.length>1){
+      ctx.beginPath();
+      fly.trail.forEach(function(p,i){
+        var c = toCanvas(p);
+        if(i===0) ctx.moveTo(c.x,c.y); else ctx.lineTo(c.x,c.y);
+      });
+      ctx.strokeStyle = css(fly.color==="gold"?"--gold":fly.color==="teal"?"--teal":"--lavender");
+      ctx.globalAlpha = 0.25;
+      ctx.lineWidth = 1.4;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+    var p = toCanvas(fly);
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(fly.angle);
+    var color = css(fly.color==="gold"?"--gold":fly.color==="teal"?"--teal":"--lavender");
+    ctx.globalAlpha = fly.alive ? 1 : 0.3;
+    // wings
+    ctx.fillStyle = "rgba(255,255,255,0.35)";
+    ctx.beginPath(); ctx.ellipse(-2,-6,7,3.2, -0.3, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(-2,6,7,3.2, 0.3, 0, Math.PI*2); ctx.fill();
+    // body
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.ellipse(0,0,9,5,0,0,Math.PI*2); ctx.fill();
+    // eye
+    ctx.fillStyle = "#a8394a";
+    ctx.beginPath(); ctx.arc(5,0,2,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+
+  function draw(){
+    var W = dishPixelCenter.x*2, H = dishPixelCenter.y*2;
+    ctx.clearRect(0,0,W,H);
+    // dish
+    var grad = ctx.createRadialGradient(dishPixelCenter.x,dishPixelCenter.y,dishPixelRadius*0.1,
+      dishPixelCenter.x,dishPixelCenter.y,dishPixelRadius);
+    grad.addColorStop(0, css("--dish"));
+    grad.addColorStop(1, css("--dish-edge"));
+    ctx.beginPath();
+    ctx.arc(dishPixelCenter.x, dishPixelCenter.y, dishPixelRadius, 0, Math.PI*2);
+    ctx.fillStyle = grad; ctx.fill();
+
+    // explored overlay
+    ctx.save();
+    ctx.beginPath(); ctx.arc(dishPixelCenter.x, dishPixelCenter.y, dishPixelRadius, 0, Math.PI*2); ctx.clip();
+    ctx.fillStyle = css("--food"); ctx.globalAlpha = 0.05;
+    visitedCells.forEach(function(key){
+      var parts = key.split(","); var i = parseInt(parts[0],10), j = parseInt(parts[1],10);
+      var cw = dishPixelRadius*2/GRID_N;
+      var x0 = dishPixelCenter.x - dishPixelRadius + i*cw;
+      var y0 = dishPixelCenter.y - dishPixelRadius + j*cw;
+      ctx.fillRect(x0,y0,cw,cw);
+    });
+    ctx.globalAlpha = 1;
+    ctx.restore();
+
+    // light glow
+    lightPos = {x:Math.cos(lightAngle)*lightRadius, y:Math.sin(lightAngle)*lightRadius};
+    var lp = toCanvas(lightPos);
+    var lg = ctx.createRadialGradient(lp.x,lp.y,0, lp.x,lp.y,dishPixelRadius*0.7);
+    lg.addColorStop(0, "rgba(255,240,190,0.16)");
+    lg.addColorStop(1, "rgba(255,240,190,0)");
+    ctx.save();
+    ctx.beginPath(); ctx.arc(dishPixelCenter.x, dishPixelCenter.y, dishPixelRadius, 0, Math.PI*2); ctx.clip();
+    ctx.fillStyle = lg; ctx.fillRect(0,0,W,H);
+    ctx.restore();
+
+    // threats
+    threats.forEach(function(t){
+      var c = toCanvas(t);
+      var pulse = 1 + 0.15*Math.sin(simTime*2 + t.pulsePhase);
+      var rad = THREAT_RADIUS*dishPixelRadius*pulse;
+      ctx.beginPath(); ctx.arc(c.x,c.y,rad,0,Math.PI*2);
+      ctx.fillStyle = css("--threat"); ctx.globalAlpha = 0.32; ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.beginPath(); ctx.arc(c.x,c.y,rad*0.35,0,Math.PI*2);
+      ctx.fillStyle = css("--threat"); ctx.fill();
+    });
+
+    // food
+    food.forEach(function(f){
+      var c = toCanvas(f);
+      ctx.beginPath(); ctx.arc(c.x,c.y,5,0,Math.PI*2);
+      ctx.fillStyle = css("--food"); ctx.fill();
+    });
+
+    // flies
+    npcFlies.forEach(drawFlyShape);
+    drawFlyShape(playerFly);
+  }
+
+  // ---------- main loop ----------
+  var lastT = performance.now();
+  function loop(now){
+    var dtReal = Math.min((now-lastT)/1000, 0.1);
+    lastT = now;
+    if(running && !ended){
+      var dtSim = dtReal*speedMultiplier;
+      simTime += dtSim;
+      updateFly(playerFly, dtSim);
+      npcFlies.forEach(function(n){ updateFly(n, dtSim); });
+      genTimeLeft -= dtSim;
+
+      $("statEnergy").textContent = Math.round(playerFly.energy);
+      $("energyBar").style.width = Math.max(0,(playerFly.energy/playerFly.stats.maxEnergy*100)) + "%";
+      $("statTime").textContent = Math.max(0,genTimeLeft).toFixed(1) + "s";
+      $("statFood").textContent = playerFly.foodEaten;
+      $("statExplore").textContent = Math.round(visitedCells.size/totalValidCells*100) + "%";
+
+      if(!playerFly.alive || genTimeLeft<=0){ endGeneration(); }
+    }
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  // ---------- public API for external scripts / agents ----------
+  window.FlyLabAPI = {
+    getState: function(){
+      return {
+        x: playerFly.x, y: playerFly.y,
+        energy: playerFly.energy, maxEnergy: playerFly.stats.maxEnergy,
+        timeLeft: genTimeLeft, foodEaten: playerFly.foodEaten,
+        exploredPct: totalValidCells ? visitedCells.size/totalValidCells : 0,
+        food: food.map(function(f){ return {x:f.x, y:f.y}; }),
+        threats: threats.map(function(t){ return {x:t.x, y:t.y}; }),
+        genes: Object.assign({}, playerFly.genes),
+        mode: driveMode, alive: playerFly.alive, ended: ended
+      };
+    },
+    setControl: function(vec){
+      if(!vec) return;
+      agentVec = {x:vec.x||0, y:vec.y||0};
+      agentVecTime = performance.now();
+    },
+    setGenes: function(g){
+      activeGenes = Object.assign({}, activeGenes, g);
+      playerFly.genes = activeGenes;
+      setSliders(activeGenes);
+    },
+    setMode: function(m){
+      if(["auto","manual","agent"].indexOf(m)===-1) return;
+      driveMode = m;
+      Array.prototype.forEach.call(document.querySelectorAll(".modeBtn"), function(b){
+        b.classList.toggle("active", b.dataset.mode===m);
+      });
+    }
+  };
+
+  // ---------- init ----------
+  document.getElementById("genNum").textContent = genNumber;
+  setSliders(activeGenes);
+  setSlidersDisabled(false);
+  renderTraits();
+  drawSpark();
+  resetGenerationWorld();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

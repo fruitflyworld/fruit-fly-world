@@ -20,10 +20,6 @@ const fakeHistory = [
   { behavior: "APPROACH" as const, event: "Energy source reached", seed: 190891 }
 ];
 
-/** The live Foraging Hour, for the hero banner. Null until the first read lands,
- *  and null forever if the arena is switched off on this deployment. */
-type ArenaTick = { endsAt: number; entries: number; best: number | null };
-
 type ArchetypeKey = "BOLD_EXPLORER" | "CAUTIOUS_OBSERVER" | "ENERGY_SEEKER" | "STOIC_SURVIVOR";
 type Archetype = { key: ArchetypeKey; title: string; tagline: string; color: string };
 
@@ -37,8 +33,6 @@ function getArchetype(signals: Experiment["signals"]): Archetype {
 
 export default function HeroExperience() {
   const [index, setIndex] = useState(0);
-  const [now, setNow] = useState(() => Date.now());
-  const [race, setRace] = useState<ArenaTick | null>(null);
   const experiment = rounds[index];
   const archetype = useMemo(() => getArchetype(experiment.signals), [experiment]);
 
@@ -47,30 +41,6 @@ export default function HeroExperience() {
     const timer = window.setInterval(() => setIndex((v) => (v + 1) % rounds.length), 4200);
     return () => window.clearInterval(timer);
   }, []);
-
-  // The banner is a read of the real arena, not a decoration. It ticks locally off
-  // the window's endsAt so the countdown stays smooth between polls.
-  useEffect(() => {
-    let live = true;
-    const read = async () => {
-      try {
-        const response = await fetch("/api/arena", { cache: "no-store" });
-        const data = await response.json();
-        if (!live) return;
-        setRace(data.enabled && data.window
-          ? { endsAt: data.window.endsAt, entries: data.standing?.entries ?? 0, best: data.standing?.exact ?? null }
-          : null);
-      } catch { if (live) setRace(null); }
-    };
-    void read();
-    const poll = window.setInterval(() => void read(), 30_000);
-    const clock = window.setInterval(() => setNow(Date.now()), 1000);
-    window.addEventListener("ffw:arena", read);
-    return () => { live = false; window.clearInterval(poll); window.clearInterval(clock); window.removeEventListener("ffw:arena", read); };
-  }, []);
-
-  const secondsLeft = race ? Math.max(0, race.endsAt - Math.floor(now / 1000)) : 0;
-  const windowEnd = `${String(Math.floor(secondsLeft / 3600)).padStart(2, "0")}h ${String(Math.floor((secondsLeft % 3600) / 60)).padStart(2, "0")}m`;
 
   return (
     <div className="heroSpecimen">
@@ -126,13 +96,12 @@ export default function HeroExperience() {
           ))}
         </div>
 
-        {/* Foraging Hour banner — live from /api/arena, not a decoration */}
         <div className="raceBanner">
-          <span><i/> FORAGING HOUR · {race ? `WINDOW CLOSES IN ${windowEnd}` : "AWAITING THE WINDOW"}</span>
+          <span><i/> GENERATION {String(index + 1).padStart(2, "0")} · GF REFLEX {experiment.behavior === "FREEZE" ? "STANDBY" : "READY"}</span>
           <div className="raceMetrics">
-            <div><small>ENTRIES</small><b>{race ? race.entries : "—"}</b></div>
-            <div><small>BEST SCORE</small><b>{race && race.best !== null ? Math.round(race.best * 100) / 100 : "—"}</b></div>
-            <div><small>FREE PASSPORTS</small><b>1 / WINDOW</b></div>
+            <div><small>SIGNAL SEED</small><b>{experiment.seed}</b></div>
+            <div><small>DECISION</small><b>{experiment.behavior}</b></div>
+            <div><small>LINEAGE</small><b>CARRIED FORWARD</b></div>
           </div>
         </div>
       </div>

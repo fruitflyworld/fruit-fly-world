@@ -28,9 +28,9 @@ const passportAbi = [
 ] as const;
 
 const missions = [
-  { id: "AGENT", number: "01", title: "Bring an AI Agent", description: "A separate Agent wallet signs a one-time challenge and runs one constrained experiment. Do this once and your agent can enter the Foraging Hour every hour on its own.", proof: "AGENT WALLET" },
+  { id: "AGENT", number: "01", title: "Bring an AI Agent", description: "A separate Agent wallet signs a one-time challenge and runs one constrained experiment. Do this once and your agent can enter an arena window every hour on its own.", proof: "AGENT WALLET" },
   { id: "X_QUOTE", number: "02", title: "Spread the signal", description: "Quote the official campaign post with a wallet-bound, one-time proof code.", proof: "X QUOTE POST" },
-  { id: "ARENA", number: "03", title: "Win the Foraging Hour", description: "Enter a route — by hand on the map or from an agent — and hold the best score when the clock hits zero. Nothing to claim when you win: the completion lands here on its own and the mint unlocks. Lose and the entry still earns you half-price minting.", proof: "BEST ROUTE IN A WINDOW" }
+  { id: "ARENA", number: "03", title: "Take an arena window", description: "Enter a route — from an agent, or by hand through the documented interface — and hold the best score when the clock hits zero. Nothing to claim when you win: the completion lands here on its own and the mint unlocks. Lose and the entry still earns you half-price minting.", proof: "BEST ROUTE IN A WINDOW" }
 ];
 
 const passportPreviews = [
@@ -160,7 +160,7 @@ export default function MintSection() {
 
   async function mintPassport() {
     try {
-      if (!window.ethereum) throw new Error("Install a Robinhood Chain-compatible wallet.");
+      if (!window.ethereum) throw new Error("Install a compatible wallet.");
       setAction("AWAITING_SIGNATURE"); setMessage(undefined);
       const data = await jsonRequest("/api/mint/voucher");
       const chain = configuredChain(data.chainId);
@@ -184,7 +184,7 @@ export default function MintSection() {
 
   async function publicMintPassport() {
     try {
-      if (!window.ethereum || !address) throw new Error("Install a Robinhood Chain-compatible wallet.");
+      if (!window.ethereum || !address) throw new Error("Install a compatible wallet.");
       const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID || 11155111);
       const chain = configuredChain(chainId);
       const contract = getAddress(process.env.NEXT_PUBLIC_MINT_CONTRACT_ADDRESS!);
@@ -246,7 +246,7 @@ export default function MintSection() {
         {displayState === "MINTED" && <button type="button" className="mintButton" disabled>{tokenId ? `PASSPORT ACTIVE · TOKEN #${tokenId}` : "PASSPORT ACTIVE"}</button>}
         {address && <button type="button" className="demoEligibility" onClick={() => void disconnect()}>Disconnect {shortAddress}</button>}
         {(authError || message) && <p className="mintError" role="status">{authError || message}</p>}
-        <p className="mintFine">One non-transferable Passport per wallet. Complete one mission to mint free, enter a Foraging Hour window to mint at half price, or mint at the on-chain price shown above. No yield, price, or future value is promised.</p>
+        <p className="mintFine">One non-transferable Passport per wallet. Complete one mission to mint free, take part in a recorded activity to mint at half price, or mint at the on-chain price shown above. No yield, price, or future value is promised.</p>
       </div>
     </div>
 

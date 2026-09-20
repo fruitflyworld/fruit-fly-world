@@ -1,0 +1,28 @@
+// main.js — Phaser bootstrap.
+import { BootScene } from "./scene-boot.js";
+import { GameScene } from "./scene-game.js";
+import { initUI } from "./ui.js";
+
+// portrait phones get a tall canvas so the dish fills the screen width
+// (900x760 in a 390x844 viewport letterboxes the dish down to ~250px)
+const isTouch=("ontouchstart" in window)||navigator.maxTouchPoints>0;
+const portrait=window.innerHeight>window.innerWidth;
+const GW_GH=(isTouch&&portrait)?[620,1340]:[900,760];
+
+const config={
+  type: Phaser.AUTO,
+  parent: "canvasHost",
+  width: GW_GH[0], height: GW_GH[1],
+  backgroundColor: "#070a09",
+  scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+  scene: [BootScene, GameScene]
+};
+
+const game=new Phaser.Game(config);
+// initUI needs the Game scene to have finished create() (this.state exists).
+const checkReady=setInterval(()=>{
+  const scene=game.scene.getScene("Game");
+  if(scene&&scene.state&&!scene.__uiInited){
+    scene.__uiInited=true; clearInterval(checkReady); initUI(scene);
+  }
+},50);

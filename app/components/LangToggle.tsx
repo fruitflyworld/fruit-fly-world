@@ -12,13 +12,20 @@ export default function LangToggle() {
   const [lang, setLang] = useState<"en" | "zh">("en");
 
   useEffect(() => {
-    const saved = document.documentElement.dataset.lang;
-    if (saved === "zh" || saved === "en") setLang(saved);
+    let saved: "en" | "zh" = "en";
+    try {
+      const value = localStorage.getItem(KEY);
+      if (value === "zh") saved = "zh";
+    } catch { /* private mode */ }
+    setLang(saved);
+    document.documentElement.dataset.lang = saved;
+    document.documentElement.lang = saved;
   }, []);
 
   const choose = (next: "en" | "zh") => {
     setLang(next);
     document.documentElement.dataset.lang = next;
+    document.documentElement.lang = next;
     try { localStorage.setItem(KEY, next); } catch { /* private mode */ }
   };
 

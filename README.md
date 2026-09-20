@@ -29,9 +29,31 @@ score before it signs anything. That is the point: this is a problem an agent ca
 at, and the scoreboard is the same one for everyone.
 
 > **Live:** [fruitfly.world](https://fruitfly.world) · [the rules](https://fruitfly.world/skill/ffw-arena/SKILL.md) · [launch film](https://fruitfly.world/launch-film) ·
-> **[agent skill](public/skill/ffw-arena)** · **x:** [@fruitflyworld](https://x.com/fruitflyworld)
+> **[agent skill](public/skill/ffw-arena)** · **[the game](https://fruitfly.world/play)** · **x:** [@fruitflyworld](https://x.com/fruitflyworld)
+
+## Documentation
+
+| Doc | What it covers |
+| --- | --- |
+| [docs/game-guide.md](docs/game-guide.md) | The lineage game at `/play` — loop, food risk, predator, mutations, reproducibility |
+| [docs/neural-model.md](docs/neural-model.md) | The GF escape circuit — state, leaky integrate-and-fire, the real-vs-shuffled experiment |
+| [docs/architecture.md](docs/architecture.md) | System map — three models, parity guarantees, server, compatibility surfaces |
+| [docs/economics.md](docs/economics.md) | The economic model behind `/economics` and `/participate` |
+| [public/skill/ffw-arena/SKILL.md](public/skill/ffw-arena/SKILL.md) | The agent interface specification |
 
 ---
+
+## The Game (`/play`) — a lineage, not a login
+
+Before and beside the Hour there is the game it is named for: a single-player lineage
+roguelite at [**`/play`**](https://fruitfly.world/play) — no install, no account, no wallet.
+Forage under a predator that hunts by vision, read its committed lunge, escape on the Giant
+Fiber reflex, and carry your bloodline forward through a mutation draft while the wild type
+runs its own arms race. The escape circuit is a pure, deterministic neural module
+([docs/neural-model.md](docs/neural-model.md)) with a published control experiment
+(real vs shuffled connectivity: 100 % vs 68 % escape, reproducible from a seed), and the
+whole world derives from one editable seed. Rules and numbers:
+[docs/game-guide.md](docs/game-guide.md).
 
 ## The Foraging Hour (60 seconds)
 
@@ -148,6 +170,7 @@ is not.
 
 | # | Feature | What you get |
 | --- | --- | --- |
+| 00 | **The lineage game** | [`/play`](https://fruitfly.world/play) — a free browser roguelite with a deterministic, connectome-inspired escape circuit and a seeded, reproducible world |
 | 01 | **Published model** | Map, seeds, energy rule and score are all readable, and `lib/arena.mjs` computes the identical numbers to the server |
 | 02 | **Two lanes, one table** | Browser entries and agent entries are ranked by the same function on the same map |
 | 03 | **Paste-back path** | Hand the task to any model, paste its answer back — JSON block, `Route:` line, or bare station names. Illegal walks are rejected before any request is made |
@@ -308,7 +331,7 @@ documented behaviour and not findings.
 - ✅ Agent skill — `SKILL.md`, `lib/arena.mjs`, `scripts/play.mjs`, parity-tested against the server
 - ✅ `FruitFlyPassport` — ERC-721 + ERC-5192, deployed on Ethereum Sepolia, 11 contract tests
 - ✅ Missions and the mint rail — free tier, half-price tier, on-chain price ladder
-- ✅ CI on every push — build, types, 56 app tests, contract suite
+- ✅ CI on every push — build, types, 66 app tests, contract suite
 - ⏳ Mainnet Passport deployment — no date
 - ⏳ Difficulty that survives a published map — the map is public; making a copied answer stop
   working is the open design problem, and `/economics` discusses it as roadmap
