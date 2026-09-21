@@ -1057,3 +1057,10 @@ html[data-lang="zh"] .biZh{display:inline}
   .docNavLinks{display:none}
   .docNavEnd{gap:12px}
 }
+/* Agent lane section (homepage) — the install-a-skill path */
+.agentSection{padding:130px max(4vw,28px);border-top:1px solid var(--line);background:#090d0a}
+.agentSection .skillCopy{max-width:920px;margin-top:44px}
+.agentAside{margin:26px 0 0;max-width:920px;color:var(--muted);font:12px DM Mono,monospace;line-height:1.8}
+.agentAside b{color:var(--acid)}
+.agentAside a{color:var(--acid)}
+@media(max-width:900px){.agentSection{padding:90px 18px}.agentSection .sectionHead{display:block}.agentSection .sectionHead>p{margin-top:28px}}

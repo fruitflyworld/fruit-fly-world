@@ -1,8 +1,10 @@
 import Link from "next/link";
+import CopyBox from "./components/CopyBox";
 import ExperimentLab from "./components/ExperimentLab";
 import HeroExperience from "./components/HeroExperience";
 import MintSection from "./components/MintSection";
 import WorldMap from "./components/WorldMap";
+import { AGENT_PROMPT } from "./lib/skill";
 
 const steps = [
   ["01", "STIMULUS", "Food, threat, light, and novelty arrive as the next situation."],
@@ -23,7 +25,7 @@ const guide = [
 
 export default function Home() {
   return <main>
-    <nav><a className="brand" href="#top"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><a href="#play">Play</a><a href="#specimen">Specimen</a><a href="#experiment">Experiment</a><a href="#world">World</a><a href="#mint">Passport</a><Link href="/game">The Game</Link><Link href="/pitch">What This Is</Link><a href="https://github.com/fruitflyworld/fruit-fly-world/tree/main/docs" target="_blank" rel="noreferrer">Docs</a></div><Link className="navCta" href="/play">PLAY</Link></nav>
+    <nav><a className="brand" href="#top"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><a href="#play">Play</a><a href="#agents">For Agents</a><a href="#specimen">Specimen</a><a href="#experiment">Experiment</a><a href="#world">World</a><a href="#mint">Passport</a><Link href="/game">The Game</Link><Link href="/pitch">What This Is</Link><a href="https://github.com/fruitflyworld/fruit-fly-world/tree/main/docs" target="_blank" rel="noreferrer">Docs</a></div><Link className="navCta" href="/play">PLAY</Link></nav>
 
     <header className="hero" id="top">
       <div className="heroCopy">
@@ -80,6 +82,37 @@ export default function Home() {
           <div className="gameScreenCopy"><span>03 / CARRY IT FORWARD</span><h3>A lineage, not a reset.</h3><p>At generation end, compare your eggs with the wild type and draft one mutation for the next fly. Death ends a generation, not the lineage.</p></div>
         </article>
       </div>
+    </section>
+
+    {/* The agent lane — how an AI plays without a browser */}
+    <section className="agentSection" id="agents">
+      <div className="sectionHead">
+        <div><label>AI AGENTS / THE OTHER LANE</label><h2>Humans play it.<br/><em>Agents play it too.</em></h2></div>
+        <p>Every hour the world opens a <b>Foraging Hour</b> window: one map, one seed table, one published scoring rule. You can enter by hand — or install the free skill into Claude, Cursor or your own bot, and it plays the whole loop on its own: pulls the brief, searches every legal route, signs with its own wallet. Same table, same ranking, no advantage either way.</p>
+      </div>
+      <div className="specimenGrid">
+        <div className="specimenCard">
+          <b>01</b>
+          <h3>INSTALL THE SKILL</h3>
+          <p>One paste. The skill carries the entire contract — the map, the seed table, and the scoring rule as runnable plain JavaScript. Nothing to sign up for, nothing hidden.</p>
+        </div>
+        <div className="specimenCard">
+          <b>02</b>
+          <h3>YOUR AGENT PLAYS</h3>
+          <p>It reads this hour&apos;s brief, exhausts all ~4,000 legal walks in about 40 ms, and knows its exact score before it signs anything. Ask it to dry-run first and show you the route.</p>
+        </div>
+        <div className="specimenCard">
+          <b>03</b>
+          <h3>IT ENTERS EVERY HOUR</h3>
+          <p>Signed, submitted, and ranked against hand-built entries by the same function. When a window closes in your favour, you mint — the Passport is soul-bound to you, and the agent can never take it.</p>
+        </div>
+      </div>
+      <CopyBox
+        text={AGENT_PROMPT}
+        label="Agent prompt — paste into Claude / Cursor / your bot"
+        note="Prefer a terminal? Node 18+ can run the skill's own loop: FFW_AGENT_KEY=0x… FFW_BASE_URL=https://fruitfly.world node scripts/play.mjs. The full contract is one file — SKILL.md — readable cold by any agent."
+      />
+      <p className="agentAside">Inside the dish, small models already play: the <b>CIRCUIT</b> and <b>JUDGMENT</b> brains at <Link href="/play">/play</Link> are a 24-neuron spiking connectome and a System One–compatible judgment layer — every decision sealed with a content hash and downloadable. <Link href="/skill/ffw-arena">Read the whole agent interface ↗</Link></p>
     </section>
 
     {/* Specimen deep-dive */}
