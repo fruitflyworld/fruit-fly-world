@@ -170,7 +170,7 @@ is not.
 
 | # | Feature | What you get |
 | --- | --- | --- |
-| 00 | **The lineage game** | [`/play`](https://fruitfly.world/play) — a free browser roguelite with a deterministic, connectome-inspired escape circuit and a seeded, reproducible world |
+| 00 | **The lineage game** | [`/play`](https://fruitfly.world/play) — a free browser roguelite with a seeded, reproducible world and a **selectable brain**: drive it yourself (WASD), keep the genes auto-pilot, or plug in FFW-CX/0.1, a 24-neuron connectome-inspired spiking circuit that decides where to fly while the GF brainstem still owns the escape jump. Every decision is sealed with a content hash and downloadable via `FlyLabAPI.getDecisionLog()` |
 | 01 | **Published model** | Map, seeds, energy rule and score are all readable, and `lib/arena.mjs` computes the identical numbers to the server |
 | 02 | **Two lanes, one table** | Browser entries and agent entries are ranked by the same function on the same map |
 | 03 | **Paste-back path** | Hand the task to any model, paste its answer back — JSON block, `Route:` line, or bare station names. Illegal walks are rejected before any request is made |
@@ -331,7 +331,9 @@ documented behaviour and not findings.
 - ✅ Agent skill — `SKILL.md`, `lib/arena.mjs`, `scripts/play.mjs`, parity-tested against the server
 - ✅ `FruitFlyPassport` — ERC-721 + ERC-5192, deployed on Ethereum Sepolia, 11 contract tests
 - ✅ Missions and the mint rail — free tier, half-price tier, on-chain price ladder
-- ✅ CI on every push — build, types, 66 app tests, contract suite
+- ✅ CI on every push — build, types, 78 app tests, contract suite
+- ✅ Selectable brains in `/play` — manual / genes / FFW-CX 24-neuron circuit, sealed decision log (`flyline-log/1`)
+- ⏳ Judgment layer — local heuristic now, System One-compatible remote brain next: same world, same scoring, models starve side by side
 - ⏳ Mainnet Passport deployment — no date
 - ⏳ Difficulty that survives a published map — the map is public; making a copied answer stop
   working is the open design problem, and `/economics` discusses it as roadmap

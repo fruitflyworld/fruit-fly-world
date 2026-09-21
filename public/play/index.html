@@ -43,6 +43,15 @@
         </div></div>
       <div class="bwrap"><div class="blabel">You <b id="hRvYou" class="c-egg">0</b> : Wild type <b id="hRvRival" class="c-lav">0</b></div>
         <div class="bar rival"><i id="hRvYouBar" class="c-egg-bg"></i><i id="hRvRivalBar" class="c-lav-bg"></i></div></div>
+      <div class="bwrap" id="brainPanel" hidden>
+        <div class="blabel">Brain · <span id="hBrainModel" class="c-gold">—</span> · <span id="hBrainConf"></span></div>
+        <div class="neuro">
+          <div class="nrow bmrow"><span class="nname">APPROACH</span><div class="bar nbar bm"><i id="hBmApproach"></i></div></div>
+          <div class="nrow bmrow"><span class="nname">AVOID</span><div class="bar nbar bm"><i id="hBmAvoid"></i></div></div>
+          <div class="nrow bmrow"><span class="nname">EXPLORE</span><div class="bar nbar bm"><i id="hBmExplore"></i></div></div>
+          <div class="nrow bmrow"><span class="nname">FREEZE</span><div class="bar nbar bm"><i id="hBmFreeze"></i></div></div>
+          <div class="nchain">signals → judgment layer → behavior</div>
+        </div></div>
       <div id="hTraits" class="traitRow"></div>
     </div>
 
@@ -80,6 +89,17 @@
         At the end, compare your eggs with the wild type, choose one mutation in the Mutation Draft, and continue into the next generation. Death ends a generation, not the lineage.
       </div>
       <p class="howto small"><a href="/">← Back to fruitfly.world</a></p>
+      <div class="brainCard">
+        <h3>Choose your fly's brain</h3>
+        <p class="tiny">Same world, same rules, same scoring. The brain only decides where to go —
+        the GF brainstem still owns the escape jump.</p>
+        <div class="row brainRow">
+          <button class="small brainBtn" data-brain="manual">MANUAL<s>You drive · WASD</s></button>
+          <button class="small brainBtn" data-brain="genes">GENES<s>auto-pilot baseline</s></button>
+          <button class="small brainBtn" data-brain="circuit">CIRCUIT<s>FFW-CX/0.1 · 24 neurons</s></button>
+          <button class="small brainBtn" disabled title="Judgment layer ships next">JUDGMENT<s>System One · soon</s></button>
+        </div>
+      </div>
       <div class="circCard">
         <h3>Escape circuit · connectome-inspired</h3>
         <p class="tiny">LC4 (angular velocity, 2,442 synapses) + LPLC2 (looming size, 1,366 synapses) → Giant Fiber.

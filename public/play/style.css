@@ -135,3 +135,18 @@ body.touch #joyZone{display:block;} body.touch #gfBtn{display:block;}
   .title{font-size:34px;}
   .mcard{width:150px;padding:11px;}
 }
+
+/* ---- brain selection + judgment HUD ---- */
+.brainCard{margin-top:14px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;}
+.brainCard h3{margin:0 0 6px;font-size:13px;color:var(--gold);}
+.brainRow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+@media(max-width:640px){.brainRow{grid-template-columns:1fr 1fr;}}
+.brainBtn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 6px!important;font-size:11px!important;letter-spacing:.5px;}
+.brainBtn s{text-decoration:none;font-size:9px;color:var(--dim);font-weight:400;letter-spacing:0;text-transform:none;}
+.brainBtn.active{background:var(--gold);color:#141005;border-color:var(--gold);}
+.brainBtn.active s{color:#3d3010;}
+.brainBtn:disabled{opacity:.4;cursor:not-allowed;}
+.nbar.bm i{background:var(--dim);}
+.bmrow .nname{color:var(--dim);}
+.bmrow.lead .nname{color:var(--gold);}
+.bmrow.lead .nbar.bm i{background:var(--gold);}

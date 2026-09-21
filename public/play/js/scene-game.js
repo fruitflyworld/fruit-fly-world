@@ -9,6 +9,8 @@ import {
   recomputeStats, makeFly, resetFly,
   GF_PARAMS, stepGF, fireGF
 } from "./sim.js";
+import { createCircuitBrain } from "./brain-circuit.js";
+import { createBrainDriver } from "./brain-driver.js";
 import { sfx } from "./audio.js";
 
 const SAVE_KEY="flyline_v1";
@@ -83,6 +85,12 @@ export class GameScene extends Phaser.Scene {
 
     this.resetGenerationWorld();
 
+    // ---- brain selection (the fly's decision layer) ----
+    this.brainLog=[]; this.lastBrainBehavior="explore";
+    this.brainDriver=null;
+    this.playerBrainId=this.state.brainId||"manual";
+    this.attachBrain(this.playerBrainId,{silent:true});
+
     // agent API (same arena, same rules)
     window.FlyLabAPI={
       getState:()=>({ x:this.playerFly.x, y:this.playerFly.y, energy:this.playerFly.energy,
@@ -93,8 +101,98 @@ export class GameScene extends Phaser.Scene {
         rivalEggs:this.rivalFly.eggs, mode:this.driveMode, alive:this.playerFly.alive }),
       setControl:v=>{ if(v){ this.agentVec={x:v.x||0,y:v.y||0}; this.agentVecTime=performance.now(); } },
       dash:()=>this.tryDash(this.playerFly),
-      setMode:m=>{ if(["manual","auto","agent"].includes(m)) this.driveMode=m; }
+      setMode:m=>{ if(["manual","auto","agent"].includes(m)) this.driveMode=m; },
+      setBrain:id=>this.attachBrain(id),
+      getBrain:()=>({ id:this.playerBrainId, model:this.brainDriver?this.brainDriver.model:null }),
+      getDecisionLog:()=>({ version:"flyline-log/1", worldSeed:this.state.worldSeed,
+        genNumber:this.state.genNumber, brain:{ id:this.playerBrainId,
+        model:this.brainDriver?this.brainDriver.model:"player" }, records:this.brainLog.slice() })
     };
+  }
+
+  // ============================== brain layer ==============================
+  // The brain only chooses a direction each decision tick; the GF brainstem
+  // (gf-neuron.js + tryDash) still owns the physical escape jump.
+  attachBrain(id,opts){
+    if(!["manual","genes","circuit"].includes(id)) return;
+    const prev=this.playerBrainId;
+    this.playerBrainId=id; this.state.brainId=id;
+    this.brainLog=[]; this.lastBrainBehavior="explore";
+    if(id==="circuit"){
+      const brain=createCircuitBrain({seed:(this.state.worldSeed^0xC0FFEE)>>>0});
+      this.brainDriver=createBrainDriver({
+        brain, intervalSec:0.1,
+        onError:()=>this.onBrainError()
+      });
+    } else this.brainDriver=null;
+    // brains other than manual drive themselves; GF reflex auto-fires (updateFly)
+    if(id!=="manual") this.driveMode="auto";
+    else if(this.driveMode==="auto") this.driveMode="manual";
+    this.saveState();
+    this.refreshBrainHud();
+    if(!opts||!opts.silent){
+      this.uiLog(id==="manual"?"Brain: MANUAL — you drive (WASD + Space)."
+        :id==="genes"?"Brain: GENES — gene-weighted auto-pilot."
+        :"Brain: CIRCUIT — FFW-CX/0.1, 24 spiking neurons.");
+      if(prev!==id) sfx.uiTick();
+    }
+    document.dispatchEvent(new CustomEvent("flyline:brain",{detail:{
+      id, model:this.brainDriver?this.brainDriver.model:null }}));
+  }
+  computeSignals(fly){
+    const f=this.findNearestFood(fly), th=this.findThreat(fly), l=this.lightSignal(fly);
+    // novelty: share of unvisited cells in the 3x3 neighborhood
+    const key=this.cellKeyOf(fly).split(",");
+    const i0=+key[0], j0=+key[1];
+    let unvis=0,total=0;
+    for(let di=-1;di<=1;di++)for(let dj=-1;dj<=1;dj++){
+      const i=i0+di,j=j0+dj;
+      if(i<0||j<0||i>=GRID_N||j>=GRID_N) continue;
+      total++;
+      if(!this.visitedCells.has(i+","+j)) unvis++;
+    }
+    return { food:f?f.signal:0, threat:th?th.signal:0, light:l.signal, novelty:total?unvis/total:0 };
+  }
+  brainSteer(fly){
+    const d=this.brainDriver?this.brainDriver.last:null;
+    const beh=d?d.behavior:"explore";
+    if(beh==="freeze") return {x:0,y:0};
+    if(beh==="avoid"){ const th=this.findThreat(fly); if(th) return th.dirAway; }
+    if(beh==="approach"){ const f=this.findNearestFood(fly); if(f) return f.dir; }
+    fly.wanderAngle+=(rng()-0.5)*0.5;
+    return normalize({x:Math.cos(fly.wanderAngle),y:Math.sin(fly.wanderAngle)});
+  }
+  updateBrain(dt){
+    if(!this.brainDriver) return;
+    this.brainDriver.update(this.simTime,dt,
+      ()=>({ signals:this.computeSignals(this.playerFly), energy:this.playerFly.energy,
+             timeLeft:this.genTimeLeft, behavior:this.lastBrainBehavior }),
+      res=>{
+        this.lastBrainBehavior=res.behavior;
+        this.brainLog.push(res.record);
+        if(this.brainLog.length>2000) this.brainLog.shift();
+        this.refreshBrainHud(res);
+      });
+  }
+  onBrainError(){
+    this.uiLog("Brain error — steering falls back to genes until it recovers.");
+  }
+  refreshBrainHud(res){
+    const q=id=>document.getElementById(id);
+    const panel=q("brainPanel"); if(!panel) return;
+    const active=!!this.brainDriver;
+    panel.hidden=!active;
+    if(!active) return;
+    q("hBrainModel").textContent=this.brainDriver.model;
+    if(res){
+      q("hBrainConf").textContent="conf "+res.confidence.toFixed(2)+" · tick "+res.record.tick;
+      const map={approach:"hBmApproach",avoid:"hBmAvoid",explore:"hBmExplore",freeze:"hBmFreeze"};
+      for(const k in map){
+        const el=q(map[k]);
+        el.style.width=Math.round(Math.max(0,Math.min(1,res.record.distribution[k]))*100)+"%";
+        el.parentElement.parentElement.classList.toggle("lead",res.behavior===k);
+      }
+    }
   }
 
   // ============================== state / persistence ==============================
@@ -108,7 +206,8 @@ export class GameScene extends Phaser.Scene {
       connectivityMode:(s&&s.connectivityMode)||"real",
       lineageEggs:(s&&s.lineageEggs)||0,
       bestEggs:(s&&s.bestEggs)||0,
-      eggsHistory:(s&&s.eggsHistory)||[]
+      eggsHistory:(s&&s.eggsHistory)||[],
+      brainId:(s&&s.brainId)||"manual"
     };
     this.savedRivalSnapshot=Array.isArray(this.state.rivalTraits)?null:this.state.rivalTraits;
   }
@@ -117,7 +216,7 @@ export class GameScene extends Phaser.Scene {
       genNumber:this.state.genNumber, traits:this.state.ownedTraits,
       rivalTraits:this.rivalFly.rivalTraits, worldSeed:this.state.worldSeed,
       connectivityMode:this.state.connectivityMode, lineageEggs:this.state.lineageEggs,
-      bestEggs:this.state.bestEggs, eggsHistory:this.state.eggsHistory
+      bestEggs:this.state.bestEggs, eggsHistory:this.state.eggsHistory, brainId:this.playerBrainId
     })); }catch(e){}
   }
   getStats(){ return { ...this.state, rivalCount:this.rivalFly.rivalTraits.length }; }
@@ -178,6 +277,9 @@ export class GameScene extends Phaser.Scene {
 
     this.eggsGroup.clear(true,true);
     this.genTimeLeft=GEN_DURATION; this.genElapsed=0; this.nightFactor=0; this.ended=false;
+    // fresh brain each generation: neuron state and decision log start clean
+    this.brainLog=[]; this.lastBrainBehavior="explore";
+    if(this.brainDriver) this.brainDriver.reset();
 
     this.playerFly.traits=this.state.ownedTraits;
     resetFly(this.playerFly,{x:0,y:0});
@@ -272,6 +374,10 @@ export class GameScene extends Phaser.Scene {
     return normalize(s);
   }
   getSteer(fly){
+    // external agent API always wins when fresh
+    if(fly.isPlayer&&this.driveMode==="agent"&&this.agentVec&&(performance.now()-this.agentVecTime)<500) return normalize(this.agentVec);
+    // selected brain (CIRCUIT/JUDGMENT) steers the player fly
+    if(fly.isPlayer&&this.brainDriver) return this.brainSteer(fly);
     if(fly.isPlayer&&this.driveMode==="manual"){
       if(this.touchVec) return normalize(this.touchVec);
       if(this.pointerTarget){ const v={x:this.pointerTarget.x-fly.x,y:this.pointerTarget.y-fly.y};
@@ -282,7 +388,6 @@ export class GameScene extends Phaser.Scene {
       if(x||y) return normalize({x,y});
       return {x:0,y:0};
     }
-    if(fly.isPlayer&&this.driveMode==="agent"&&this.agentVec&&(performance.now()-this.agentVecTime)<500) return normalize(this.agentVec);
     const steer=this.decideSteer(fly);
     if(fly.stats.phototax&&this.nightFactor>0.5){
       const light=this.lightSignal(fly);
@@ -549,7 +654,12 @@ export class GameScene extends Phaser.Scene {
     document.dispatchEvent(new CustomEvent("flyline:genend",{
       detail:{ gen:this.state.genNumber, eggs, rivalEggs, win, isBest, deathReason,
         alive:this.playerFly.alive, lineageEggs:this.state.lineageEggs,
-        bestEggs:this.state.bestEggs, cards:this.drawCards() }
+        bestEggs:this.state.bestEggs, cards:this.drawCards(),
+        brain:{ id:this.playerBrainId, model:this.brainDriver?this.brainDriver.model:"player",
+          decisions:this.brainLog.length,
+          avgConfidence:this.brainLog.length
+            ?this.brainLog.reduce((a,r)=>a+r.confidence,0)/this.brainLog.length
+            :null } }
     }));
   }
   nextGen(traitId){
@@ -573,6 +683,7 @@ export class GameScene extends Phaser.Scene {
       this.updateFly(this.playerFly,dt);
       this.updateFly(this.rivalFly,dt);
       this.updatePredator(dt);
+      this.updateBrain(dt);
       this.genTimeLeft-=dt;
       if(!this.playerFly.alive||this.genTimeLeft<=0) this.endGeneration();
     }

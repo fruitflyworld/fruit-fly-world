@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>果蝇世界 · 判断层需要一个会饿死它的世界</title>
-<meta name="description" content="Jev 发布一周调研，落到 Fruit Fly World：System One 当脑干，培养皿当世界，死亡当真值。">
+<title>果蝇世界 · 别再给 AI 出考卷，给 AI 造世界</title>
+<meta name="description" content="判断模型的考场不该是问答，是会饿死它的世界。真果蝇神经回路 + 可插拔判断层（Jev 兼容）+ 闭环生存基准。全程说人话。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
@@ -24,534 +24,343 @@ body{background:var(--void);color:var(--text);
     repeating-linear-gradient(0deg,transparent,transparent 47px,rgba(42,51,25,.18) 48px);
 }
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
 nav{position:sticky;top:0;z-index:40;background:rgba(7,10,6,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 nav .wrap{display:flex;justify-content:space-between;align-items:center;min-height:56px;gap:16px;flex-wrap:wrap;padding:10px 24px}
-nav .brand{font-weight:700;letter-spacing:.02em}
+nav .brand{font-weight:700}
 nav .brand span{color:var(--gold)}
 nav .links{display:flex;flex-wrap:wrap;gap:6px 16px}
 nav a{color:var(--dim);text-decoration:none;font-size:12px}
 nav a:hover{color:var(--text)}
-.hero{padding:96px 0 72px;border-bottom:1px solid var(--line)}
 .kick{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase}
-h1{font-size:clamp(2.2rem,5.6vw,4rem);line-height:1.08;font-weight:700;letter-spacing:-.02em;margin:16px 0 22px}
-h2{font-size:clamp(1.55rem,3.2vw,2.35rem);line-height:1.18;margin:10px 0 16px;letter-spacing:-.01em}
-h3{font-size:1.12rem;margin-bottom:8px}
+h1{font-size:clamp(2.1rem,5.6vw,3.8rem);line-height:1.12;font-weight:700;letter-spacing:-.02em;margin:16px 0 20px}
+h2{font-size:clamp(1.45rem,3vw,2.2rem);line-height:1.2;margin:10px 0 14px;letter-spacing:-.01em}
+h3{font-size:1.08rem;margin-bottom:8px}
+p,li{line-height:1.85;color:var(--dim)}
+p b,li b{color:var(--text);font-weight:600}
 .gold{color:var(--gold)}
-p.lead{font-size:clamp(1.02rem,1.7vw,1.22rem);line-height:1.8;color:var(--dim);max-width:46em}
-p.lead b{color:var(--text);font-weight:600}
-section{padding:76px 0;border-bottom:1px solid var(--line)}
-p,li{line-height:1.75}
-.muted{color:var(--dim)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+.hero{padding:88px 0 64px;border-bottom:1px solid var(--line)}
+.lead{font-size:clamp(1.02rem,1.7vw,1.2rem);max-width:46em}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-@media(max-width:860px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
-@media(max-width:700px){
-  nav .links{width:100%}
-  nav a{font-size:11px}
-}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:860px){.grid2,.grid3{grid-template-columns:1fr}}
+blockquote{border-left:3px solid var(--gold);padding:6px 0 6px 18px;margin:22px 0;font-size:1.15rem;line-height:1.7;color:var(--text)}
+.btn{display:inline-block;border:1px solid var(--line);background:var(--gold);color:#0a0c08;font-weight:700;
+  font-family:inherit;border-radius:10px;padding:11px 18px;cursor:pointer;text-decoration:none;font-size:.95rem}
+.btn.ghost{background:transparent;color:var(--text)}
+.btn:hover{filter:brightness(1.08)}
+.num{font-family:'JetBrains Mono',monospace;color:var(--gold);font-weight:700}
 .pill{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;
   border:1px solid var(--line);border-radius:999px;padding:5px 11px;color:var(--dim);margin:4px 6px 0 0}
-table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.92rem}
-th{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--dim);text-align:left;
-  padding:10px 12px;border-bottom:1px solid var(--line);text-transform:uppercase}
-td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--dim);vertical-align:top}
-td:first-child{color:var(--text)}
-.scroll{overflow-x:auto}
-.num{font-family:'JetBrains Mono',monospace;color:var(--gold);font-weight:700}
-.good{color:var(--green)} .bad{color:var(--red)}
-blockquote{border-left:3px solid var(--gold);padding:6px 0 6px 18px;margin:22px 0;color:var(--text);font-size:1.15rem;line-height:1.7}
-.formula{font-family:'JetBrains Mono',monospace;background:var(--panel);border:1px solid var(--line);
-  border-radius:14px;padding:20px 22px;margin-top:18px;font-size:clamp(.78rem,1.5vw,.95rem);line-height:1.9;overflow-x:auto}
-pre{font-family:'JetBrains Mono',monospace;background:var(--panel2);border:1px solid var(--line);border-radius:12px;
-  padding:16px;overflow-x:auto;font-size:12px;line-height:1.65;color:var(--dim);margin-top:14px}
-.toc a{display:block;color:var(--dim);text-decoration:none;padding:6px 0;font-size:.92rem}
-.toc a:hover{color:var(--gold)}
-.note{font-size:.82rem;color:var(--dim);margin-top:10px}
-.dish{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:22px}
-.sliders label{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);margin:10px 0 4px}
-input[type=range]{width:100%;accent-color:var(--gold)}
-.bars .row{display:grid;grid-template-columns:88px 1fr 52px;gap:10px;align-items:center;margin:8px 0}
+.statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+@media(max-width:700px){.statrow{grid-template-columns:1fr 1fr}}
+.stat{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--panel)}
+.stat .v{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--gold)}
+.stat .k{font-size:.78rem;color:var(--dim);margin-top:6px;line-height:1.5}
+svg{display:block;width:100%;height:auto}
+.diagram{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:18px}
+.diagram .cap{font-size:.82rem;color:var(--dim);margin-top:10px;line-height:1.7}
+.brainrow{display:grid;grid-template-columns:160px 1fr;border:1px solid var(--line);background:var(--panel)}
+.brainrow:first-of-type{border-radius:14px 14px 0 0}
+.brainrow:last-of-type{border-bottom:1px solid var(--line);border-radius:0 0 14px 14px}
+.brainrow .head{padding:16px;border-right:1px solid var(--line);background:var(--panel2)}
+.brainrow .head .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--gold)}
+.brainrow .head .s{font-size:.75rem;color:var(--dim);margin-top:6px;line-height:1.5}
+.brainrow .body{padding:16px;font-size:.94rem}
+@media(max-width:700px){.brainrow{grid-template-columns:1fr}.brainrow .head{border-right:none;border-bottom:1px solid var(--line)}}
+.bars .row{display:grid;grid-template-columns:80px 1fr 44px;gap:10px;align-items:center;margin:8px 0}
 .bars .track{height:8px;background:#1c2414;border-radius:99px;overflow:hidden}
 .bars .fill{height:100%;background:var(--gold)}
-.flybox{height:220px;border:1px dashed var(--line);border-radius:12px;position:relative;overflow:hidden;background:#0c1109}
-.fly{position:absolute;width:18px;height:18px;margin:-9px 0 0 -9px;transition:left .18s linear, top .18s linear}
-.fly svg{display:block}
-.food,.shadow{position:absolute;border-radius:50%;pointer-events:none}
-.food{width:22px;height:22px;background:radial-gradient(circle,#e3ac3d,#7a5a18);box-shadow:0 0 16px rgba(227,172,61,.45)}
-.shadow{width:70px;height:70px;background:radial-gradient(circle,rgba(217,95,95,.45),transparent 70%)}
-.btn{appearance:none;border:1px solid var(--line);background:var(--gold);color:#0a0c08;font-weight:700;
-  font-family:inherit;border-radius:10px;padding:9px 14px;cursor:pointer}
-.btn.ghost{background:transparent;color:var(--text)}
-.statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
-@media(max-width:700px){.statrow{grid-template-columns:1fr 1fr} nav .links{width:100%} nav a{font-size:11px}}
-.stat{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--panel)}
-.stat .v{font-family:'JetBrains Mono',monospace;font-size:1.35rem;font-weight:700;color:var(--gold)}
-.stat .k{font-size:.78rem;color:var(--dim);margin-top:6px;line-height:1.45}
-.camp{position:relative}
-.camp .id{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;color:var(--gold)}
+.bars .lab{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim)}
+.bars .val{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);text-align:right}
+.term{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-top:16px}
+.term dt{font-weight:700;color:var(--gold);margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:.9rem}
+.term dt:first-child{margin-top:0}
+.term dd{margin:4px 0 0 0;color:var(--dim);line-height:1.8}
+.term dd b{color:var(--text)}
 footer{padding:36px 0 64px;color:var(--dim);font-size:.8rem;line-height:1.8}
 footer a{color:var(--gold);text-decoration:none}
-.stage{display:grid;grid-template-columns:200px 1fr;border:1px solid var(--line);border-bottom:none;background:var(--panel)}
-.stage:first-child{border-radius:14px 14px 0 0}
-.stage:last-child{border-bottom:1px solid var(--line);border-radius:0 0 14px 14px}
-.stage .head{padding:18px;border-right:1px solid var(--line);background:var(--panel2)}
-.stage .body{padding:18px;color:var(--dim);font-size:.92rem}
-@media(max-width:700px){.stage{grid-template-columns:1fr}.stage .head{border-right:none;border-bottom:1px solid var(--line)}}
+.note{font-size:.82rem;color:var(--dim);margin-top:12px}
+.step{display:grid;grid-template-columns:64px 1fr;gap:16px;padding:16px 0;border-bottom:1px dashed var(--line)}
+.step:last-child{border-bottom:none}
+.step .n{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--gold)}
+.step h3{margin-bottom:4px}
 </style>
 </head>
 <body>
 <nav>
   <div class="wrap">
-    <div class="brand">FRUIT FLY WORLD <span>×</span> SYSTEM ONE</div>
+    <div class="brand">FRUIT FLY WORLD <span>·</span> STARVE IT</div>
     <div class="links">
-      <a href="#week">一周</a>
-      <a href="#camps">四派</a>
-      <a href="#gap">缺口</a>
-      <a href="#game">游戏</a>
-      <a href="#dish">培养皿</a>
-      <a href="#brain">脑干</a>
-      <a href="#bio">连接组</a>
-      <a href="#science">科研</a>
-      <a href="#roadmap">路线</a>
+      <a href="#plain">先说人话</a>
+      <a href="#week">这周发生了什么</a>
+      <a href="#gap">为什么考卷不行</a>
+      <a href="#what">我们的三层</a>
+      <a href="#play">怎么玩</a>
+      <a href="#proof">钉死的数字</a>
+      <a href="#road">路线</a>
+      <a href="#honest">诚实边界</a>
     </div>
   </div>
 </nav>
 
-<header class="hero">
+<!-- HERO -->
+<section class="hero">
   <div class="wrap">
-    <p class="kick">Fruit Fly World · Game Design Brief · 2026-09-20</p>
-    <h1>判断层一周内可以被复刻。<br>会饿死它的世界，不行。</h1>
-    <p class="lead">
-      Jev 发布还不到一周，OpenJEV 已经扎堆。SemIf、Simple Jev、Laya、Von、Verdict、Kev、Nimble、OpenJev——
-      表面形式都是「<b>不吐 token，只给概率</b>」。真正拉开差距的是准确率、泛化、和那个 90% 到底能不能信。
-      果蝇世界不训练第九个 Jev。我们给判断层一件它在对话框里永远得不到的东西：
-      <b>一个有身体、有限食物、旁边全是同样贪婪代理人的培养皿。选错了，就饿死。</b>
-    </p>
-    <div style="margin-top:26px">
-      <span class="pill">90 秒一局</span>
-      <span class="pill">FOOD / THREAT / LIGHT / NOVELTY</span>
-      <span class="pill">CHOICE · SCORE · NOUL</span>
-      <span class="pill">FFW-CX / 0.1</span>
-      <span class="pill">DEATH = GROUND TRUTH</span>
-    </div>
-    <div class="statrow">
-      <div class="stat"><div class="v">8</div><div class="k">一周内有代表性的 OpenJEV 项目</div></div>
-      <div class="stat"><div class="v">4</div><div class="k">技术路线：读分数 / 专用模型 / 改造大模型 / 扩散填空</div></div>
-      <div class="stat"><div class="v">10.7pt</div><div class="k">同一个 Jev，Banking77 上四个评测的分数散布</div></div>
-      <div class="stat"><div class="v">&lt;$0.01</div><div class="k">一局约 600 次判断的成本量级</div></div>
-    </div>
-  </div>
-</header>
-
-<section id="toc">
-  <div class="wrap">
-    <p class="kick">00 / 目录</p>
-    <h2>给游戏用的一份完整简报。</h2>
-    <p class="lead">不是融资稿。是 Fruit Fly World 这一周该改什么、脑干怎么接、什么能写进游戏、什么必须写进页脚的诚实声明。</p>
-    <div class="grid2 toc" style="margin-top:22px">
-      <div class="card">
-        <a href="#week">01  Jev 一周编年，哪些数字可信</a>
-        <a href="#camps">02  八个项目，四条路线</a>
-        <a href="#gap">03  品类真正缺的东西：闭环、代价、校准</a>
-        <a href="#wrong">04  果蝇世界做对了什么，做错了什么</a>
-      </div>
-      <div class="card">
-        <a href="#game">05  游戏循环：接线 → 放飞 → 结算 → 变异</a>
-        <a href="#dish">06  可玩的四信号培养皿（给 HUD 用）</a>
-        <a href="#brain">07  System One 当脑干：问题包与回放日志</a>
-        <a href="#bio">08  连接组怎么接，科学声明怎么写</a>
-        <a href="#science">09  科研价值与路线图</a>
-      </div>
+    <div class="kick">FRUITFLY.WORLD · CLOSED-LOOP SURVIVAL BENCHMARK</div>
+    <h1>别再给 AI 出考卷，<br><span class="gold">给 AI 造世界。</span></h1>
+    <p class="lead">新一代 AI agent 的"判断层"（只会做选择题的模型，比如 Jev）正在爆发。
+    但它们的考试只有问答——<b>答题不等于会活</b>。我们造了一个培养皿：真果蝇的神经回路打底，
+    判断层可插拔，上面是一个会饿死、会被吃、有下一代的世界。</p>
+    <blockquote>Don't exam the model. <span class="gold">Starve it.</span><br>
+    考核指标不是答对几题，是<span class="gold">活几代</span>。</blockquote>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+      <a class="btn" href="/play">进培养皿玩 →</a>
+      <a class="btn ghost" href="#plain">先看三个名词</a>
     </div>
   </div>
 </section>
 
+<!-- 先说人话 -->
+<section id="plain">
+  <div class="wrap">
+    <div class="kick">00 / 先说人话</div>
+    <h2>三个名词，讲完再往下。</h2>
+    <dl class="term">
+      <dt>判断模型 / Jev 是什么？</dt>
+      <dd>普通 AI（ChatGPT 这类）是"聊天模型"：你问一段话，它回一大段。
+        <b>Jev 不聊天，只做选择题</b>——你给它一个情况、几个选项，它告诉你选哪个、多有把握。
+        像一个人不解释，只伸手指一下："选 B，80% 把握。" 因为又快、又便宜、又干脆，
+        很多开发者拿它当机器人大脑里的"条件反射"。它由 TypeSafe AI 发布，接口标准叫 System One。</dd>
+      <dt>连接组 / Connectome 是什么？</dt>
+      <dd>就是<b>大脑的完整线路图</b>——哪个神经元连哪个神经元、连多强。果蝇的连接组已经被科学家完整画出来了：
+        大约 14 万个神经元、几千万条连线，每一条都有名字和编号。这意味着我们不必"猜"一个果蝇大脑，
+        可以照着真的抄。</dd>
+      <dt>脑干 / Giant Fiber 是什么？</dt>
+      <dd>果蝇脑子里有一根特别粗的神经纤维，叫<b>巨纤维（Giant Fiber）</b>，相当于人的脑干：不思考，
+        只负责"有东西扑过来了→跳！"。两只"眼睛"（LC4 和 LPLC2 两组视觉神经元）把"影子转得多快、
+        长得多大"报告给它，电位攒够，它就下令逃命。我们的游戏里，这根回路是真做的。</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- 这周发生了什么 -->
 <section id="week">
   <div class="wrap">
-    <p class="kick">01 / 一周</p>
-    <h2>2026-09-15 到 09-20。判断层被教育完了。</h2>
-    <p class="lead">TypeSafe AI 出潜发布 Jev，自称第一个 System One 模型。它不写字。读一段状态，返回 Noul / Choice / Score。市场用五天学会了这个品类。果蝇世界不用再解释「什么是判断层」，只要占住「判断层最硬的应用：活着」。</p>
-    <div class="scroll">
-      <table>
-        <thead><tr><th>日期</th><th>事件</th></tr></thead>
-        <tbody>
-          <tr><td>09-15</td><td>Jev 发布。HN 三天 1863 分、491 评论。BusinessWire 发 $40M 种子轮稿（DCVC 领投；Forbes 报道估值 $200M）。</td></tr>
-          <tr><td>09-16</td><td>The Register / The Decoder 报 Doom demo。Browser Use 官方接入。</td></tr>
-          <tr><td>09-17</td><td>Riley Brown 推文分析器。Matthew Berman：40 秒分析 724 条广告、8,724 次判断。jaredpalmer 发 Kev-0.5B。</td></tr>
-          <tr><td>09-18</td><td>TechCrunch 长文。OpenJev 上 HN（693 分）后更名 SemIf。</td></tr>
-          <tr><td>09-19</td><td>creativeainews：《六个克隆，四个 Jev 分数》。Bespoke Nimble 发布。</td></tr>
-          <tr><td>09-20</td><td>LangChain 公开 Jev-as-a-Judge。X 累计曝光约 3700 万。</td></tr>
-        </tbody>
-      </table>
+    <div class="kick">01 / 这周发生了什么</div>
+    <h2>判断模型满地都是，<br><span class="gold">考场一个都没有。</span></h2>
+    <p class="lead">我们把 GitHub 上整个 Jev 生态翻了一遍，数字如下：</p>
+    <div class="statrow">
+      <div class="stat"><div class="v">240+</div><div class="k">Jev 生态项目（awesome-jev 收录），一个月长出来的</div></div>
+      <div class="stat"><div class="v">12,600★</div><div class="k">最火的一个：Jev 每步选"点哪个按钮"，7 秒订好机票</div></div>
+      <div class="stat"><div class="v">10</div><div class="k">游戏/模拟类项目——全是"让 Jev 玩玩具游戏"</div></div>
+      <div class="stat"><div class="v">0</div><div class="k">闭环生存基准 · 把判断层嵌进生物回路的项目</div></div>
     </div>
-    <div class="grid3" style="margin-top:8px">
-      <div class="card"><h3>公司</h3><p class="muted">CEO Diogo Almeida，前 OpenAI，RLHF / InstructGPT 共同发明人。核心赌注是全合成数据。Jev ← 杰文斯悖论；System One ← 卡尼曼。</p></div>
-      <div class="card"><h3>可信的工程事实</h3><p class="muted">仅文本/JSON。一次前向问完所有问题。第三方测 100 问与 3 问延迟几乎相同（714ms vs 712ms）。热连接 250–580ms。Doom demo 约 10 次/秒。</p></div>
-      <div class="card"><h3>不可信 / 未验证</h3><p class="muted">RLCD 无论文。193.6× / 444.6× 是自报，对的是强模型一致性不是真值。「零幻觉」只指类型安全——高置信判断照样会错，官方 FAQ 自己承认。</p></div>
-    </div>
-    <p class="note">Forbes 的切入值得记住：他们修的是 AI 的过度自信。校准是公司级叙事，不只是模型特性。果蝇世界把校准从曲线变成「跳没跳过拍子」。</p>
+    <p style="margin-top:22px">现有的玩法都是一种：让 Jev <b>当整个大脑</b>，去玩超级马里奥、宝可梦、星际争霸。
+    好玩，但没有一个项目给它一个<b>会饿死它的身体</b>，没有一个人把它的每次判断记下来、钉死、可回放。</p>
+    <p>同时，开源克隆已经成熟：<b>kev</b>（Apache 协议，接口和官方完全兼容，在你自己的 Mac 上免费跑）和
+    <b>NanoJev</b>（0.6B 小模型，在生存游戏 ViZDoom 里 128 局全胜，把官方 Jev 的 56 胜按在地上打）。
+    <b>"小模型 + 生存压力训练"这条路已经被验证走得通——这正是我们要走的路。</b></p>
+    <blockquote>别人给判断模型找应用，<br>我们给判断模型品类定<b>考试标准</b>。</blockquote>
   </div>
 </section>
 
-<section id="camps">
-  <div class="wrap">
-    <p class="kick">02 / 四派</p>
-    <h2>八个项目。没有一个在做世界。</h2>
-    <p class="lead">发布 48 小时内开源复刻按架构假设分裂——因为没人知道 Jev 的权重是什么。接口不难。难的是报 90% 的时候，这个 90% 有多可信。</p>
-    <div class="scroll">
-      <table>
-        <thead><tr><th>项目</th><th>派</th><th>做法</th><th>自报 / 边界</th></tr></thead>
-        <tbody>
-          <tr><td>SemIf</td><td>1 读分数</td><td>现成 Qwen，在要答 A/B/C 时截住，只读选项分数再换算概率。不重新训练。</td><td>最省事。作者自己说 softmax 不是校准置信度。</td></tr>
-          <tr><td>Simple Jev</td><td>1 读分数</td><td>同一段材料只读一次，后面多个问题共用前缀，再分别算答案概率。复刻接口和用法。</td><td>不代表已做到 Jev 的准确率、速度、校准。</td></tr>
-          <tr><td>Laya</td><td>2 专用模型</td><td>放弃会写字的大模型，改用编码模型 + 决策头。几亿参数，很快。</td><td>77 选项任务 42.5%，对照表里 Jev 87.0%。复杂任务差距明显。</td></tr>
-          <tr><td>Von</td><td>2 专用模型</td><td>~4 亿参数，不生成文字，一次前向处理 Choice / Noul / Score。</td><td>本地 GPU 单次可压到几十毫秒。更像能读自然语言的分类器。</td></tr>
-          <tr><td>Verdict</td><td>2 专用模型</td><td>~1.5 亿参数。专门打两个洞：答错仍报高置信；A/B 换序答案跟着变。</td><td>这条路线看重稳定，不看重会不会写诗。</td></tr>
-          <tr><td>Kev</td><td>3 改造大模型</td><td>给 Qwen 加决策结构，同一份输入只读一次。官方 SDK 改 base_url 就能打本地。</td><td>新题 8B 约 78%，Jev 约 86%。路线能跑通，差距还在。</td></tr>
-          <tr><td>Nimble</td><td>3 改造大模型</td><td>Qwen3.5-9B + 「只改一个事实，正确答案就翻转」的后训练。</td><td>324 个未参与训练样本 90.1% vs Jev 93.2%。概率尚未完全校准。H100 ~115ms。</td></tr>
-          <tr><td>OpenJev</td><td>4 扩散填空</td><td>DiffusionGemma。多个答案位置留空，一次填完，不逐 token 往后吐。</td><td>RTX PRO 6000 上单请求中位约 94ms。</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="grid2" style="margin-top:8px">
-      <div class="card camp"><div class="id">CAMP 1</div><h3>直接读现成大模型的答案分数</h3><p class="muted">SemIf、Simple Jev。冻结 Qwen，截 logits。最快做出「像 Jev 的 API」。</p></div>
-      <div class="card camp"><div class="id">CAMP 2</div><h3>重新训练专用决策模型</h3><p class="muted">Laya、Von、Verdict。小、快，复杂任务和校准是硬伤。</p></div>
-      <div class="card camp"><div class="id">CAMP 3</div><h3>把现有大模型改造成决策模型</h3><p class="muted">Kev、Nimble。保留 Qwen，加结构或做事实翻转后训练。最接近「把大模型变成脑干」。</p></div>
-      <div class="card camp"><div class="id">CAMP 4</div><h3>用扩散模型直接填答案</h3><p class="muted">OpenJev。一次填多个槽。延迟叙事强，品类仍缺真值。</p></div>
-    </div>
-    <blockquote>别人在复刻脑干。果蝇世界要做的是那只脑子住进去之后会不会死。</blockquote>
-  </div>
-</section>
-
+<!-- 为什么考卷不行 -->
 <section id="gap">
   <div class="wrap">
-    <p class="kick">03 / 缺口</p>
-    <h2>同一个 Jev，四个分数。这个品类没有标准基准。</h2>
-    <p class="lead">creativeainews 09-19 拆过弹：Banking77 上四个独立评测，同一个闭源 API，分数从 87.0% 掉到 76.3%，<b>散布 10.7 个点</b>。@abacaj 在 Latent.Space 的原话被这一周证实了：demo 强调速度多于质量，品类没有标准基准。</p>
-    <div class="grid2">
-      <div class="card">
-        <h3>静态评测测不到的三件事</h3>
-        <p class="muted">无代价：答错只扣分。无闭环：答案不改变下一个输入。无竞争：没有别人抢同一口糖。培养皿三件都有——判断错 = 能量清零；每次判断改世界；存活率是相对值。</p>
-      </div>
-      <div class="card">
-        <h3>校准比准确率更硬</h3>
-        <p class="muted">Arize：把 0.3–0.7 的中间带（占 4.6%）送人工，其余 99.5% 准确。judge-audit：对抗下准确率仍高，但平均置信度从 0.996 崩到 0.71——失败与低置信重合，闸门用得上。任务路由里却出现「自信地、系统地错」。准确率榜抓不到，只有校准审计抓得到。</p>
-      </div>
-    </div>
-    <p class="muted" style="margin-top:18px">对照数字钉死边界：冻结 bge-small + logistic 回归 + 10,003 条标注，Banking77 得 93.3%，反超 Jev 83.2%。<b>有标注时监督小模型赢；Jev 的地盘是零样本 + 延迟。</b> 果蝇世界每一局都在生产带生存标签的决策语料。死亡就是 Nimble 那种对比负样本，而且是真的。</p>
-  </div>
-</section>
-
-<section id="wrong">
-  <div class="wrap">
-    <p class="kick">04 / 现状</p>
-    <h2>概念是对的。形态还像落地页，不像 Steam 游戏。</h2>
-    <p class="lead">fruitfly.world 说「不要叫它说话，给它一个世界去生存」。这句话可以当工作室座右铭。但第一分钟的体验是：连接组、灵魂绑定、连钱包、等整点。Steam 游戏第一分钟要有手感、有失败、有再来一局。</p>
-    <div class="grid2">
-      <div class="card">
-        <h3>做对了</h3>
-        <p class="muted">FlyWire 2024：约 139,000 神经元、约 1500 万突触，最小但完整的脑子是真科学对象。四个信号 → 一个行为（靠近 / 躲开 / 乱逛 / 停住）透明可复现。纯函数回放（同种子同输入同结果）是最重要的资产，后面所有方案都不能破坏它。</p>
-      </div>
-      <div class="card">
-        <h3>做错了</h3>
-        <p class="muted">门槛设反。没有死亡，路线错了只是分数低。AI 的用法是「COPY THE TASK 给大模型，把答案贴回来」——搜索，不是 agent。奖励是不能转让的护照。奖励应该是一只更会活的脑子。NPC 彩蝇不抢食。突变是噪声不是选择。</p>
-      </div>
-    </div>
-    <p class="muted" style="margin-top:16px">FLY LAB 已经证明 60 秒一代、三种驾驶、公开打分能玩。缺的是：突变改三选一、Agent 搬出控制台、真竞争、System One 真的在每 tick 判断。</p>
-  </div>
-</section>
-
-<section id="game">
-  <div class="wrap">
-    <p class="kick">05 / 游戏</p>
-    <h2>果蝇版杀戮尖塔。脑干是 System One。</h2>
-    <p class="lead">对玩家：90 秒一局，养一只会自己做决定的果蝇。对 agent 开发者：公开、可复现、有死亡的试炼场。对围观者：能看懂「AI 在做决定」的窗口——不是聊天框，是培养皿。</p>
-    <div class="pipe" style="margin-top:24px">
-      <div class="stage"><div class="head"><div class="kick">01 接线 · 15s</div><h3>选性格</h3></div>
-        <div class="body">野生型均衡；贪吃鬼食物信号 ×2，为一口糖送命；惊弓之鸟危险权重 ×2，容易饿死；探险家被新鲜感驱动，前期弱。滑条保留——拖的是子回路输入增益，不是神秘权重。</div></div>
-      <div class="stage"><div class="head"><div class="kick">02 放飞 · 60s</div><h3>四个信号进脑干</h3></div>
-        <div class="body">食物（触角叶 → 蘑菇体 / 侧角）、危险（LPLC2/LC4 → 巨纤维逃命跳）、光线（中央复合体定向）、新鲜（蘑菇体：这味道见过没有）。玩家可干预：丢水果、挥拍子、暂停看概率。</div></div>
-      <div class="stage"><div class="head"><div class="kick">03 结算 · 5s</div><h3>死亡公开</h3></div>
-        <div class="body">分数 = 12×进食 + 40×探索% + 0.5×存活秒 + 40×逃命跳成功。死因：饿死 / 被拍死 / 活满全场。没有死亡就没有紧张感。</div></div>
-      <div class="stage"><div class="head"><div class="kick">04 变异 · 10s</div><h3>三选一，不是随机抖</h3></div>
-        <div class="body">嗅觉增强、巨纤维敏感、饥饿门控、记忆痕迹、节能代谢——每张牌有代价。卷翅更快但更耗能。「这一局我赌什么」就是游戏性。</div></div>
-    </div>
-    <div class="formula">fitness = 12×eaten + 40×explored% + 0.5×alive_s + 40×escape_jumps</div>
-    <h3 style="margin-top:28px">三种驾驶，同一张榜</h3>
-    <div class="scroll">
-      <table>
-        <thead><tr><th>模式</th><th>谁在决定</th><th>给谁</th></tr></thead>
-        <tbody>
-          <tr><td>基因自动</td><td>感知权重 / FFW-CX 回路</td><td>想摸生物学的玩家</td></tr>
-          <tr><td>手动</td><td>人，WASD / 拖动</td><td>想要手感的玩家</td></tr>
-          <tr><td>Agent</td><td>粘贴 JS 策略，或托管任何 System One（Jev / Nimble / Kev / 本地）</td><td>开发者。概率画在 HUD 上</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="muted">培养皿里 3–5 只果蝇共享有限食物。杀它的不是环境，是别人的策略。排行榜按分数，标注这只蝇的脑是权重、人、还是哪个模型版本。</p>
-  </div>
-</section>
-
-<section id="dish">
-  <div class="wrap">
-    <p class="kick">06 / 培养皿</p>
-    <h2>拖四个信号。看脑干怎么选。</h2>
-    <p class="lead">这是 HUD 原型。下面的概率来自与游戏同一套启发式：饥饿门控食物、逼近阴影走巨纤维、新鲜感驱动探索、能量低就冻结。换成 Jev 时，接口不变，只换那一次 <span class="mono">POST /v1/systemone</span>。</p>
-    <div class="dish">
-      <div class="grid2">
-        <div>
-          <div class="sliders">
-            <label>FOOD 食物 <span class="mono" id="v-food">0.70</span></label>
-            <input id="food" type="range" min="0" max="100" value="70">
-            <label>THREAT 危险 <span class="mono" id="v-threat">0.25</span></label>
-            <input id="threat" type="range" min="0" max="100" value="25">
-            <label>LIGHT 光线 <span class="mono" id="v-light">0.45</span></label>
-            <input id="light" type="range" min="0" max="100" value="45">
-            <label>NOVELTY 新鲜 <span class="mono" id="v-nov">0.55</span></label>
-            <input id="nov" type="range" min="0" max="100" value="55">
-            <label>ENERGY 能量 <span class="mono" id="v-en">0.62</span></label>
-            <input id="en" type="range" min="0" max="100" value="62">
-          </div>
-          <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-            <button class="btn" id="drop">丢一只烂果子</button>
-            <button class="btn ghost" id="swat">挥拍子</button>
-          </div>
-          <p class="note" id="cause">死因预演：还活着。</p>
-        </div>
-        <div>
-          <div class="flybox" id="box">
-            <div class="food" id="pellet" style="left:72%;top:38%"></div>
-            <div class="shadow" id="loom" style="left:12%;top:58%;opacity:.2"></div>
-            <div class="fly" id="fly" style="left:40%;top:55%">
-              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-                <ellipse cx="12" cy="13" rx="4" ry="6" fill="#e3ac3d"/>
-                <ellipse cx="7" cy="10" rx="5" ry="2.2" fill="rgba(240,232,208,.35)"/>
-                <ellipse cx="17" cy="10" rx="5" ry="2.2" fill="rgba(240,232,208,.35)"/>
-              </svg>
-            </div>
-          </div>
-          <div class="bars" id="bars" style="margin-top:14px"></div>
-          <p class="mono" style="font-size:12px;color:var(--gold);margin-top:10px" id="decision">approach · p=0.00 · 启发式脑干</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="brain">
-  <div class="wrap">
-    <p class="kick">07 / 脑干</p>
-    <h2>System 2 规划路线。System 1 开果蝇。</h2>
-    <p class="lead">现在的「COPY THE TASK」是慢思考，每窗口一次，可以留着。缺的是战术层：每 tick 把培养皿状态发给任何 Jev 线兼容模型，Choice 回来直接执行。70–500ms 够 5–10Hz。输出免费，一局 600 次判断，成本几乎全在输入，量级不到一分钱。</p>
-    <div class="formula">state(food, threat, light, novelty, energy, t) → Choice(approach/avoid/explore/freeze) + Score(danger 0–3) + Noul(hunger_override)</div>
-    <h3 style="margin-top:26px">游戏里直接用的问题包</h3>
-    <pre>{
-  "act": {
-    "type": "choice",
-    "instructions": "Given four Drosophila-like signals and remaining energy, what should the fly do this tick?",
-    "criteria": {
-      "approach": "move toward the strongest food cue",
-      "avoid": "escape the looming shadow — giant-fiber jump",
-      "explore": "walk into cells not yet visited",
-      "freeze": "hold still; metabolism first"
-    }
-  },
-  "danger": {
-    "type": "score",
-    "instructions": "How close is death this tick?",
-    "levels": {
-      "0": "safe",
-      "1": "uneasy",
-      "2": "looming",
-      "3": "jump now"
-    }
-  },
-  "hunger_override": {
-    "type": "noul",
-    "instructions": "Is energy low enough that food should override novelty?"
-  }
-}</pre>
+    <div class="kick">02 / 为什么问答考卷不行</div>
+    <h2>答题好的人，<br>不一定活得下来。</h2>
+    <p class="lead">用个类比：招聘司机，你是给他一张交规笔试卷子，还是给他一辆车、一条山路？
+    问答评测就是笔试卷。它有两个致命伤：</p>
     <div class="grid2" style="margin-top:18px">
       <div class="card">
-        <h3>回放怎么做（硬约束）</h3>
-        <p class="muted">Jev 是外部 oracle，版本会漂。竞赛窗口要求纯函数。解法：每次调用的 state、问题包、分布、置信度、模型版本全部落日志，带内容哈希。回放不重跑模型，只验日志。禁止 jev-latest，钉死 jev-1.13.0 或本地模型哈希。</p>
+        <h3>致命伤一：答错不疼</h3>
+        <p>笔试里选错了，扣一分。真实世界里选错了——吃到有气味的食物，捕食者循味而来，<b>你就死了，没有下一题</b>。
+        判断的"代价"只有在闭环里才存在，问答给不了。</p>
       </div>
       <div class="card">
-        <h3>后端可换</h3>
-        <p class="muted">同一 schema 可打 TypeSafe、Kev（改 base_url）、Nimble、SemIf、或 FFW-CX 回路。无 key 时启发式兜底，HUD 写明 backend=fallback。判断层本身没有护城河，所以果蝇世界从不把核心循环押在一家供应商上。</p>
+        <h3>致命伤二：置信度会说谎</h3>
+        <p>今年圈里最大的丑闻（judge-audit 事件）：有人给判断模型看对抗样本，它照样说得斩钉截铁——
+        平均置信度从 <span class="num">0.996</span> 崩到 <span class="num">0.71</span> 才被发现不对。
+        <b>高把握 ≠ 正确</b>，只有让后果落下来，才知道它的把握值几个钱。</p>
       </div>
     </div>
-    <h3 style="margin-top:26px">Jev 在游戏里的三份工</h3>
-    <div class="grid3">
-      <div class="card"><h3>当脑</h3><p class="muted">玩家侧。每 tick Choice。概率画在头上。选错了能量清零——判断第一次有代价。</p></div>
-      <div class="card"><h3>当裁判</h3><p class="muted">平台侧。Noul：这条路线和声明的策略一致吗。高光检测：刚才是不是极限逃生。触发死亡回放。</p></div>
-      <div class="card"><h3>当导演</h3><p class="muted">世界侧。Score 评当前紧张度，调拍子刷新和食物密度。90 秒需要戏剧曲线。</p></div>
+    <p style="margin-top:22px">所以真正的考核应该是闭环的：判断 → 行为 → 世界改变 → 新的处境 → 再判断……
+    一圈一圈转下去，<b>活下来的判断才是好判断</b>。这套东西，问答 benchmark 做不了，游戏天生就是。</p>
+  </div>
+</section>
+
+<!-- 我们的三层 -->
+<section id="what">
+  <div class="wrap">
+    <div class="kick">03 / 我们的三层</div>
+    <h2>果蝇神经元 + 判断层 + 世界，<br>各就各位。</h2>
+    <div class="grid3" style="margin-top:18px">
+      <div class="card">
+        <div class="pill">BRAINSTEM · 脑干</div>
+        <h3 style="margin-top:12px">真生物学的逃生回路</h3>
+        <p>LC4（2,442 突触）+ LPLC2（1,366 突触）→ 巨纤维。照着真果蝇的连线写的脉冲神经元，
+        负责不需要思考的事：看到阴影扑来，充电，满了就跳。<b>大脑选择，脑干起跳。</b></p>
+      </div>
+      <div class="card">
+        <div class="pill">JUDGMENT · 判断层</div>
+        <h3 style="margin-top:12px">可插拔的"选择题 AI"</h3>
+        <p>接口按 System One（Jev）设计：<b>状态进，四选一行为 + 置信度出</b>。后端随便换——
+        官方 Jev、免费的开源克隆（kev / NanoJev）、或内置本地启发式。不绑 API，不绑成本，不绑 token。</p>
+      </div>
+      <div class="card">
+        <div class="pill">WORLD · 考场</div>
+        <h3 style="margin-top:12px">代谢压力 + 捕食者 + 代际</h3>
+        <p>糖是安全的，烂食物值钱但留气味引来捕食者。能量见底就死，死了换下一代。
+        <b>判断的代价是真实的</b>——这是问答考卷永远给不了的东西。</p>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 920 220" role="img" aria-label="从世界到行为到后果的闭环">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#a39d86"/>
+          </marker>
+          <marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#e3ac3d"/>
+          </marker>
+        </defs>
+        <rect x="16" y="60" width="170" height="100" rx="12" fill="#161c10" stroke="#2a3319"/>
+        <text x="101" y="96" text-anchor="middle" fill="#f0e8d0" font-size="14" font-family="Space Grotesk,Noto Sans SC">培养皿世界</text>
+        <text x="101" y="118" text-anchor="middle" fill="#a39d86" font-size="11" font-family="Noto Sans SC">食物 · 阴影 · 昼夜 · 代谢</text>
+        <text x="101" y="138" text-anchor="middle" fill="#a39d86" font-size="11" font-family="Noto Sans SC">死了就换下一代</text>
+        <rect x="300" y="26" width="300" height="74" rx="12" fill="#161c10" stroke="#6a9bd4"/>
+        <text x="450" y="56" text-anchor="middle" fill="#6a9bd4" font-size="12" font-family="JetBrains Mono">JUDGMENT · 判断层（可插拔）</text>
+        <text x="450" y="78" text-anchor="middle" fill="#a39d86" font-size="11" font-family="Noto Sans SC">Jev / kev / NanoJev / 本地启发式</text>
+        <rect x="300" y="120" width="300" height="74" rx="12" fill="#161c10" stroke="#7dc98f"/>
+        <text x="450" y="150" text-anchor="middle" fill="#7dc98f" font-size="12" font-family="JetBrains Mono">BRAINSTEM · 脑干（真回路）</text>
+        <text x="450" y="172" text-anchor="middle" fill="#a39d86" font-size="11" font-family="Noto Sans SC">LC4 + LPLC2 → Giant Fiber</text>
+        <rect x="716" y="60" width="188" height="100" rx="12" fill="#161c10" stroke="#e3ac3d"/>
+        <text x="810" y="92" text-anchor="middle" fill="#f0e8d0" font-size="14" font-family="Space Grotesk,Noto Sans SC">一个行为</text>
+        <text x="810" y="114" text-anchor="middle" fill="#a39d86" font-size="11" font-family="Noto Sans SC">approach / avoid / explore / freeze</text>
+        <text x="810" y="134" text-anchor="middle" fill="#a39d86" font-size="11" font-family="Noto Sans SC">+ 全程留痕可回放</text>
+        <line x1="186" y1="90" x2="296" y2="63" stroke="#a39d86" stroke-width="1.5" marker-end="url(#ar)"/>
+        <line x1="186" y1="130" x2="296" y2="157" stroke="#a39d86" stroke-width="1.5" marker-end="url(#ar)"/>
+        <line x1="600" y1="63" x2="712" y2="90" stroke="#a39d86" stroke-width="1.5" marker-end="url(#ar)"/>
+        <line x1="600" y1="157" x2="712" y2="130" stroke="#a39d86" stroke-width="1.5" marker-end="url(#ar)"/>
+        <path d="M 810 160 L 810 196 L 101 196 L 101 164" fill="none" stroke="#e3ac3d" stroke-width="1.5" marker-end="url(#arg)"/>
+        <text x="455" y="210" text-anchor="middle" fill="#e3ac3d" font-size="11" font-family="Noto Sans SC">行为改变世界 → 世界的下一刻反过来考核判断</text>
+      </svg>
+      <div class="cap">闭环：世界喂信号，脑干管反射，判断层管取舍，行为改变世界。<b style="color:var(--text)">没有哪一环可以靠背题通过。</b></div>
+    </div>
+
+    <p style="margin-top:22px">为什么判断层要架在真回路上面，而不是直接开果蝇？因为生物学替我们解决了
+    <b>"底盘"问题</b>：反射、代谢、稀疏编码这些脏活累活交给脑干，判断层只回答真正需要判断的问题——
+    "这块值 38 点但有气味的烂食物，我现在这个血量，值得冒险吗？" 分层清楚了，考核才公平：
+    换任何一个判断模型进来，底盘完全一样，成绩才有可比性。</p>
+  </div>
+</section>
+
+<!-- 怎么玩 -->
+<section id="play">
+  <div class="wrap">
+    <div class="kick">04 / 怎么玩</div>
+    <h2>选你果蝇的大脑。</h2>
+    <p class="lead">同一个世界、同一套代谢、同一个捕食者、同一张榜。唯一的问题：你果蝇脑袋里装什么？</p>
+    <div style="margin-top:20px">
+      <div class="brainrow">
+        <div class="head"><div class="t">GENES</div><div class="s">基因自动驾驶</div></div>
+        <div class="body">默认模式：五个基因权重决定它多贪吃、多怕死。笨，但能活——它是所有大脑的<b>及格基线</b>（相当于野生型果蝇）。</div>
+      </div>
+      <div class="brainrow">
+        <div class="head"><div class="t">CIRCUIT</div><div class="s">24 神经元脉冲回路</div></div>
+        <div class="body">FFW-CX 回路，四段都是照真果蝇抄的：嗅觉（气味→PN→KC 稀疏编码，KC 饿的时候信号放大——NPF 饥饿门控）、
+        逃命（ looming→巨纤维）、探索（光/新鲜），最后四个下行神经元投票选出行为。确定性：同种子，逐位复现。</div>
+      </div>
+      <div class="brainrow">
+        <div class="head"><div class="t">JUDGMENT</div><div class="s">System One 兼容判断层</div></div>
+        <div class="body">默认跑内置本地启发式（免费、离线、不用任何 key）；填自己的 key 就换成真 Jev，
+        或指向你本地跑的 kev / NanoJev。每次判断四条概率 + 危险分实时显示，全程日志可下载成 JSON——
+        <b>这就是未来基准的提交格式</b>。</div>
+      </div>
+      <div class="brainrow">
+        <div class="head"><div class="t">MANUAL</div><div class="s">你自己当脑子</div></div>
+        <div class="body">WASD + 空格逃逸跳。亲手感受一下：你的反应和巨纤维反射，到底谁快。</div>
+      </div>
+    </div>
+    <div class="diagram">
+      <div class="cap" style="margin:0 0 12px">判断层开启时，你能看见果蝇在"想什么"——四选一的概率分布，每半秒刷新：</div>
+      <div class="bars">
+        <div class="row"><span class="lab">APPROACH</span><div class="track"><div class="fill" style="width:22%"></div></div><span class="val">0.22</span></div>
+        <div class="row"><span class="lab">AVOID</span><div class="track"><div class="fill" style="width:61%"></div></div><span class="val">0.61</span></div>
+        <div class="row"><span class="lab">EXPLORE</span><div class="track"><div class="fill" style="width:12%"></div></div><span class="val">0.12</span></div>
+        <div class="row"><span class="lab">FREEZE</span><div class="track"><div class="fill" style="width:5%"></div></div><span class="val">0.05</span></div>
+      </div>
+      <div class="cap">捕食者进入扑击距离的瞬间，avoid 概率跳起来——你看见的不是动画，是一次<b style="color:var(--text)">真实的判断调用</b>。</div>
     </div>
   </div>
 </section>
 
-<section id="bio">
+<!-- 钉死的数字 -->
+<section id="proof">
   <div class="wrap">
-    <p class="kick">08 / 连接组</p>
-    <h2>科学声明写进页脚。滑条变成神经元输入电流。</h2>
-    <p class="lead">默认脑不是 139k 神经元的全脑仿真。游戏循环用回路基序约束（T1），展示/研究模式再上脉冲子回路（T2）。FFW-CX/0.1 已经按这个诚实程度实现过：约 30 个神经元，每个基序有文献出处。</p>
-    <div class="scroll">
-      <table>
-        <thead><tr><th>档</th><th>内容</th><th>能写进游戏的话</th></tr></thead>
-        <tbody>
-          <tr><td>T0 现状</td><td>手工四信号权重 FFW-CI/0.1</td><td>connectome-inspired。最弱，人人能做。</td></tr>
-          <tr><td>T1 推荐</td><td>真实回路拓扑约束决策骨架</td><td>connectome-constrained。有逐突触引用。</td></tr>
-          <tr><td>T2 展示</td><td>从 FlyWire 抽子回路跑确定性 LIF</td><td>spiking subcircuit from FlyWire。可发方法学 note。</td></tr>
-          <tr><td>T3 不做</td><td>NeuroMechFly 级全脑具身</td><td>研究合作，不是游戏组件。</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="grid2">
+    <div class="kick">05 / 钉死的数字</div>
+    <h2>我们最反潮流的一点：<br>数字不会变。</h2>
+    <p class="lead">评测造假和复现失败是今年判断模型圈最大的丑闻（同一个模型在四个评测里分差 10.7 分）。
+    我们的做法是把数字钉进测试里：</p>
+    <div class="grid2" style="margin-top:18px">
       <div class="card">
-        <h3>是真的</h3>
-        <p class="muted">FlyWire（Dorkenwald et al. 2024, Nature）完成成年果蝇全脑接线。嗅觉寻食、阴影逃命（LPLC2/LC4 → DNp01）、饥饿放大食物信号（NPF-DAN，Beshel &amp; Zhong 2013）、蘑菇体气味学习，都有文献。Shiu et al. 2024 证明 LIF + 连接组 + 递质符号能预测进食/梳理回路，并经光遗传验证。</p>
+        <h3><span class="num">100%</span> vs <span class="num">68%</span></h3>
+        <p><b>对照实验</b>：真实连线 vs 随机打乱的连线，各跑 200 次遭遇。真实连线逃生率 100%，打乱的只剩 68%。
+        这说明 LC4/LPLC2→GF 的连线<b>真的有功能</b>——打乱它，果蝇就死得更多。任何人任何机器跑，都是这两个数。</p>
       </div>
       <div class="card">
-        <h3>是游戏化 · 不声称</h3>
-        <p class="muted">性格是权重预设，变异是强化牌。不声称复刻完整大脑，不声称果蝇有意识，不声称这是科学仿真。透明比「看起来很真」更重要：每回合公开输入、决策、概率、结果、模型版本哈希。</p>
+        <h3>bit-identical</h3>
+        <p>同一个种子，同一个输入序列，输出<b>逐字节相同</b>。回放不是重跑，是验证。判断层的每次调用
+        （状态、问题、概率、模型版本、哈希）全部落日志——将来基准提交的就是这份日志，作弊无处藏。</p>
       </div>
     </div>
-    <p class="muted" style="margin-top:16px">三条硬约束：不能破坏纯函数回放；边列表 SHA-256 钉死随版本发布；滑条保留为解释层——拖食物 = 调 ORN 刺激强度。</p>
+    <p class="note">66 个测试守护这些数字。改坏任何一个，构建直接红。</p>
   </div>
 </section>
 
-<section id="science">
+<!-- 路线 -->
+<section id="road">
   <div class="wrap">
-    <p class="kick">09 / 为什么这比点按钮硬</p>
-    <h2>点按钮可以撤销。培养皿里慢了就是死了。</h2>
-    <p class="lead">别人拿 Jev 筛广告、清上下文、当裁判、点浏览器按钮。用完即走。我们拿它给一只会饿死的生物当脑干。分数、死亡、排行榜都是真的。这是判断层模型唯一自带地面真值的闭环生存测试场。</p>
-    <div class="grid3">
-      <div class="card"><h3>Benchmark</h3><p class="muted">存活曲线、风险调整收益（贪吃鬼高分高死）、探索-利用、换图后的泛化。静态 eval 测不出这些。</p></div>
-      <div class="card"><h3>校准试验场</h3><p class="muted">模型说危险 3、置信 80%，影子落下它是不是 80% 活下来？可靠性图第一次有行为真值。低置信回退到基因本能，阈值能被测出来。</p></div>
-      <div class="card"><h3>跨基质比较</h3><p class="muted">人 vs 演化权重 vs System One vs 连接组控制器，同一只培养皿。最优觅食（MacArthur &amp; Pianka 1966）和边际值定理第一次变成可玩的题。</p></div>
-    </div>
-    <p class="muted" style="margin-top:18px">数据飞轮：10Hz × 60 秒 × 每局 × 每个玩家 = (状态, 决策, 概率, 结果)。公开数据集满足可复现。数据训练更强的本地判断模型，再进游戏。Jev 是冷启动火箭，不是终点。</p>
-  </div>
-</section>
-
-<section id="roadmap">
-  <div class="wrap">
-    <p class="kick">10 / 落地</p>
-    <h2>先让它死得明白。再让它进化得像选择。</h2>
-    <div class="scroll">
-      <table>
-        <thead><tr><th>#</th><th>做什么</th><th>为什么是现在</th></tr></thead>
-        <tbody>
-          <tr><td>1</td><td>死亡 + 公开死因 + 90 秒短局</td><td>没有死亡就还是落地页</td></tr>
-          <tr><td>2</td><td>突变改三选一</td><td>游戏性的核心决策感</td></tr>
-          <tr><td>3</td><td>Agent 搬到页面：粘贴策略 + 托管模型</td><td>普通人不会写 setControl</td></tr>
-          <tr><td>4</td><td>NPC 真抢食</td><td>竞争才像世界</td></tr>
-          <tr><td>5</td><td>接 System One（先单机，日志格式定死再进竞赛）</td><td>AI 接管必须是真模型</td></tr>
-          <tr><td>6</td><td>FFW-CX 与 FFW-CI 同场跑同一张图</td><td>本身就是内容</td></tr>
-          <tr><td>7</td><td>排行榜按分数，标注脑类型</td><td>挂机不解锁</td></tr>
-          <tr><td>8</td><td>承诺-揭示修 Foraging Hour 抄作业</td><td>竞赛公平性的地基</td></tr>
-          <tr><td>9</td><td>护照改活档案（评级、赛季），先别发币</td><td>零监管风险，先积累留存数据</td></tr>
-          <tr><td>10</td><td>分享 15 秒死亡回放</td><td>每只死掉的果蝇都值得被看见</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="grid2" style="margin-top:8px">
-      <div class="card">
-        <h3>Token 如果要做</h3>
-        <p class="muted">消耗口必须是游戏动作：孵化、买突变牌、高级窗口入场。产出必须是可验证行为：通过回放校验的回合。红线：不生息、不分红、不承诺收益。社交任务最差，易女巫。先声誉，后 token，参数用声誉阶段的数据校准。</p>
-      </div>
-      <div class="card">
-        <h3>风险怎么写进游戏</h3>
-        <p class="muted">Jev 热度会退——任何判断模型都能当脑干，本地 Nimble / Kev / FFW-CX 都行。果蝇题材是钩子，卖点是 agent 第一次有死亡。被说伪科学：第 08 节的诚实声明进页脚。API 成本：输出免费 + 本地兜底。</p>
-      </div>
+    <div class="kick">06 / 路线</div>
+    <h2>四步，每步都先出能玩的东西。</h2>
+    <div style="margin-top:14px">
+      <div class="step"><div class="n">1</div><div><h3>回路进培养皿</h3><p>24 神经元 FFW-CX 回路成为可选大脑，HUD 实时显示它的"思考"。已开工。</p></div></div>
+      <div class="step"><div class="n">2</div><div><h3>判断层接入</h3><p>本地启发式默认免费跑；有 key 的换 Jev 或本地 kev。决策日志可下载。</p></div></div>
+      <div class="step"><div class="n">3</div><div><h3>闭环考场</h3><p>同种子双跑、逐字节比对、页内出"identical"验证；本地同种子排行榜。口号拿到收据。</p></div></div>
+      <div class="step"><div class="n">4</div><div><h3>脑对脑</h3><p>你的大脑 vs 我的大脑 vs 打乱连线，同一个世界对局。判断模型品类的第一张生存榜。</p></div></div>
     </div>
   </div>
 </section>
 
-<section>
+<!-- 诚实边界 -->
+<section id="honest">
   <div class="wrap">
-    <p class="kick">愿景</p>
-    <blockquote>
-      当所有人都把 AI 养成更会说话的秘书，真正的 agent 时代还没开始。
-      Agent 不该住在对话框里，它该被扔进一个会饿死它的世界：有身体、有限的资源、旁边全是同样贪婪的代理人。
-      Jev 是它的脑干，培养皿是它的世界。未来衡量智能的，不再是它说得多好，而是它能和别的智能一起，活着。
-    </blockquote>
-    <p class="muted" style="margin-top:22px">给工作室的一句话：判断层会继续扎堆。果蝇世界只要把死亡、回放、和那四个信号做硬，这一周的所有克隆都会想来这只培养皿里测自己。</p>
+    <div class="kick">07 / 诚实边界</div>
+    <h2>我们没吹的部分。</h2>
+    <ul style="margin-top:10px;padding-left:20px">
+      <li>这是<b>简化、连接组启发的</b>逃生回路，不是完整果蝇大脑，不是 FlyWire 全脑运行时，更不是"造出了有意识的果蝇"。</li>
+      <li>判断层说的是<b>"System One 兼容接口"</b>——只有你真填了 key，才叫 Jev 驱动。默认的本地启发式会老老实实标成 local-heuristic。</li>
+      <li>闭环基准（flyline-bench）正在建设中：先出游戏内的确定性验证和本地榜，再谈公开榜。不抢跑宣布。</li>
+      <li>不接 token、不接支付、不绑任何一家模型厂商的 API。</li>
+    </ul>
+    <blockquote style="margin-top:26px">Trust nothing that cannot <span class="gold">starve</span>.</blockquote>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+      <a class="btn" href="/play">去玩 →</a>
+      <a class="btn ghost" href="/pitch/fruitfly/brief.html">上周的详细调研简报（硬核版）→</a>
+    </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    简报日期 2026-09-20。数字凡能交叉验证的已标明来源；193.6×、RLCD、零幻觉等按「自报 / 未验证」处理。
-    本页是 Fruit Fly World 游戏设计简报，可直接放到 docs 或关于页。
-    科学声明：默认脑是四信号权重或回路基序模型，不是 139k 神经元全脑仿真。
-    <br>fruitfly.world · Trust nothing that cannot starve.
+    FRUIT FLY WORLD · fruitfly.world · 独立连接组启发实验，与任何机构无关。<br>
+    想看完整硬核论证（四派格局、基准危机、脑干架构、科研路线）：<a href="/pitch/fruitfly/brief.html">详细简报</a> ｜
+    想直接上手：<a href="/play">进入培养皿</a>
   </div>
 </footer>
-
-<script>
-(function () {
-  const $ = (id) => document.getElementById(id);
-  const ids = ["food", "threat", "light", "nov", "en"];
-  const labels = { food: "v-food", threat: "v-threat", light: "v-light", nov: "v-nov", en: "v-en" };
-  let x = 0.4, y = 0.55;
-
-  function val(id) { return $(id).value / 100; }
-
-  function softmax(s) {
-    const m = Math.max(...Object.values(s));
-    const e = {};
-    let z = 0;
-    for (const k in s) { e[k] = Math.exp((s[k] - m) / 0.35); z += e[k]; }
-    for (const k in s) e[k] /= z;
-    return e;
-  }
-
-  function decide() {
-    const food = val("food"), threat = val("threat"), light = val("light");
-    const nov = val("nov"), energy = val("en");
-    const hunger = 1 - energy;
-    const scores = {
-      approach: food * (0.55 + 1.4 * hunger) + 0.08 * light,
-      avoid: threat * (1.15 + threat),
-      explore: nov * (0.9 - 0.55 * hunger) + 0.12 * light,
-      freeze: (1 - energy) * 0.7 * (1 - threat) + (1 - food) * 0.15
-    };
-    const p = softmax(scores);
-    const act = Object.entries(p).sort((a, b) => b[1] - a[1])[0][0];
-    return { p, act, threat, energy, food };
-  }
-
-  function render() {
-    ids.forEach((id) => { $(labels[id]).textContent = val(id).toFixed(2); });
-    const { p, act, threat, energy, food } = decide();
-    $("bars").innerHTML = ["approach", "avoid", "explore", "freeze"].map((k) =>
-      `<div class="row"><span class="mono">${k}</span><div class="track"><div class="fill" style="width:${(p[k]*100).toFixed(1)}%;background:${k===act?"#e3ac3d":"#5a6a3a"}"></div></div><span class="mono">${(p[k]*100).toFixed(0)}%</span></div>`
-    ).join("");
-    $("decision").textContent = act + " · p=" + p[act].toFixed(2) + " · 启发式脑干（可替换为任何 System One）";
-    let cause = "死因预演：还活着。";
-    if (energy < 0.08) cause = "死因预演：饿死。能量归零。";
-    else if (threat > 0.82 && act !== "avoid") cause = "死因预演：被拍死。巨纤维没跳。";
-    $("cause").textContent = cause;
-    $("cause").style.color = cause.includes("还活着") ? "var(--dim)" : "var(--red)";
-    const dx = { approach: 0.035, avoid: -0.04, explore: 0.02, freeze: 0 }[act];
-    const dy = { approach: -0.01, avoid: 0.03, explore: -0.025, freeze: 0 }[act];
-    x = Math.min(0.9, Math.max(0.08, x + dx + (food - 0.5) * 0.01));
-    y = Math.min(0.88, Math.max(0.12, y + dy + (threat - 0.4) * 0.012));
-    $("fly").style.left = (x * 100).toFixed(1) + "%";
-    $("fly").style.top = (y * 100).toFixed(1) + "%";
-    $("loom").style.opacity = String(0.15 + threat * 0.75);
-    $("loom").style.transform = "scale(" + (0.7 + threat * 1.1) + ")";
-  }
-
-  ids.forEach((id) => $(id).addEventListener("input", render));
-  $("drop").onclick = () => { $("food").value = "92"; $("en").value = Math.max(10, $("en").value - 4); render(); };
-  $("swat").onclick = () => { $("threat").value = "88"; render(); };
-  render();
-})();
-</script>
 </body>
 </html>

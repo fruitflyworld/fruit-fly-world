@@ -6,8 +6,8 @@ const $=id=>document.getElementById(id);
 let gameScene=null;
 let language=localStorage.getItem("flyline_language")||"en";
 const LANG={
-  en:{label:"Language",start:"Start first generation →",continue:g=>`Continue generation ${g} →`,reset:"Clear lineage save",pause:"Pause / menu",subtitle:"Fruit-fly lineage · biological survival game",intro:"You are a lineage, not a single fly. Gather food and energy → lay eggs automatically; the predator commits to a ballistic strike. When the GF reflex lights up READY, press Space to jump.",phone:"Mobile: hold and drag anywhere to steer; tap GF when it lights up.",food:"Food: sugar +12 (safe) · yeast +26 (rim, predator risk) · rot +38 (odor exposure).",circuit:"Escape circuit · connectome-inspired",real:"Real connectivity",shuffled:"Shuffled connectivity",seed:"Set seed",experiment:"Run control experiment · real vs shuffled",draftPrompt:"What will this generation leave behind? Choose one mutation for the next generation.",touchHint:"Hold and drag anywhere to steer"},
-  zh:{label:"语言",start:"开始第一代 →",continue:g=>`继续第 ${g} 代 →`,reset:"清空血脉存档",pause:"暂停/菜单",subtitle:"果蝇血脉 · 生物学生存游戏",intro:"你是一条血脉,不是一只苍蝇。觅食攒能量 → 自动产卵;捕食者会锁定弹道扑杀你。GF 反射亮起「就绪」时按空格起跳。",phone:"手机:按住屏幕任意处拖动 = 飞行方向;GF 按钮发光时点它。",food:"食物:糖 +12(安全) · 酵母 +26(盘缘,有风险) · 腐物 +38(气味暴露)。",circuit:"逃逸回路 · connectome-inspired",real:"真实连接",shuffled:"打乱连接",seed:"设种子",experiment:"跑对照实验 · 真实 vs 打乱",draftPrompt:"这一代留下什么？选择一个突变，传给下一代",touchHint:"按住屏幕任意处拖动 = 飞行方向"},
+  en:{label:"Language",start:"Start first generation →",continue:g=>`Continue generation ${g} →`,reset:"Clear lineage save",pause:"Pause / menu",subtitle:"Fruit-fly lineage · biological survival game",intro:"You are a lineage, not a single fly. Gather food and energy → lay eggs automatically; the predator commits to a ballistic strike. When the GF reflex lights up READY, press Space to jump.",phone:"Mobile: hold and drag anywhere to steer; tap GF when it lights up.",food:"Food: sugar +12 (safe) · yeast +26 (rim, predator risk) · rot +38 (odor exposure).",circuit:"Escape circuit · connectome-inspired",real:"Real connectivity",shuffled:"Shuffled connectivity",seed:"Set seed",experiment:"Run control experiment · real vs shuffled",draftPrompt:"What will this generation leave behind? Choose one mutation for the next generation.",touchHint:"Hold and drag anywhere to steer",brainTitle:"Choose your fly's brain",brainNote:"Same world, same rules. The brain only decides where to go — the GF brainstem still owns the escape jump.",brainManual:"You drive · WASD",brainGenes:"auto-pilot baseline",brainCircuit:"FFW-CX/0.1 · 24 neurons",brainJudgment:"System One · soon",brainLine:`Brain this generation`,},
+  zh:{label:"语言",start:"开始第一代 →",continue:g=>`继续第 ${g} 代 →`,reset:"清空血脉存档",pause:"暂停/菜单",subtitle:"果蝇血脉 · 生物学生存游戏",intro:"你是一条血脉,不是一只苍蝇。觅食攒能量 → 自动产卵;捕食者会锁定弹道扑杀你。GF 反射亮起「就绪」时按空格起跳。",phone:"手机:按住屏幕任意处拖动 = 飞行方向;GF 按钮发光时点它。",food:"食物:糖 +12(安全) · 酵母 +26(盘缘,有风险) · 腐物 +38(气味暴露)。",circuit:"逃逸回路 · connectome-inspired",real:"真实连接",shuffled:"打乱连接",seed:"设种子",experiment:"跑对照实验 · 真实 vs 打乱",draftPrompt:"这一代留下什么？选择一个突变，传给下一代",touchHint:"按住屏幕任意处拖动 = 飞行方向",brainTitle:"选你果蝇的大脑",brainNote:"同一个世界、同一套规则。大脑只决定往哪飞——逃逸起跳仍然归脑干(GF 反射)管。",brainManual:"你自己开 · WASD",brainGenes:"基因自动驾驶",brainCircuit:"FFW-CX/0.1 · 24 神经元",brainJudgment:"System One · 即将推出",brainLine:`本代大脑`,},
   ja:{label:"言語",start:"第1世代を開始 →",continue:g=>`${g}世代を続ける →`,reset:"血統データを消去",pause:"一時停止 / メニュー",subtitle:"ショウジョウバエの血統 · 生存ゲーム",intro:"あなたは一匹ではなく血統です。餌とエネルギーを集めて産卵し、捕食者の確定弾道をGF反射で避けましょう。",phone:"モバイル:画面を押してドラッグして操縦。GFボタンが光ったらタップ。",food:"餌:砂糖 +12 · 酵母 +26 · 腐敗物 +38。",circuit:"脱出回路 · connectome-inspired",real:"実際の接続",shuffled:"シャッフル接続",seed:"シード設定",experiment:"対照実験を実行",draftPrompt:"この世代に何を残す？次世代へ渡す変異を1つ選択",touchHint:"画面を押してドラッグして操縦"},
   ko:{label:"언어",start:"첫 세대 시작 →",continue:g=>`${g}세대 계속 →`,reset:"혈통 저장 삭제",pause:"일시정지 / 메뉴",subtitle:"초파리 혈통 · 생존 게임",intro:"당신은 한 마리가 아니라 혈통입니다. 먹이와 에너지를 모아 알을 낳고 GF 반사로 포식자를 피하세요.",phone:"모바일: 화면을 누르고 드래그해 조종하세요. GF 버튼이 빛나면 누르세요.",food:"먹이: 설탕 +12 · 효모 +26 · 부패물 +38.",circuit:"탈출 회로 · connectome-inspired",real:"실제 연결",shuffled:"셔플 연결",seed:"시드 설정",experiment:"대조 실험 실행"},
   es:{label:"Idioma",start:"Empezar primera generación →",continue:g=>`Continuar generación ${g} →`,reset:"Borrar linaje",pause:"Pausa / menú",subtitle:"Linaje de moscas · juego de supervivencia",intro:"Eres un linaje, no una sola mosca. Busca alimento, acumula energía y pon huevos; evita el ataque balístico con el reflejo GF.",phone:"Móvil: mantén pulsado y arrastra para volar. Toca GF cuando se ilumine.",food:"Comida: azúcar +12 · levadura +26 · putrefacto +38.",circuit:"Circuito de escape · connectome-inspired",real:"Conexión real",shuffled:"Conexión mezclada",seed:"Fijar semilla",experiment:"Ejecutar experimento"}
@@ -23,6 +23,13 @@ function applyLanguage(){
   document.querySelector(".circCard h3").textContent=l.circuit;
   document.querySelector('[data-conn="real"]').textContent=l.real;
   document.querySelector('[data-conn="shuffled"]').textContent=l.shuffled;
+  document.querySelector(".brainCard h3").textContent=l.brainTitle||LANG.en.brainTitle;
+  document.querySelector(".brainCard .tiny").textContent=l.brainNote||LANG.en.brainNote;
+  const bs={manual:l.brainManual||LANG.en.brainManual,genes:l.brainGenes||LANG.en.brainGenes,
+    circuit:l.brainCircuit||LANG.en.brainCircuit,judgment:l.brainJudgment||LANG.en.brainJudgment};
+  document.querySelectorAll(".brainBtn").forEach(b=>{
+    const s=b.querySelector("s"); if(s) s.textContent=bs[b.dataset.brain]||"";
+  });
   $("seedApply").textContent=l.seed; $("expBtn").textContent=l.experiment;
   $("dsubtitle").textContent=l.draftPrompt||LANG.en.draftPrompt;
   refreshMenuStats();
@@ -119,6 +126,15 @@ function wireMenu(){
       sfx.uiTick(); addLog("连接组切到「"+(b.dataset.conn==="real"?lang().real:lang().shuffled)+"」");
     });
   });
+  // brain selection
+  document.querySelectorAll(".brainBtn:not([disabled])").forEach(b=>{
+    b.classList.toggle("active",b.dataset.brain===gameScene.playerBrainId);
+    b.addEventListener("click",()=>{
+      gameScene.attachBrain(b.dataset.brain);
+      document.querySelectorAll(".brainBtn").forEach(x=>x.classList.remove("active"));
+      b.classList.add("active");
+    });
+  });
   // seed
   $("seedInput").value=gameScene.state.worldSeed;
   $("seedApply").addEventListener("click",()=>{
@@ -181,6 +197,15 @@ function showDraft(d){
     wrap.appendChild(el);
   });
   $("dRival").textContent=en?`Wild type has accumulated ${gameScene.rivalFly.rivalTraits.length} mutations — it evolves too.`:`野生型已积累 ${gameScene.rivalFly.rivalTraits.length} 个突变 — 它也在进化。`;
+  document.querySelectorAll(".brainReport").forEach(e=>e.remove());
+  if(d.brain&&d.brain.id!=="manual"&&d.brain.decisions>0){
+    const bl=document.createElement("div");
+    bl.className="tiny brainReport";
+    bl.innerHTML=en
+      ?`Brain: <b class="c-gold">${d.brain.model||d.brain.id}</b> · ${d.brain.decisions} decisions · avg confidence ${d.brain.avgConfidence!=null?d.brain.avgConfidence.toFixed(2):"—"}`
+      :`大脑: <b class="c-gold">${d.brain.model||d.brain.id}</b> · 共 ${d.brain.decisions} 次判断 · 平均置信度 ${d.brain.avgConfidence!=null?d.brain.avgConfidence.toFixed(2):"—"}`;
+    $("dRival").after(bl);
+  }
   $("draft").classList.add("show");
   sfx.draftShow();
 }
