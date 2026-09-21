@@ -10,6 +10,8 @@ import {
   GF_PARAMS, stepGF, fireGF
 } from "./sim.js";
 import { createCircuitBrain } from "./brain-circuit.js";
+import { createLocalBrain } from "./brain-local.js";
+import { createJevBrain, JEV_MODEL_DEFAULT } from "./brain-jev.js";
 import { createBrainDriver } from "./brain-driver.js";
 import { sfx } from "./audio.js";
 
@@ -87,7 +89,7 @@ export class GameScene extends Phaser.Scene {
 
     // ---- brain selection (the fly's decision layer) ----
     this.brainLog=[]; this.lastBrainBehavior="explore";
-    this.brainDriver=null;
+    this.brainDriver=null; this.judgmentFallback=null; this.judgmentWarned=false;
     this.playerBrainId=this.state.brainId||"manual";
     this.attachBrain(this.playerBrainId,{silent:true});
 
@@ -106,7 +108,8 @@ export class GameScene extends Phaser.Scene {
       getBrain:()=>({ id:this.playerBrainId, model:this.brainDriver?this.brainDriver.model:null }),
       getDecisionLog:()=>({ version:"flyline-log/1", worldSeed:this.state.worldSeed,
         genNumber:this.state.genNumber, brain:{ id:this.playerBrainId,
-        model:this.brainDriver?this.brainDriver.model:"player" }, records:this.brainLog.slice() })
+        model:this.brainDriver?this.brainDriver.model:"player" }, records:this.brainLog.slice() }),
+      downloadDecisionLog:()=>this.downloadDecisionLog()
     };
   }
 
@@ -114,16 +117,31 @@ export class GameScene extends Phaser.Scene {
   // The brain only chooses a direction each decision tick; the GF brainstem
   // (gf-neuron.js + tryDash) still owns the physical escape jump.
   attachBrain(id,opts){
-    if(!["manual","genes","circuit"].includes(id)) return;
+    if(!["manual","genes","circuit","judgment"].includes(id)) return;
     const prev=this.playerBrainId;
     this.playerBrainId=id; this.state.brainId=id;
     this.brainLog=[]; this.lastBrainBehavior="explore";
+    this.judgmentWarned=false;
     if(id==="circuit"){
       const brain=createCircuitBrain({seed:(this.state.worldSeed^0xC0FFEE)>>>0});
       this.brainDriver=createBrainDriver({
         brain, intervalSec:0.1,
         onError:()=>this.onBrainError()
       });
+    } else if(id==="judgment"){
+      const key=localStorage.getItem("flyline_jev_key");
+      if(key){
+        // remote System One brain; any failure falls back to the local heuristic
+        try{
+          const remote=createJevBrain({apiKey:key, model:JEV_MODEL_DEFAULT});
+          const local=createLocalBrain();
+          this.judgmentFallback=local;
+          this.brainDriver=createBrainDriver({
+            brain:remote, intervalSec:1.0,
+            onError:()=>this.fallbackToJudgmentLocal()
+          });
+        }catch(e){ this.attachJudgmentLocal(); }
+      } else this.attachJudgmentLocal(true);
     } else this.brainDriver=null;
     // brains other than manual drive themselves; GF reflex auto-fires (updateFly)
     if(id!=="manual") this.driveMode="auto";
@@ -133,11 +151,35 @@ export class GameScene extends Phaser.Scene {
     if(!opts||!opts.silent){
       this.uiLog(id==="manual"?"Brain: MANUAL — you drive (WASD + Space)."
         :id==="genes"?"Brain: GENES — gene-weighted auto-pilot."
-        :"Brain: CIRCUIT — FFW-CX/0.1, 24 spiking neurons.");
+        :id==="circuit"?"Brain: CIRCUIT — FFW-CX/0.1, 24 spiking neurons."
+        :(this.brainDriver&&this.brainDriver.model!==("local-heuristic/0.1")
+          ?"Brain: JUDGMENT — "+this.brainDriver.model+" via /api/jev."
+          :"Brain: JUDGMENT — local-heuristic/0.1 (no key set; free offline)."));
       if(prev!==id) sfx.uiTick();
     }
     document.dispatchEvent(new CustomEvent("flyline:brain",{detail:{
       id, model:this.brainDriver?this.brainDriver.model:null }}));
+  }
+  attachJudgmentLocal(silent){
+    this.judgmentFallback=null;
+    this.brainDriver=createBrainDriver({
+      brain:createLocalBrain(), intervalSec:0.5, onError:()=>this.onBrainError()
+    });
+    if(!silent) this.refreshBrainHud();
+  }
+  fallbackToJudgmentLocal(){
+    // remote brain failed (529, timeout, bad key): swap in the local heuristic,
+    // keep the decision cadence going. Visible chip change + one-time warning.
+    if(!this.judgmentFallback) return;
+    if(!this.judgmentWarned){
+      this.judgmentWarned=true;
+      this.uiLog("Judgment model unreachable — fell back to local-heuristic/0.1. Check your key or the /api/jev proxy.");
+    }
+    const tick=this.brainDriver?this.brainDriver.last:null;
+    this.brainDriver=createBrainDriver({
+      brain:this.judgmentFallback, intervalSec:0.5, onError:()=>this.onBrainError()
+    });
+    this.refreshBrainHud();
   }
   computeSignals(fly){
     const f=this.findNearestFood(fly), th=this.findThreat(fly), l=this.lightSignal(fly);
@@ -177,6 +219,16 @@ export class GameScene extends Phaser.Scene {
   onBrainError(){
     this.uiLog("Brain error — steering falls back to genes until it recovers.");
   }
+  downloadDecisionLog(){
+    const payload=window.FlyLabAPI.getDecisionLog();
+    const blob=new Blob([JSON.stringify(payload,null,1)],{type:"application/json"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="flyline-log-seed"+payload.worldSeed+"-gen"+payload.genNumber+".json";
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+    return payload.records.length;
+  }
   refreshBrainHud(res){
     const q=id=>document.getElementById(id);
     const panel=q("brainPanel"); if(!panel) return;
@@ -191,6 +243,12 @@ export class GameScene extends Phaser.Scene {
         const el=q(map[k]);
         el.style.width=Math.round(Math.max(0,Math.min(1,res.record.distribution[k]))*100)+"%";
         el.parentElement.parentElement.classList.toggle("lead",res.behavior===k);
+      }
+      const dg=q("hDanger");
+      if(dg){
+        const d=Math.max(0,Math.min(3,res.record.dangerScore||0));
+        dg.textContent="▮".repeat(Math.round(d))+"▯".repeat(3-Math.round(d))+" "+d.toFixed(1);
+        dg.className=d>=2?"c-red":d>=1?"c-gold":"c-teal";
       }
     }
   }

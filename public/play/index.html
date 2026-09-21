@@ -50,6 +50,8 @@
           <div class="nrow bmrow"><span class="nname">AVOID</span><div class="bar nbar bm"><i id="hBmAvoid"></i></div></div>
           <div class="nrow bmrow"><span class="nname">EXPLORE</span><div class="bar nbar bm"><i id="hBmExplore"></i></div></div>
           <div class="nrow bmrow"><span class="nname">FREEZE</span><div class="bar nbar bm"><i id="hBmFreeze"></i></div></div>
+          <div class="nrow bmrow"><span class="nname">DANGER</span><span id="hDanger" class="c-teal dangerTxt">▯▯▯ 0.0</span>
+            <button id="hBrainDl" class="ghost tinyBtn" title="Download this generation's sealed decision log">⤓ log</button></div>
           <div class="nchain">signals → judgment layer → behavior</div>
         </div></div>
       <div id="hTraits" class="traitRow"></div>
@@ -97,7 +99,13 @@
           <button class="small brainBtn" data-brain="manual">MANUAL<s>You drive · WASD</s></button>
           <button class="small brainBtn" data-brain="genes">GENES<s>auto-pilot baseline</s></button>
           <button class="small brainBtn" data-brain="circuit">CIRCUIT<s>FFW-CX/0.1 · 24 neurons</s></button>
-          <button class="small brainBtn" disabled title="Judgment layer ships next">JUDGMENT<s>System One · soon</s></button>
+          <button class="small brainBtn" data-brain="judgment">JUDGMENT<s id="judgmentSub">local heuristic · free</s></button>
+        </div>
+        <div class="brainCfg">
+          <label for="jevKey">System One key</label>
+          <input id="jevKey" type="password" autocomplete="off" spellcheck="false"
+            placeholder="leave empty for the free local heuristic">
+          <span class="tiny">jev-1.13.0 via same-origin /api/jev proxy · key stored in this browser only · on failure the local heuristic takes over</span>
         </div>
       </div>
       <div class="circCard">
