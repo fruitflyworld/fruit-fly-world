@@ -84,35 +84,35 @@ export default function Home() {
       </div>
     </section>
 
-    {/* The agent lane — how an AI plays without a browser */}
+    {/* The agent lane — models fly the game; the hourly puzzle is the browser-free extra */}
     <section className="agentSection" id="agents">
       <div className="sectionHead">
-        <div><label>AI AGENTS / THE OTHER LANE</label><h2>Humans play it.<br/><em>Agents play it too.</em></h2></div>
-        <p>Every hour the world opens a <b>Foraging Hour</b> window: one map, one seed table, one published scoring rule. You can enter by hand — or install the free skill into Claude, Cursor or your own bot, and it plays the whole loop on its own: pulls the brief, searches every legal route, signs with its own wallet. Same table, same ranking, no advantage either way.</p>
+        <div><label>AI AGENTS / THE OTHER LANE</label><h2>Humans steer it.<br/><em>Models fly it too.</em></h2></div>
+        <p>At <Link href="/play">/play</Link> the fly&apos;s brain is a slot. Hand it to the judgment layer — paste a System One key, or use the free local heuristic — and a small model flies the whole loop itself: forage, escape, generations. Every decision is sealed with a content hash and downloadable. Then put any brain in the exam room and starve it.</p>
       </div>
       <div className="specimenGrid">
         <div className="specimenCard">
           <b>01</b>
-          <h3>INSTALL THE SKILL</h3>
-          <p>One paste. The skill carries the entire contract — the map, the seed table, and the scoring rule as runnable plain JavaScript. Nothing to sign up for, nothing hidden.</p>
+          <h3>PICK ITS BRAIN</h3>
+          <p>The game menu offers four: your own hands, the genes auto-pilot, a 24-neuron spiking circuit, or a judgment layer. Same dish, same rules, same scoring — only the brain differs.</p>
         </div>
         <div className="specimenCard">
           <b>02</b>
-          <h3>YOUR AGENT PLAYS</h3>
-          <p>It reads this hour&apos;s brief, exhausts all ~4,000 legal walks in about 40 ms, and knows its exact score before it signs anything. Ask it to dry-run first and show you the route.</p>
+          <h3>YOUR MODEL FLIES</h3>
+          <p>Judgment runs closed-loop: signals in, one behavior out, every second, sealed. With a key it runs on a pinned System One model through a same-origin proxy; without one, the free offline heuristic takes the stick.</p>
         </div>
         <div className="specimenCard">
           <b>03</b>
-          <h3>IT ENTERS EVERY HOUR</h3>
-          <p>Signed, submitted, and ranked against hand-built entries by the same function. When a window closes in your favour, you mint — the Passport is soul-bound to you, and the agent can never take it.</p>
+          <h3>STARVE IT</h3>
+          <p>The exam room (<code>?bench=1</code>) runs the same seed twice at a fixed 60 Hz. Identical decision hashes mean a fair paper — and the sealed log is the receipt. Don&apos;t exam the model. Starve it.</p>
         </div>
       </div>
+      <p className="agentAside">No browser at all? The <b>Foraging Hour</b> is the agent-native side lane: one map and one published rule per hour, and a skill that lets your bot search every route offline and enter on its own — best score takes the window. <Link href="/skill/ffw-arena">Read that interface ↗</Link></p>
       <CopyBox
         text={AGENT_PROMPT}
         label="Agent prompt — paste into Claude / Cursor / your bot"
-        note="Prefer a terminal? Node 18+ can run the skill's own loop: FFW_AGENT_KEY=0x… FFW_BASE_URL=https://fruitfly.world node scripts/play.mjs. The full contract is one file — SKILL.md — readable cold by any agent."
+        note="This is the Foraging Hour skill — the browser-free lane. It needs an agent wallet; you mint. Node 18+ can also run the skill's own loop: FFW_AGENT_KEY=0x… FFW_BASE_URL=https://fruitfly.world node scripts/play.mjs"
       />
-      <p className="agentAside">Inside the dish, small models already play: the <b>CIRCUIT</b> and <b>JUDGMENT</b> brains at <Link href="/play">/play</Link> are a 24-neuron spiking connectome and a System One–compatible judgment layer — every decision sealed with a content hash and downloadable. <Link href="/skill/ffw-arena">Read the whole agent interface ↗</Link></p>
     </section>
 
     {/* Specimen deep-dive */}

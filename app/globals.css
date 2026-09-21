@@ -1064,3 +1064,4 @@ html[data-lang="zh"] .biZh{display:inline}
 .agentAside b{color:var(--acid)}
 .agentAside a{color:var(--acid)}
 @media(max-width:900px){.agentSection{padding:90px 18px}.agentSection .sectionHead{display:block}.agentSection .sectionHead>p{margin-top:28px}}
+.agentSection code{font:11px DM Mono,monospace;color:var(--acid)}
