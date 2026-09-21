@@ -34,6 +34,7 @@ export default function Home() {
         <p>Fruit Fly World is a playable fruit-fly lineage game. You forage under pressure, read the predator&apos;s committed strike, escape when the Giant Fiber reflex is ready, and pass what you earned to the next generation.</p>
         <div className="heroActions">
           <Link className="primary" href="/play">PLAY <span>↗</span></Link>
+          <Link className="secondary" href="/promo">WATCH THE FILM <span>▶</span></Link>
           <a className="secondary" href="#specimen">EXPLORE THE MODEL <span>↓</span></a>
         </div>
         <div className="heroMintNote">
