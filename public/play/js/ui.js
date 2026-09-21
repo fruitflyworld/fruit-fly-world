@@ -202,6 +202,7 @@ function traitCopy(t){
 
 // ---------------- draft ----------------
 function showDraft(d){
+  if(gameScene.__bench) return; // bench mode steps generations without UI modals
   const en=language==="en";
   $("dTitle").textContent=en?`Generation ${d.gen} · Complete`:`第 ${d.gen} 代 · 结束`;
   const v=$("dVerdict");

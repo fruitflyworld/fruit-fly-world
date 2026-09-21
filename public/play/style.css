@@ -160,3 +160,17 @@ body.touch #joyZone{display:block;} body.touch #gfBtn{display:block;}
 .brainCfg .tiny{flex-basis:100%;margin:0;font-size:9px;line-height:1.4;}
 .dangerTxt{font-size:10px;letter-spacing:1px;font-family:ui-monospace,monospace;}
 .tinyBtn{font-size:9px!important;padding:2px 7px!important;margin-left:auto;}
+
+/* ---- bench mode (?bench=1): the exam report ---- */
+#benchReport{position:absolute;inset:0;z-index:60;overflow:auto;padding:26px 30px;
+  background:rgba(5,8,7,.96);font-size:13px;line-height:1.55;}
+#benchReport .verdict{font-size:19px;font-weight:700;letter-spacing:.5px;margin-bottom:10px;}
+#benchReport .benchMeta{color:var(--dim);margin-bottom:14px;}
+#benchReport .benchH2{margin:18px 0 6px;font-size:12px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;}
+#benchReport table{border-collapse:collapse;margin-bottom:4px;}
+#benchReport th,#benchReport td{border:1px solid var(--line);padding:4px 10px;text-align:left;font-size:11.5px;}
+#benchReport th{color:var(--dim);font-weight:600;letter-spacing:.5px;}
+#benchReport td.mono{font-family:ui-monospace,monospace;color:var(--lavender);}
+#benchReport tr.bad td{color:var(--red);}
+#benchReport .benchFoot{margin-top:16px;color:var(--dim);font-size:11.5px;}
+#benchReport a{color:var(--teal);}

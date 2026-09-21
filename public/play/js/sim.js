@@ -179,3 +179,32 @@ export function runExperiment(worldSeed){
     leadR+=a.lead>0?a.lead:0; leadS+=b.lead>0?b.lead:0; }
   return { n, realEscape:100*er/n, shufEscape:100*es/n, realLead:leadR/n, shufLead:leadS/n };
 }
+
+// ============================== deterministic draft (ADDITIVE) ==============================
+// The menu's Mutation Draft used Math.random, which made runs unreproducible:
+// same seed, same score, different cards. These exports fix that without
+// touching any pinned numerics above. draftCards is a pure function: the same
+// (seed, gen, eggs, rivalEggs, owned) always draws the same three cards.
+export function makeRng(seed){
+  let a=(seed>>>0)||1;
+  return function(){
+    a|=0; a=(a+0x6D2B79F5)|0;
+    let t=Math.imul(a^(a>>>15),1|a);
+    t=(t+Math.imul(t^(t>>>7),61|t))^t;
+    return ((t^(t>>>14))>>>0)/4294967296;
+  };
+}
+export function draftSeed(worldSeed, gen, eggs, rivalEggs){
+  // mix the run's outcome into the draft: your cards depend on how you got here
+  return (worldSeed ^ Math.imul(gen,2654435761) ^ Math.imul(eggs,97) ^ Math.imul(rivalEggs,31))>>>0;
+}
+export function draftCards(worldSeed, gen, eggs, rivalEggs, owned){
+  const r=makeRng(draftSeed(worldSeed,gen,eggs,rivalEggs));
+  const ownedSet=new Set(owned||[]);
+  const pool=[...STACKABLE];
+  for(const t of NAMED_ONCE) if(!ownedSet.has(t)) pool.push(t);
+  const chosen=[]; const copy=pool.slice();
+  while(chosen.length<3&&copy.length){ chosen.push(copy.splice(Math.floor(r()*copy.length),1)[0]); }
+  while(chosen.length<3) chosen.push(STACKABLE[Math.floor(r()*STACKABLE.length)]);
+  return chosen;
+}

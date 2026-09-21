@@ -331,9 +331,10 @@ documented behaviour and not findings.
 - ✅ Agent skill — `SKILL.md`, `lib/arena.mjs`, `scripts/play.mjs`, parity-tested against the server
 - ✅ `FruitFlyPassport` — ERC-721 + ERC-5192, deployed on Ethereum Sepolia, 11 contract tests
 - ✅ Missions and the mint rail — free tier, half-price tier, on-chain price ladder
-- ✅ CI on every push — build, types, 90 app tests, contract suite
+- ✅ CI on every push — build, types, 96 app tests, contract suite
 - ✅ Selectable brains in `/play` — manual / genes / FFW-CX 24-neuron circuit, sealed decision log (`flyline-log/1`)
 - ✅ Judgment layer — free local heuristic by default; add a System One key and the fly runs on pinned `jev-1.13.0` through the same-origin `/api/jev` proxy (bodies capped, rate-limited, key never logged), falling back to the local heuristic on any failure
+- ✅ Determinism exam — `/play?bench=1` drives the world twice at a fixed 60 Hz and verifies every decision hash and outcome is bit-identical; the Mutation Draft is now seeded (same run, same cards)
 - ⏳ Mainnet Passport deployment — no date
 - ⏳ Difficulty that survives a published map — the map is public; making a copied answer stop
   working is the open design problem, and `/economics` discusses it as roadmap

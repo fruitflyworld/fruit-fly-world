@@ -24,5 +24,16 @@ const checkReady=setInterval(()=>{
   const scene=game.scene.getScene("Game");
   if(scene&&scene.state&&!scene.__uiInited){
     scene.__uiInited=true; clearInterval(checkReady); initUI(scene);
+    const qp=new URLSearchParams(location.search);
+    if(qp.get("bench")==="1"){
+      import("./bench.js").then(async m=>{
+        const r=await m.runBench(scene,{
+          seed:+qp.get("seed")||42,
+          brain:qp.get("brain")||"circuit",
+          gens:+qp.get("gens")||2 });
+        m.renderBenchReport(r);
+        window.FlyBenchAPI={last:()=>r};
+      });
+    }
   }
 },50);

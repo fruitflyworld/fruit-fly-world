@@ -4,7 +4,7 @@ import {
   GEN_DURATION, CYCLE_SEC, FOOD_RADIUS, FOOD_SENSE, THREAT_SENSE, NOVELTY_SENSE, GRID_N, FOOD_COUNT,
   LAY_THRESHOLD, LAY_COST, LAY_CD, DASH_SPEED, DASH_TIME, DASH_CD, DASH_COST,
   PRED_BASE, PRED_LUNGE, PRED_LUNGE_RANGE, PRED_CATCH, PRED_DPS,
-  GF, PRED_VISUAL, FOOD_TYPES, ODOR_TIME, TRAIT_INFO, NAMED_ONCE, STACKABLE,
+  GF, PRED_VISUAL, FOOD_TYPES, ODOR_TIME, TRAIT_INFO, NAMED_ONCE, STACKABLE, draftCards,
   clamp01, dist, normalize, rng, seedRng, randRange, randomInDish,
   recomputeStats, makeFly, resetFly,
   GF_PARAMS, stepGF, fireGF
@@ -690,12 +690,9 @@ export class GameScene extends Phaser.Scene {
 
   // ============================== generation flow ==============================
   drawCards(){
-    const pool=[...STACKABLE];
-    for(const t of NAMED_ONCE) if(!this.state.ownedTraits.includes(t)) pool.push(t);
-    const chosen=[]; const copy=pool.slice();
-    while(chosen.length<3&&copy.length){ chosen.push(copy.splice(Math.floor(Math.random()*copy.length),1)[0]); }
-    while(chosen.length<3) chosen.push(STACKABLE[Math.floor(Math.random()*STACKABLE.length)]);
-    return chosen;
+    // deterministic: the draft depends only on (worldSeed, gen, eggs, rivalEggs, owned)
+    return draftCards(this.state.worldSeed, this.state.genNumber,
+      this.playerFly.eggs, this.rivalFly.eggs, this.state.ownedTraits);
   }
   endGeneration(){
     if(this.ended) return;
