@@ -1102,3 +1102,32 @@ html[data-lang="zh"] .biZh{display:inline}
 .promoFooter{padding:30px max(4vw,28px);border-top:1px solid #1c2a1d;font:9px DM Mono,monospace;color:#7d8a7b}
 .promoFooter a{color:var(--acid)}
 @media(max-width:900px){.promoBeats{grid-template-columns:1fr}.promoNav>div{gap:12px}.promoHead{padding:60px 18px 30px}}
+/* Essay page (long-form) */
+.essayPage{min-height:100vh;background:#050705;color:#f2f7ed}
+.essayNav{height:70px;padding:0 max(4vw,28px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1c2a1d}
+.essayNav>div{display:flex;gap:26px;font:9px DM Mono,monospace;color:#9aa89a}
+.essayNav>div a{color:var(--acid)}
+.essayBody{max-width:760px;margin:0 auto;padding:90px 22px 40px}
+.essayBody header{border-bottom:1px solid #1c2a1d;padding-bottom:46px;margin-bottom:56px}
+.essayKicker{color:var(--acid);font:500 10px DM Mono,monospace;letter-spacing:.16em}
+.essayBody h1{font-size:clamp(46px,6vw,86px);letter-spacing:-.045em;line-height:1.02;margin:26px 0}
+.essayBody h1 em{color:var(--acid);font-style:normal}
+.essayLede{font-size:19px;line-height:1.8;color:#c4d0c0;margin:0 0 30px}
+.essayLede b{color:#f2f7ed}
+.essayMeta{display:flex;flex-wrap:wrap;gap:10px 26px;font:9px DM Mono,monospace;color:#7d8a7b;letter-spacing:.1em}
+.essayBody section{margin-bottom:64px}
+.essayBody h2{font-size:15px;font-family:DM Mono,monospace;font-weight:500;color:var(--acid);letter-spacing:.14em;margin:0 0 22px}
+.essayBody p{font-size:17px;line-height:1.85;color:#b7c3b3;margin:0 0 20px}
+.essayBody p b{color:#f2f7ed;font-weight:700}
+.essayBody p i{color:#d7e2d3}
+.essayBody a{color:var(--acid);text-decoration-color:#baff3555;text-underline-offset:3px}
+.essayBody a:hover{background:var(--acid);color:#050705;text-decoration:none}
+.essayBody ul{margin:0 0 20px;padding-left:22px}
+.essayBody li{font-size:16.5px;line-height:1.85;color:#b7c3b3;margin-bottom:12px}
+.essayBody li b{color:#f2f7ed}
+.essayBody li i{color:#d7e2d3}
+.essayBody code{font:14px DM Mono,monospace;color:var(--acid)}
+.essayOut{font-size:26px!important;color:#f2f7ed!important;letter-spacing:-.02em;margin-top:36px!important}
+.essayFooter{padding:34px max(4vw,28px);border-top:1px solid #1c2a1d;font:9px DM Mono,monospace;color:#7d8a7b}
+.essayFooter a{color:var(--acid)}
+@media(max-width:700px){.essayBody{padding:60px 18px 30px}.essayNav>div{gap:12px}.essayBody p{font-size:16px}}
