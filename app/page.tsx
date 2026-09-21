@@ -82,6 +82,14 @@ export default function Home() {
           <div className="gameScreenCopy"><span>03 / CARRY IT FORWARD</span><h3>A lineage, not a reset.</h3><p>At generation end, compare your eggs with the wild type and draft one mutation for the next fly. Death ends a generation, not the lineage.</p></div>
         </article>
       </div>
+      <div className="gameClipCard">
+        <video className="gameClip" src="/gameplay/gameplay.mp4" poster="/gameplay/gameplay-poster.jpg" autoPlay loop muted playsInline/>
+        <div className="gameClipCopy">
+          <span>04 / RECORDED IN THE DISH</span>
+          <h3>The game, not a mockup.</h3>
+          <p>Above are concept frames; this is real footage, captured from a live browser run — the judgment layer flying the fly, food being read, the predator on its way. The brain decides where to go; the GF brainstem still owns the jump.</p>
+        </div>
+      </div>
     </section>
 
     {/* The agent lane — models fly the game; the hourly puzzle is the browser-free extra */}

@@ -1065,3 +1065,11 @@ html[data-lang="zh"] .biZh{display:inline}
 .agentAside a{color:var(--acid)}
 @media(max-width:900px){.agentSection{padding:90px 18px}.agentSection .sectionHead{display:block}.agentSection .sectionHead>p{margin-top:28px}}
 .agentSection code{font:11px DM Mono,monospace;color:var(--acid)}
+/* Real-gameplay clip card (homepage game showcase) */
+.gameClipCard{display:grid;grid-template-columns:1.45fr .75fr;gap:14px;margin-top:14px}
+.gameClipCard video,.gameClipCard img{width:100%;display:block;border:1px solid var(--line);background:#050805}
+.gameClipCopy{border:1px solid var(--line);padding:28px;display:grid;gap:12px;align-content:start;background:#050805}
+.gameClipCopy span{font:500 9px DM Mono,monospace;color:var(--acid);letter-spacing:.12em}
+.gameClipCopy h3{margin:0;font-size:24px;letter-spacing:-.03em}
+.gameClipCopy p{margin:0;color:var(--muted);font-size:13px;line-height:1.75}
+@media(max-width:900px){.gameClipCard{grid-template-columns:1fr}}
