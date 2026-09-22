@@ -1131,3 +1131,11 @@ html[data-lang="zh"] .biZh{display:inline}
 .essayFooter{padding:34px max(4vw,28px);border-top:1px solid #1c2a1d;font:9px DM Mono,monospace;color:#7d8a7b}
 .essayFooter a{color:var(--acid)}
 @media(max-width:700px){.essayBody{padding:60px 18px 30px}.essayNav>div{gap:12px}.essayBody p{font-size:16px}}
+/* Dish quests (mission 04 claim rows) */
+.dishQuestRow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed #2a382b}
+.dishQuestRow:last-child{border-bottom:none}
+.dishQuestRow b{font:11px DM Mono,monospace;color:var(--acid);letter-spacing:.08em;display:block}
+.dishQuestRow small{display:block;font-size:11.5px;color:#7d8a7b;margin-top:3px}
+.dishQuestRow a{font:10px DM Mono,monospace;color:#9fb29c;text-decoration:none;letter-spacing:.08em}
+.dishQuestRow button{margin:0}
+.dishQuestDone{font:10px DM Mono,monospace;color:var(--acid);letter-spacing:.08em}

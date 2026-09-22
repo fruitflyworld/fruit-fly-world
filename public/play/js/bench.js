@@ -101,6 +101,24 @@ export async function runBench(scene, opts = {}) {
     localStorage.setItem("flyline_bench_v1", JSON.stringify(board));
   } catch (e) { /* private mode: report still shows */ }
 
+  // An IDENTICAL double run is the EXAMINED dish quest — first one is kept as
+  // freemint evidence (client-attested v1, validated by app/lib/dish.ts).
+  if (identical) {
+    try {
+      const store = JSON.parse(localStorage.getItem("flyline_quests_v1") || "{}");
+      if (!store.EXAMINED) {
+        store.EXAMINED = {
+          quest: "EXAMINED", gen: 1,
+          eggs: result.eggsTotal, rivalEggs: runA.reduce((a, g) => a + g.rivalEggs, 0),
+          survived: runA.every((g) => g.survived), deathReason: "time", escapes: 0,
+          brain: { id: brain, model: null }, decisions: result.decisions,
+          seed, gens, identical: true, ts: Date.now(),
+        };
+        localStorage.setItem("flyline_quests_v1", JSON.stringify(store));
+      }
+    } catch (e) { /* private mode: report still shows */ }
+  }
+
   return { ...result, runA, runB };
 }
 

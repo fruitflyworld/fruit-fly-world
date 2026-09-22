@@ -30,7 +30,7 @@ export async function POST(request: Request) {
         `SELECT 1 FROM mission_completions mc
          JOIN mission_campaigns c ON c.id=mc.campaign_id
          WHERE mc.participant_address=$1 AND mc.campaign_id=$2
-           AND mc.mission_type IN ('AGENT','X_QUOTE','ARENA')
+           AND mc.mission_type IN ('AGENT','X_QUOTE','ARENA','DISH')
            AND c.enabled=true AND c.starts_at<=now() AND c.ends_at>now()
          LIMIT 1 FOR UPDATE OF c`,
         [session.address, MINT_CAMPAIGN]

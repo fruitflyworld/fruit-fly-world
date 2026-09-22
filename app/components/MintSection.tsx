@@ -30,8 +30,16 @@ const passportAbi = [
 const missions = [
   { id: "AGENT", number: "01", title: "Bring an AI Agent", description: "A separate Agent wallet signs a one-time challenge and runs one constrained experiment. Do this once and your agent can enter an arena window every hour on its own.", proof: "AGENT WALLET" },
   { id: "X_QUOTE", number: "02", title: "Spread the signal", description: "Quote the official campaign post with a wallet-bound, one-time proof code.", proof: "X QUOTE POST" },
-  { id: "ARENA", number: "03", title: "Take an arena window", description: "Enter a route — from an agent, or by hand through the documented interface — and hold the best score when the clock hits zero. Nothing to claim when you win: the completion lands here on its own and the mint unlocks. Lose and the entry still earns you half-price minting.", proof: "BEST ROUTE IN A WINDOW" }
+  { id: "ARENA", number: "03", title: "Take an arena window", description: "Enter a route — from an agent, or by hand through the documented interface — and hold the best score when the clock hits zero. Nothing to claim when you win: the completion lands here on its own and the mint unlocks. Lose and the entry still earns you half-price minting.", proof: "BEST ROUTE IN A WINDOW" },
+  { id: "DISH", number: "04", title: "Survive the dish", description: "Complete one of four quests in the game: SURVIVOR (outlive a full 50s generation), FORAGER (3+ eggs in one generation), REFLEX (3 Giant Fiber escapes in one generation), or EXAMINED (an IDENTICAL double run in the exam room at ?bench=1). The quest records itself the moment you do it.", proof: "QUEST EVIDENCE FROM /PLAY" }
 ];
+
+const dishQuests = [
+  { id: "SURVIVOR", hint: "Outlive a full 50-second generation in the dish." },
+  { id: "FORAGER", hint: "Lay 3 or more eggs in one generation." },
+  { id: "REFLEX", hint: "Land 3 Giant Fiber escapes in one generation." },
+  { id: "EXAMINED", hint: "Run the exam room (?bench=1) until it prints IDENTICAL." }
+] as const;
 
 const passportPreviews = [
   { name: "GENESIS", image: "/nft/passport-genesis-001.png" },
@@ -67,6 +75,7 @@ export default function MintSection() {
   const [agentSignature, setAgentSignature] = useState("");
   const [xChallenge, setXChallenge] = useState<{ code: string; officialPostId: string; postText: string; intentUrl: string }>();
   const [xPostUrl, setXPostUrl] = useState("");
+  const [dishEvidence, setDishEvidence] = useState<Record<string, unknown>>({});
   const contractConfigured = /^0x[a-fA-F0-9]{40}$/.test(process.env.NEXT_PUBLIC_MINT_CONTRACT_ADDRESS || "");
 
   const refresh = useCallback(async () => {
@@ -100,9 +109,14 @@ export default function MintSection() {
   }, [address, contractConfigured]);
 
   useEffect(() => { void refresh(); const update = () => void refresh(); window.addEventListener("ffw:auth", update); return () => window.removeEventListener("ffw:auth", update); }, [refresh]);
+  // Quest evidence lives in the browser the game ran in (flyline_quests_v1):
+  // first completion of each quest, recorded by the game itself.
+  useEffect(() => {
+    try { setDishEvidence(JSON.parse(localStorage.getItem("flyline_quests_v1") || "{}")); } catch { setDishEvidence({}); }
+  }, [checked]);
   // ARENA is one of the three ways in: winning a Foraging Hour window records the
   // mission server-side, so it has to count here too or the winner cannot mint.
-  const eligible = completed.some((mission) => mission === "AGENT" || mission === "X_QUOTE" || mission === "ARENA");
+  const eligible = completed.some((mission) => mission === "AGENT" || mission === "X_QUOTE" || mission === "ARENA" || mission === "DISH");
   const contractAvailable = contractConfigured && checked;
   const soldOut = totalSupply >= maxSupply;
   // The half-price tier only exists while the standard price does — the contract halves it.
@@ -156,6 +170,16 @@ export default function MintSection() {
       setMessage("X Quote Mission verified. Mint unlocked.");
       setXChallenge(undefined); setXPostUrl(""); await refresh();
     } catch (cause) { setMessage(cause instanceof Error ? cause.message : "X verification failed."); }
+  }
+
+  async function claimDishQuest(quest: string) {
+    try {
+      const evidence = dishEvidence[quest];
+      if (!evidence || typeof evidence !== "object") throw new Error("No recorded evidence for this quest — complete it in the game first.");
+      await jsonRequest("/api/missions/dish/verify", evidence);
+      setMessage("Dish quest verified. Mint unlocked.");
+      await refresh();
+    } catch (cause) { setMessage(cause instanceof Error ? cause.message : "Dish verification failed."); }
   }
 
   async function mintPassport() {
@@ -230,7 +254,7 @@ export default function MintSection() {
         <div className="mintStatus"><span className={`statusDot ${displayState.toLowerCase()}`}/><small>{displayState.replaceAll("_", " ")}</small>{address && <b>{shortAddress}</b>}</div>
         <h3>{copy.label}</h3>
         <p>{copy.detail}</p>
-        <div className="missionProgress"><i style={{ width: `${eligible ? 100 : 0}%` }}/><span>{eligible ? "1 VERIFIED MISSION · QUALIFIED" : halfPriceOpen ? "WINDOW ENTERED · HALF PRICE" : "ANY 1 OF 3 WAYS = FREE MINT · OR MINT NOW"}</span></div>
+        <div className="missionProgress"><i style={{ width: `${eligible ? 100 : 0}%` }}/><span>{eligible ? "1 VERIFIED MISSION · QUALIFIED" : halfPriceOpen ? "WINDOW ENTERED · HALF PRICE" : "ANY 1 OF 4 WAYS = FREE MINT · OR MINT NOW"}</span></div>
         <div className="supplyBar" aria-label={`${supplyLabel} minted`}><i style={{ width: `${supplyPercent}%` }}/><span>{tokenId ? `YOUR TOKEN · #${tokenId}` : `${supplyLabel} MINTED`}</span></div>
         <div className="mintFacts">
           <span><small>PRICE</small><b>{eligible ? "FREE + GAS" : halfPriceOpen ? `${halfPrice} · HALF` : publicMintOpen ? paidPrice : "—"}</b></span>
@@ -250,9 +274,9 @@ export default function MintSection() {
       </div>
     </div>
 
-    <div className="missionPreview" id="missions"><header><span>THREE WAYS IN · PICK ONE</span><b>COMPLETE 1 TO QUALIFY</b></header>
+    <div className="missionPreview" id="missions"><header><span>FOUR WAYS IN · PICK ONE</span><b>COMPLETE 1 TO QUALIFY</b></header>
       {missions.map((mission) => <article className={completed.includes(mission.id) ? "missionDone" : ""} key={mission.id}><span>{completed.includes(mission.id) ? "✓" : mission.number}</span><div><h4>{mission.title}</h4><p>{mission.description}</p><small>PROOF · {completed.includes(mission.id) ? "VERIFIED" : mission.proof}</small></div><b>{completed.includes(mission.id) ? "DONE" : mission.id === "ARENA" ? "LIVE" : "OPEN"}</b></article>)}
-      {address && !eligible && <div className="missionActions"><section><h4>AI AGENT MISSION</h4><input aria-label="Agent wallet address" value={agentAddress} onChange={(event) => setAgentAddress(event.target.value)} placeholder="0x Agent wallet address"/><button type="button" onClick={() => void startAgentMission()}>CREATE CHALLENGE</button>{agentChallenge && <><textarea aria-label="Agent challenge message" readOnly value={agentChallenge.message}/><input aria-label="Agent signature" value={agentSignature} onChange={(event) => setAgentSignature(event.target.value)} placeholder="0x Agent signature"/><button type="button" onClick={() => void verifyAgentMission()}>VERIFY AGENT</button></>}</section><section><h4>X QUOTE MISSION</h4>{!xChallenge ? <button type="button" onClick={() => void startXMission()}>GET PROOF CODE</button> : <><code>{xChallenge.code}</code><p>Publish this exactly — the code and the trailing link both have to stay in it, or the post will not read as a quote of the campaign post.</p><textarea aria-label="X post text" readOnly value={xChallenge.postText}/><a className="missionCompose" href={xChallenge.intentUrl} target="_blank" rel="noreferrer">OPEN IN X COMPOSER ↗</a><input aria-label="X post link or @handle" value={xPostUrl} onChange={(event) => setXPostUrl(event.target.value)} placeholder="Post link, or just @yourhandle"/><button type="button" onClick={() => void verifyXMission()}>VERIFY X POST</button></>}</section></div>}
+      {address && !eligible && <div className="missionActions"><section><h4>AI AGENT MISSION</h4><input aria-label="Agent wallet address" value={agentAddress} onChange={(event) => setAgentAddress(event.target.value)} placeholder="0x Agent wallet address"/><button type="button" onClick={() => void startAgentMission()}>CREATE CHALLENGE</button>{agentChallenge && <><textarea aria-label="Agent challenge message" readOnly value={agentChallenge.message}/><input aria-label="Agent signature" value={agentSignature} onChange={(event) => setAgentSignature(event.target.value)} placeholder="0x Agent signature"/><button type="button" onClick={() => void verifyAgentMission()}>VERIFY AGENT</button></>}</section><section><h4>X QUOTE MISSION</h4>{!xChallenge ? <button type="button" onClick={() => void startXMission()}>GET PROOF CODE</button> : <><code>{xChallenge.code}</code><p>Publish this exactly — the code and the trailing link both have to stay in it, or the post will not read as a quote of the campaign post.</p><textarea aria-label="X post text" readOnly value={xChallenge.postText}/><a className="missionCompose" href={xChallenge.intentUrl} target="_blank" rel="noreferrer">OPEN IN X COMPOSER ↗</a><input aria-label="X post link or @handle" value={xPostUrl} onChange={(event) => setXPostUrl(event.target.value)} placeholder="Post link, or just @yourhandle"/><button type="button" onClick={() => void verifyXMission()}>VERIFY X POST</button></>}</section><section><h4>DISH QUESTS · ANY 1 OF 4</h4>{dishQuests.map((quest) => <div className="dishQuestRow" key={quest.id}><div><b>{quest.id}</b><small>{dishEvidence[quest.id] ? "RECORDED IN THIS BROWSER" : quest.hint}</small></div>{completed.includes("DISH") ? <span className="dishQuestDone">VERIFIED</span> : dishEvidence[quest.id] ? <button type="button" onClick={() => void claimDishQuest(quest.id)}>CLAIM</button> : <a href="/play" target="_blank" rel="noreferrer">PLAY ↗</a>}</div>)}</section></div>}
     </div>
   </div>;
 }

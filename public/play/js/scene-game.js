@@ -336,7 +336,7 @@ export class GameScene extends Phaser.Scene {
     this.eggsGroup.clear(true,true);
     this.genTimeLeft=GEN_DURATION; this.genElapsed=0; this.nightFactor=0; this.ended=false;
     // fresh brain each generation: neuron state and decision log start clean
-    this.brainLog=[]; this.lastBrainBehavior="explore";
+    this.brainLog=[]; this.lastBrainBehavior="explore"; this.escapesThisGen=0;
     if(this.brainDriver) this.brainDriver.reset();
 
     this.playerFly.traits=this.state.ownedTraits;
@@ -495,6 +495,7 @@ export class GameScene extends Phaser.Scene {
         fly.vx+=a.x*b; fly.vy+=a.y*b;
       }
       if(fly.isPlayer){
+        this.escapesThisGen=(this.escapesThisGen||0)+1;
         sfx.dash(); this.floater(fly,"GF ESCAPE!",CSS.teal);
         const p=this.toPx(fly.x,fly.y); this.emTeal.explode(14,p.x,p.y);
         this.squash(fly);
@@ -706,16 +707,41 @@ export class GameScene extends Phaser.Scene {
     const win=eggs>=rivalEggs;
     sfx.genEnd(win);
     this.saveState();
-    document.dispatchEvent(new CustomEvent("flyline:genend",{
-      detail:{ gen:this.state.genNumber, eggs, rivalEggs, win, isBest, deathReason,
-        alive:this.playerFly.alive, lineageEggs:this.state.lineageEggs,
-        bestEggs:this.state.bestEggs, cards:this.drawCards(),
-        brain:{ id:this.playerBrainId, model:this.brainDriver?this.brainDriver.model:"player",
-          decisions:this.brainLog.length,
-          avgConfidence:this.brainLog.length
-            ?this.brainLog.reduce((a,r)=>a+r.confidence,0)/this.brainLog.length
-            :null } }
-    }));
+    const genendDetail={
+      gen:this.state.genNumber, eggs, rivalEggs, win, isBest, deathReason,
+      alive:this.playerFly.alive, lineageEggs:this.state.lineageEggs,
+      bestEggs:this.state.bestEggs, cards:this.drawCards(),
+      escapes:this.escapesThisGen||0,
+      brain:{ id:this.playerBrainId, model:this.brainDriver?this.brainDriver.model:"player",
+        decisions:this.brainLog.length,
+        avgConfidence:this.brainLog.length
+          ?this.brainLog.reduce((a,r)=>a+r.confidence,0)/this.brainLog.length
+          :null } };
+    document.dispatchEvent(new CustomEvent("flyline:genend",{detail:genendDetail}));
+    this.recordDishQuests(genendDetail);
+  }
+
+  // v1 freemint quests: record the first completion of each dish quest as a
+  // client-attested evidence object (validated server-side by app/lib/dish.ts).
+  // The Passport is soul-bound and free, so the prize for forging one is a
+  // badge you cannot sell; v2 re-simulates the run server-side.
+  recordDishQuests(detail){
+    if(this.__bench) return; // exam-room runs earn EXAMINED, not the dish quests
+    try{
+      const store=JSON.parse(localStorage.getItem("flyline_quests_v1")||"{}");
+      const base={ gen:detail.gen, eggs:detail.eggs, rivalEggs:detail.rivalEggs,
+        survived:detail.alive, deathReason:detail.deathReason, escapes:detail.escapes,
+        brain:detail.brain, decisions:detail.brain.decisions||0, ts:Date.now() };
+      const hit=(quest)=>{
+        if(store[quest]) return;
+        store[quest]={quest,...base};
+        this.uiLog(`🏅 DISH quest complete: ${quest} — claim your free mint on the Passport page.`);
+      };
+      if(detail.alive) hit("SURVIVOR");
+      if(detail.eggs>=3) hit("FORAGER");
+      if(detail.escapes>=3) hit("REFLEX");
+      localStorage.setItem("flyline_quests_v1",JSON.stringify(store));
+    }catch(e){ /* private mode: the generation still ends normally */ }
   }
   nextGen(traitId){
     this.state.ownedTraits.push(traitId);
