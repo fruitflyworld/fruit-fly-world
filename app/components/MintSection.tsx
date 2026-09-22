@@ -183,13 +183,38 @@ export default function MintSection() {
     } catch (cause) { setMessage(cause instanceof Error ? cause.message : "Dish verification failed."); }
   }
 
+  // Robinhood Chain is young: many wallets know Sepolia but not 4663, so a plain
+  // switch returns 4902 and the mint dies at the last step. Teach the wallet the
+  // chain instead of failing.
+  async function ensureWalletChain(chainId: number) {
+    const provider = window.ethereum;
+    if (!provider) throw new Error("Install a compatible wallet.");
+    const chain = configuredChain(chainId);
+    const chainIdHex = `0x${chainId.toString(16)}`;
+    const params = [{
+      chainId: chainIdHex,
+      chainName: chain.name,
+      nativeCurrency: chain.nativeCurrency,
+      rpcUrls: chain.rpcUrls.default.http,
+      blockExplorerUrls: [chain.blockExplorers!.default.url]
+    }];
+    try {
+      await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: chainIdHex }] });
+    } catch (error) {
+      const code = (error as { code?: number; data?: { originalError?: { code?: number } } })?.data?.originalError?.code
+        ?? (error as { code?: number })?.code;
+      if (code !== 4902) throw error;
+      await provider.request({ method: "wallet_addEthereumChain", params });
+    }
+  }
+
   async function mintPassport() {
     try {
       if (!window.ethereum) throw new Error("Install a compatible wallet.");
       setAction("AWAITING_SIGNATURE"); setMessage(undefined);
       const data = await jsonRequest("/api/mint/voucher");
+      await ensureWalletChain(data.chainId);
       const chain = configuredChain(data.chainId);
-      await window.ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: `0x${data.chainId.toString(16)}` }] });
       const wallet = createWalletClient({ chain, transport: custom(window.ethereum) });
       const [account] = await wallet.requestAddresses();
       if (getAddress(account) !== getAddress(address!)) throw new Error("Your active wallet does not match the signed-in wallet.");
@@ -214,7 +239,7 @@ export default function MintSection() {
       const chain = configuredChain(chainId);
       const contract = getAddress(process.env.NEXT_PUBLIC_MINT_CONTRACT_ADDRESS!);
       setAction("AWAITING_SIGNATURE"); setMessage(undefined);
-      await window.ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: `0x${chainId.toString(16)}` }] });
+      await ensureWalletChain(chainId);
       const wallet = createWalletClient({ chain, transport: custom(window.ethereum) });
       const [account] = await wallet.requestAddresses();
       if (getAddress(account) !== getAddress(address)) throw new Error("Your active wallet does not match the signed-in wallet.");
