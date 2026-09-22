@@ -125,6 +125,26 @@ contract FruitFlyPassport {
         tokenId = _mintPassport(msg.sender, voucher.free, msg.value);
     }
 
+    /// @notice Owner mint — free, marks the recipient mission-qualified, still one
+    ///         per address and hard-capped by MAX_SUPPLY. Team reserve, treasury,
+    ///         giveaways, and repairs the voucher path cannot express.
+    function ownerMint(address recipient) external onlyOwner returns (uint256 tokenId) {
+        tokenId = _mintPassport(recipient, true, 0);
+    }
+
+    /// @notice Giveaway helper: one free passport to each address in the list.
+    ///         Soul-bound means one per address — holders and zero addresses are
+    ///         SKIPPED instead of reverting, so one stale entry cannot brick the
+    ///         whole batch. Each mint costs roughly 100k gas: chunk ~100–200.
+    function ownerMintBatch(address[] calldata recipients) external onlyOwner returns (uint256 minted) {
+        for (uint256 i = 0; i < recipients.length; i++) {
+            address recipient = recipients[i];
+            if (recipient == address(0) || hasMinted[recipient]) continue;
+            _mintPassport(recipient, true, 0);
+            minted++;
+        }
+    }
+
     /// @notice Per-token price for the next voucher mint.
     /// @param participant Verified Foraging Hour entrant — pays half the standard price.
     function mintPrice(bool participant) public view returns (uint256) {

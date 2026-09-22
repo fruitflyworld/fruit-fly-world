@@ -237,6 +237,37 @@ contract FruitFlyPassportTest {
         require(address(passport).balance == price, "existing holder was charged twice");
     }
 
+    function testOwnerMintAndBatch() public {
+        vm.expectRevert(FruitFlyPassport.NotOwner.selector);
+        vm.prank(alice);
+        passport.ownerMint(bob);
+
+        uint256 tokenId = passport.ownerMint(bob);
+        require(tokenId == 1 && passport.ownerOf(1) == bob, "owner mint failed");
+        require(passport.missionQualified(bob), "owner mint is the mission tier");
+        require(address(passport).balance == 0, "owner mint is free");
+        require(passport.totalSupply() == 1, "supply wrong");
+
+        // soul-bound: a second owner mint to the same address reverts
+        vm.expectRevert(FruitFlyPassport.AlreadyMinted.selector);
+        passport.ownerMint(bob);
+
+        // the batch skips holders and zero addresses instead of bricking
+        address[] memory list = new address[](3);
+        list[0] = bob;
+        list[1] = address(0);
+        list[2] = alice;
+        uint256 minted = passport.ownerMintBatch(list);
+        require(minted == 1, "batch must skip holder and zero address");
+        require(passport.ownerOf(2) == alice && passport.totalSupply() == 2, "batch mint wrong");
+
+        // and the supply cap still binds owner mints
+        FruitFlyPassportHarness cap = new FruitFlyPassportHarness(address(this), signer, CAMPAIGN, "ipfs://passport/");
+        cap.forceTotalSupply(cap.MAX_SUPPLY());
+        vm.expectRevert(FruitFlyPassport.SoldOut.selector);
+        cap.ownerMint(alice);
+    }
+
     function _voucher(address recipient, bytes32 nonce, uint256 deadline)
         private pure returns (FruitFlyPassport.MintVoucher memory)
     {
