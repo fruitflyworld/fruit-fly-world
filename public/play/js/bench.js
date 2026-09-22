@@ -140,12 +140,21 @@ export function renderBenchReport(r) {
     `<td>${b.seed}</td><td>${b.brain}</td><td>${b.gens}</td><td>${b.identical ? "identical" : "DIVERGED"}</td>` +
     `<td>${b.eggsTotal}</td><td>${b.decisions}</td></tr>`
   ).join("");
+  // The shareable one-liner: every result doubles as a challenge someone else
+  // can accept by clicking the link — same seed, same brain, same paper.
+  const challenge =
+    `Fruit Fly World — exam result\n` +
+    `${r.identical ? "IDENTICAL" : "DIVERGED"} · seed ${r.seed} · brain ${r.brain} · ${r.gens} gen ×2 runs\n` +
+    `${r.eggsTotal} eggs · ${r.decisions} sealed decisions\n` +
+    `Run the same exam and beat my eggs:\n` +
+    `https://fruitfly.world/play?bench=1&seed=${r.seed}&brain=${r.brain}&gens=${r.gens}`;
   el.innerHTML =
     `<div class="verdict ${r.identical ? "win" : "lose"}">${r.identical
       ? "IDENTICAL — same seed, same brain, same paper. Every decision hash and every outcome matched."
       : "DIVERGED — the two runs disagreed. This is a bug report, not a score."}</div>` +
     `<div class="benchMeta">seed ${r.seed} · brain ${r.brain} · ${r.gens} generation${r.gens > 1 ? "s" : ""} ×2 runs · ` +
-    `${r.decisions} sealed decisions · ${r.elapsedMs} ms</div>` +
+    `${r.decisions} sealed decisions · ${r.elapsedMs} ms ` +
+    `<button type="button" class="benchCopy" id="benchCopyBtn">COPY RESULT AS CHALLENGE</button></div>` +
     `<table><thead><tr><th>gen</th><th>eggs</th><th>wild type</th><th>survived</th><th>decisions</th><th>decision-log hash</th></tr></thead>` +
     `<tbody>${rows}</tbody></table>` +
     `<div class="benchH2">Recent exams (this browser)</div>` +
@@ -154,5 +163,12 @@ export function renderBenchReport(r) {
     `<div class="benchFoot">Don't exam the model. Starve it. — try <a href="?bench=1&seed=42&brain=judgment&gens=2">seed 42 · judgment</a> · ` +
     `<a href="?bench=1&seed=1337&brain=circuit&gens=2">seed 1337 · circuit</a> · <a href="/play">← back to the dish</a></div>`;
   document.getElementById("gameWrap").appendChild(el);
+  const btn = document.getElementById("benchCopyBtn");
+  btn.addEventListener("click", () => {
+    navigator.clipboard.writeText(challenge).then(() => {
+      btn.textContent = "COPIED ✓ — PASTE IT ANYWHERE";
+      setTimeout(() => { btn.textContent = "COPY RESULT AS CHALLENGE"; }, 2500);
+    }).catch(() => { /* clipboard blocked: the report itself is still screenshottable */ });
+  });
   return el;
 }

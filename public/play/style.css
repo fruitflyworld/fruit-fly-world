@@ -173,4 +173,9 @@ body.touch #joyZone{display:block;} body.touch #gfBtn{display:block;}
 #benchReport td.mono{font-family:ui-monospace,monospace;color:var(--lavender);}
 #benchReport tr.bad td{color:var(--red);}
 #benchReport .benchFoot{margin-top:16px;color:var(--dim);font-size:11.5px;}
+#benchReport .benchCopy{margin-left:10px;padding:3px 10px;font:inherit;font-size:11px;
+  letter-spacing:.5px;color:var(--teal);background:transparent;border:1px solid var(--teal);
+  border-radius:6px;cursor:pointer;vertical-align:1px;}
+#benchReport .benchCopy:hover{background:rgba(94,197,176,.12);}
+#benchReport .benchCopy:active{transform:translateY(1px);}
 #benchReport a{color:var(--teal);}
