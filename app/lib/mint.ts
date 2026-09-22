@@ -53,14 +53,31 @@ export function resolveMintState(input: {
   return "MINT_UNAVAILABLE";
 }
 
+/* The free mint takes TWO steps, and the share is the second one. Any single
+ * qualifying mission (AGENT / ARENA / DISH) earns the slot; the verified X
+ * quote post — proof code, quote of the announcement, follow — is what
+ * converts it. Nobody mints free in silence. (Model ported from the
+ * stonkrobotics.xyz whitelist gate: entitlement + amplification.) */
+const QUALIFYING_MISSIONS = ["AGENT", "ARENA", "DISH"];
+
+export function freeMintUnlocked(completed: readonly string[]): boolean {
+  return completed.includes("X_QUOTE") && completed.some((mission) => QUALIFYING_MISSIONS.includes(mission));
+}
+
+/** True when a quest mission is done but the share is still owed — the UI and
+ * the voucher route both want to say "one step left", not "not eligible". */
+export function shareOwed(completed: readonly string[]): boolean {
+  return !completed.includes("X_QUOTE") && completed.some((mission) => QUALIFYING_MISSIONS.includes(mission));
+}
+
 export const mintCopy: Record<MintState, { label: string; detail: string }> = {
   DISCONNECTED: { label: "Connect to enter", detail: "Connect a compatible wallet to choose your path into Fruit Fly World." },
   CHECKING_ELIGIBILITY: { label: "Checking access…", detail: "Reading mission proofs and Passport status." },
-  MINT_UNAVAILABLE: { label: "Mint not open yet", detail: "Complete a mission or enter a Foraging Hour window now, or return when public mint opens." },
+  MINT_UNAVAILABLE: { label: "Mint not open yet", detail: "Complete one of three quests, share the post, or enter a Foraging Hour window now — or return when public mint opens." },
   SOLD_OUT: { label: "Genesis is complete", detail: "All 4,444 Genesis Passports have been issued." },
-  READY_FREE_MINT: { label: "Mission verified", detail: "Mint your Passport free. You pay network gas only." },
+  READY_FREE_MINT: { label: "Quest + share verified", detail: "Mint your Passport free. You pay network gas only." },
   READY_PARTICIPANT_MINT: { label: "Half price — you entered a window", detail: "You have a route in the Foraging Hour, so your Passport costs half the standard price." },
-  READY_PAID_MINT: { label: "Enter immediately", detail: "Mint now with ETH, or complete one mission to mint free." },
+  READY_PAID_MINT: { label: "Enter immediately", detail: "Mint now with ETH, or complete one quest and share the post to mint free." },
   READY_TO_ACTIVATE: { label: "Activate mission status", detail: "Your existing Passport can now record your verified contribution." },
   AWAITING_SIGNATURE: { label: "Confirm in wallet", detail: "Review the contract and transaction before signing." },
   CONFIRMING: { label: "Confirming…", detail: "Waiting for the network to confirm your Passport." },

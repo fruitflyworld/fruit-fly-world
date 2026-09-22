@@ -177,6 +177,8 @@ export const X_HANDLE = (process.env.X_HANDLE || "fruitflyworld").replace(/^@/, 
  *  you are not replying to as a quote card, so publishing the template unchanged
  *  is what makes the post a quote; the code sits above the link because a read
  *  that ever truncates will eat the tail before it eats the proof. */
+export const X_REQUIRED_TAGS = ["#fruitflyworld", "#starveit"];
+
 export function xPostText({ code, officialPostId }: { code: string; officialPostId: string }) {
   return [
     `Unlocking a @${X_HANDLE} Genesis Passport 🪰`,
@@ -184,9 +186,31 @@ export function xPostText({ code, officialPostId }: { code: string; officialPost
     "One 6×4 map an hour. Everyone gets the same seeds; the best route takes it.",
     "",
     String(code),
+    "#FruitFlyWorld #StarveIt",
     "",
     `https://x.com/${X_HANDLE}/status/${officialPostId}`
   ].join("\n");
+}
+
+/** FOLLOW, machine-checked. twitterapi.io answers the question directly with
+ *  GET /twitter/user/check_follow_relationship -> { data: { following } }.
+ *
+ *  Three states, and only one refuses: a definite `following: false`. A winner
+ *  who did everything right must never be held back by our reader being down,
+ *  so unreachable/unreadable returns null and passes. (The LIKE half of the ask
+ *  stays unenforceable — X made liker lists private in 2024 — so it is not
+ *  asked for at all rather than pretended.) */
+export async function xFollowsUs(handle: string): Promise<boolean | null> {
+  if (!handle) return null;
+  try {
+    const payload = await api(
+      `/twitter/user/check_follow_relationship?source_user_name=${encodeURIComponent(handle)}&target_user_name=${encodeURIComponent(X_HANDLE)}`
+    );
+    const following = (payload as { data?: { following?: unknown } })?.data?.following;
+    return following === true ? true : following === false ? false : null;
+  } catch {
+    return null; // reader down or shape unknown: not the winner's problem
+  }
 }
 
 /** One-tap composer link, so nobody has to copy a template by hand. */

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { query } from "../../lib/server/db";
 import { currentSession } from "../../lib/server/session";
+import { freeMintUnlocked } from "../../lib/mint";
 
 export const dynamic = "force-dynamic";
 
@@ -11,5 +12,6 @@ export async function GET() {
   const completed = result.rows.map((row) => row.mission_type);
   // ARENA is awarded by the close of an hourly window, not claimed by the entrant: the
   // route itself is submitted while the window is open (by hand or by an agent).
-  return NextResponse.json({ session, eligible: completed.some((mission) => mission === "AGENT" || mission === "X_QUOTE" || mission === "ARENA" || mission === "DISH"), completed });
+  // Free = one qualifying mission AND the verified X quote post (X_QUOTE).
+  return NextResponse.json({ session, eligible: freeMintUnlocked(completed), completed });
 }

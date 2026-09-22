@@ -4,6 +4,7 @@ import { configuredChain } from "../../../lib/chain";
 import { opaqueToken, tokenHash } from "../../../lib/canonical";
 import { transaction } from "../../../lib/server/db";
 import { smallJson } from "../../../lib/server/input";
+import { freeMintUnlocked, shareOwed } from "../../../lib/mint";
 import {
   MINT_CAMPAIGN, MINT_CAMPAIGN_HASH, mintSigningConfiguration, mintVoucherTypes,
   passportPricingAbi, type MintTier
@@ -24,24 +25,31 @@ export async function POST(request: Request) {
     const nonce = `0x${tokenHash(opaqueToken(32))}` as Hex;
     const deadline = BigInt(Math.floor(Date.now() / 1000) + 10 * 60);
 
-    // A verified mission mints free; having entered a Foraging Hour window is worth half price.
+    // A verified mint is a two-step price: one qualifying mission (AGENT /
+    // ARENA / DISH) earns the free slot, and the verified X quote post
+    // (X_QUOTE) converts it. Having entered a Foraging Hour window is still
+    // worth half price on its own.
     const tier: MintTier = await transaction(async (client) => {
-      const eligible = await client.query(
-        `SELECT 1 FROM mission_completions mc
+      const missions = await client.query<{ mission_type: string }>(
+        `SELECT mc.mission_type FROM mission_completions mc
          JOIN mission_campaigns c ON c.id=mc.campaign_id
          WHERE mc.participant_address=$1 AND mc.campaign_id=$2
            AND mc.mission_type IN ('AGENT','X_QUOTE','ARENA','DISH')
            AND c.enabled=true AND c.starts_at<=now() AND c.ends_at>now()
-         LIMIT 1 FOR UPDATE OF c`,
+         LIMIT 4 FOR UPDATE OF c`,
         [session.address, MINT_CAMPAIGN]
       );
+      const completed = missions.rows.map((row) => row.mission_type);
       let resolved: MintTier = "free";
-      if (!eligible.rowCount) {
+      if (!freeMintUnlocked(completed)) {
+        if (shareOwed(completed)) {
+          throw new Error("One step left: publish the quote post (mission 04 — code, tags, quote of the announcement) and the free mint unlocks");
+        }
         const entered = await client.query(
           "SELECT 1 FROM arena_entries WHERE participant_address=$1 LIMIT 1",
           [session.address]
         );
-        if (!entered.rowCount) throw new Error("Complete one verified mission, or enter a Foraging Hour window, first");
+        if (!entered.rowCount) throw new Error("Complete one verified quest, or enter a Foraging Hour window, first");
         resolved = "participant";
       }
       await client.query(

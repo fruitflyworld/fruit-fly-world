@@ -5,7 +5,7 @@ import { tokenHash } from "../../../../lib/canonical";
 import { transaction } from "../../../../lib/server/db";
 import { enforceRateLimit } from "../../../../lib/server/rate-limit";
 import { assertSameOrigin, clientIp } from "../../../../lib/server/request";
-import { fetchXPost, findXPostByHandle, parseXPostId, xEvidenceHash, XProofError, type XPost } from "../../../../lib/server/x-proof";
+import { fetchXPost, findXPostByHandle, parseXPostId, xEvidenceHash, xFollowsUs, X_HANDLE, X_REQUIRED_TAGS, XProofError, type XPost } from "../../../../lib/server/x-proof";
 
 /** Reasons that mean "X has not caught up yet", not "your post is wrong". A
  *  freshly published post takes a few seconds to become readable, and treating
@@ -58,6 +58,14 @@ export async function POST(request: Request) {
 
     if (!post.text.includes(body.code)) throw new Error(`The post does not contain the proof code ${body.code}`);
     if (post.quotedPostId !== challengeResult.official_x_post_id) throw new Error("That post has to quote the official campaign post — the template in this box already ends on the link, so publishing it unchanged is enough");
+    const low = post.text.toLowerCase();
+    const missingTags = X_REQUIRED_TAGS.filter((tag) => !low.includes(tag));
+    if (missingTags.length) throw new Error(`The post is missing ${missingTags.join(" ")} — publish the template unchanged (code and tags included), then verify again`);
+    // The follow is the other machine-checkable half of the ask. Only a definite
+    // "not following" refuses; a reader that cannot tell passes the winner through.
+    if ((await xFollowsUs(post.authorHandle)) === false) {
+      throw new Error(`@${post.authorHandle} does not follow @${X_HANDLE} yet — follow it, then send the same link again. Nothing needs reposting`);
+    }
     if (post.createdAt < challengeResult.created_at || post.createdAt > challengeResult.expires_at) throw new Error("The Quote Post is outside the proof window");
     const evidenceHash = xEvidenceHash(post, challengeResult.campaign_id);
     await transaction(async (client) => {
