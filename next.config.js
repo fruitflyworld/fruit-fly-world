@@ -13,6 +13,22 @@ const nextConfig = {
         { source: "/pitch/fruitfly", destination: "/pitch/fruitfly/index.html" }
       ]
     };
+  },
+  /* Baseline browser hardening. No CSP here on purpose: /play and /essay are
+     self-contained pages with their own inline module trees, and a wrong CSP
+     breaks the game silently — the headers below are the ones that carry no
+     such risk. The site is always served over https by nginx. */
+  async headers() {
+    return [{
+      source: "/:path*",
+      headers: [
+        { key: "X-Frame-Options", value: "DENY" },
+        { key: "X-Content-Type-Options", value: "nosniff" },
+        { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+        { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" }
+      ]
+    }];
   }
 };
 

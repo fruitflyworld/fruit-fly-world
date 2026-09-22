@@ -15,6 +15,14 @@ export function assertSameOrigin(request: Request) {
 }
 
 export function clientIp(request: Request) {
-  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  return forwarded || request.headers.get("x-real-ip") || "unknown";
+  // nginx sets X-Real-IP to $remote_addr unconditionally, so it is the one
+  // header a client cannot influence. X-Forwarded-For is
+  // $proxy_add_x_forwarded_for: the real client address is appended LAST, and
+  // anything before it is whatever the client chose to send — an attacker
+  // forging that header must never get a fresh rate-limit identity per request.
+  const real = request.headers.get("x-real-ip")?.trim();
+  if (real) return real;
+  const forwarded = request.headers.get("x-forwarded-for");
+  const last = forwarded?.split(",").pop()?.trim();
+  return last || "unknown";
 }
