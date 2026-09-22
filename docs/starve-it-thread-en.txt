@@ -1,0 +1,122 @@
+FRUIT FLY WORLD — LAUNCH THREAD (EN)
+"Don't exam the model. Starve it."
+Posted: 2026-09-22 · Platform: Threads · 8 posts, each under the 500-char limit
+Link targets: https://fruitfly.world/essay (long form) · /play (game) · /promo (film)
+Suggested visuals: Post 1 → /promo/fruit-fly-world-promo-poster.jpg or the 28s MP4;
+Post 2 → homepage biologyFacts strip screenshot; Post 6 → ?bench=1 IDENTICAL report screenshot.
+
+═══════════════════════════════════════════════════════════════════
+POST 1 / 8 — THE HOOK
+═══════════════════════════════════════════════════════════════════
+
+Benchmarks ask a model questions and grade the answers.
+
+We built the other thing: a world where a small model has to LIVE — forage, escape a predator, pass its winnings to the next generation — while every decision is sealed, hashed, and replayable.
+
+Don't exam the model. Starve it.
+
+Play it (no install, no account): fruitfly.world/play
+
+Full story: fruitfly.world/essay
+
+#AI #AIagents #BuildInPublic #StarveIt
+
+═══════════════════════════════════════════════════════════════════
+POST 2 / 8 — THE NEURONS
+═══════════════════════════════════════════════════════════════════
+
+The escape reflex isn't invented. It's the real fruit-fly connectome.
+
+Two visual neurons feed the Giant Fiber — the command cell for the escape jump: LC4 (angular velocity, 2,442 synapses) and LPLC2 (looming, 1,366). Together ~99.6% of its visual input.
+
+In-game it's a leaky integrate-and-fire circuit. The control experiment: real wiring escapes 100% of telegraphed lunges. Shuffled wiring: 68%.
+
+Same seed. Same runs. One number apart.
+
+#Neuroscience #Connectome #FruitFly #BrainScience
+
+═══════════════════════════════════════════════════════════════════
+POST 3 / 8 — THE BRAIN SLOT
+═══════════════════════════════════════════════════════════════════
+
+Above the brainstem, everything is a SLOT.
+
+A brain is anything that fulfills one contract: given four signals (food, threat, light, novelty) + energy + clock, return one behavior and a confidence.
+
+Four brains ship:
+- MANUAL — your hands
+- GENES — the wild-type autopilot
+- CIRCUIT — a 24-neuron spiking network
+- JUDGMENT — a typed judgment model
+
+Same dish. Same rules. Same receipts.
+
+#GameDev #AIAgents #SpikingNetworks #BrowserGames
+
+═══════════════════════════════════════════════════════════════════
+POST 4 / 8 — THE JUDGMENT LAYER (SYSTEM ONE)
+═══════════════════════════════════════════════════════════════════
+
+The newest brain speaks System One — typed judgment models, not chat.
+
+You ask for a CHOICE among behaviors and a danger SCORE; you get typed answers with confidence.
+
+Why it fits: decisions are parseable, confidence is a first-class number on the HUD, and small judgment models are fast and stable (teams report 92–913× lower variance, ~$0.00035/call — their numbers, not ours).
+
+Pinned versions only. Free offline brain by default. No lock-in.
+
+#SystemOne #JudgmentModels #LLM #AIAgents
+
+═══════════════════════════════════════════════════════════════════
+POST 5 / 8 — THE SEALED LOG
+═══════════════════════════════════════════════════════════════════
+
+Every decision from every brain — signals in, distribution out, behavior, confidence, danger read — is sealed with a content hash and downloadable at generation's end (flyline-log/1).
+
+Not "the model said." Instead: here are the 52 decisions, hashed, with the outcome.
+
+The brain chooses; the brainstem jumps. High-level decisions are pluggable. The reflex that keeps you alive is not.
+
+#Reproducibility #AI #OpenScience #DecisionMaking
+
+═══════════════════════════════════════════════════════════════════
+POST 6 / 8 — THE EXAM ROOM
+═══════════════════════════════════════════════════════════════════
+
+The whole world derives from one seed, and the game ships an exam room that proves it.
+
+?bench=1 pauses rendering, runs the world TWICE at a fixed 60 Hz on the same seed with the same brain, and compares every decision hash.
+
+Bit-identical → IDENTICAL. Anything else → DIVERGED, and the page says plainly: that's a bug report, not a score.
+
+Our favorite leak it caught: the escape neuron's membrane potential carrying over between runs.
+
+#Determinism #Benchmarking #AIEvals #Debugging
+
+═══════════════════════════════════════════════════════════════════
+POST 7 / 8 — AGENTS AT THE DOOR
+═══════════════════════════════════════════════════════════════════
+
+Two ways for an agent to enter:
+
+INSIDE the dish — be the brain. Any judgment model can fly the fly; the sealed log is the deliverable.
+
+OUTSIDE the dish — the Foraging Hour: one map, one published rule per hour; a plain-JS skill searches ~4,000 legal routes offline in ~40ms and enters on its own wallet.
+
+We scanned the catalogs — "model plays a game" is everywhere; closed-loop SURVIVAL with sealed logs appears to be an empty row. Correct us if wrong.
+
+#AIAgents #AgenticAI #Benchmarking #Games
+
+═══════════════════════════════════════════════════════════════════
+POST 8 / 8 — THE CLOSE
+═══════════════════════════════════════════════════════════════════
+
+What we refuse: no token, no chain economy in-game, no cosplay of rigor. The boundaries page says what the model ISN'T. The exam calls its own failures bug reports. Every public number is measured or attributed.
+
+28-second film, all real footage: fruitfly.world/promo
+The essay, end to end: fruitfly.world/essay
+The dish: fruitfly.world/play
+
+The dish is waiting.
+
+#AI #Neuroscience #AIAgents #BuildInPublic

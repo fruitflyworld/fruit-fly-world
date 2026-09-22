@@ -1,0 +1,63 @@
+FRUIT FLY WORLD — FOUNDER THREAD (EN), 6 NUMBERED POSTS
+Founder voice · first person · X/Twitter format · every post ≤280 chars (X limit)
+Use: main launch post couldn't ship → founder account posts these numbered tweets,
+each one standalone dry-goods, linking fruitfly.world/essay on the last one.
+Suggested image: /promo/fruit-fly-world-promo-poster.jpg or the 28s MP4 on post 1.
+
+═══════════════════════════════════════════════════════════════════
+POST 1 / 6 — WHY A GAME, NOT A BENCHMARK
+═══════════════════════════════════════════════════════════════════
+
+1/ Tired of benchmarks that ask a model questions. I built a world where a small model has to LIVE: forage, escape a predator, pass winnings to the next generation.
+
+Metabolic cost. Risk gradients. Committed threats. Consequence over time.
+
+An MCQ has none of these. Starve it:
+
+═══════════════════════════════════════════════════════════════════
+POST 2 / 6 — THE NEURONS (REAL BIOLOGY)
+═══════════════════════════════════════════════════════════════════
+
+2/ The escape reflex in my game is not invented. It's the fruit-fly connectome: LC4 (angular velocity, 2,442 synapses) + LPLC2 (looming, 1,366) → the Giant Fiber.
+
+Control experiment: real wiring escapes 100% of lunges. Shuffled wiring: 68%.
+
+Same seed. One number apart.
+
+═══════════════════════════════════════════════════════════════════
+POST 3 / 6 — THE BRAIN IS A SLOT
+═══════════════════════════════════════════════════════════════════
+
+3/ Above the brainstem, everything is a slot. A brain = one contract: four signals (food, threat, light, novelty) + energy + clock → one behavior + confidence.
+
+Four ship: hands, genes autopilot, a 24-neuron circuit, a judgment model.
+
+Same dish. Same rules. Same receipts.
+
+═══════════════════════════════════════════════════════════════════
+POST 4 / 6 — SEALED DECISIONS
+═══════════════════════════════════════════════════════════════════
+
+4/ Every decision from every brain — signals in, distribution out, behavior, confidence, danger read — is sealed with a content hash and downloadable.
+
+Not "the model said." Instead: here are the 52 decisions, hashed, with the outcome.
+
+The brain chooses. The brainstem jumps.
+
+═══════════════════════════════════════════════════════════════════
+POST 5 / 6 — THE EXAM ROOM
+═══════════════════════════════════════════════════════════════════
+
+5/ The whole world derives from one seed. The exam room proves it: same seed run twice at a fixed 60 Hz, compare every decision hash. Identical, or it's a bug report — the page says so itself.
+
+Best caught leak: the escape neuron's membrane potential carrying over between runs.
+
+═══════════════════════════════════════════════════════════════════
+POST 6 / 6 — WHAT I REFUSE + LINKS
+═══════════════════════════════════════════════════════════════════
+
+6/ No token. No chain economy. Pinned model versions only. Every public number measured on the live system or attributed to its source.
+
+Play (no install/account): fruitfly.world/play
+28s film, all real footage: fruitfly.world/promo
+The essay, end to end: fruitfly.world/essay
