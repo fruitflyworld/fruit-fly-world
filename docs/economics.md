@@ -12,7 +12,7 @@ Nothing here is a promise of value.
 The unit of this system is an identity, not a token and not a balance. One wallet holds one
 Passport or none: `hasMinted` is permanent, a second mint can only re-activate mission status and
 can never take payment, and the token is locked and non-transferable. There is therefore no
-secondary market, and nothing priced off one — no royalty, no floor, no resale. There is no token.
+secondary market, and nothing priced off one — no royalty, no floor, no resale. Nothing is on sale today.
 
 Because supply is counted in identities, 4,444 caps Passports *and* participating wallets. Every
 number below is per-identity.
@@ -300,7 +300,7 @@ reproduce it. A payout layer would read the season record of §1.8, which is alr
 
 **What has to change first.** A route score is public and reproducible, so a payout on *score alone*
 would be a race to paste the same answer, and the Hour would need a search that costs something to
-solve. Until both change, the score is a record, not a wage. No token today means no passive yield; the
+solve. Until both change, the score is a record, not a wage. Nothing on sale today means no passive yield; the
 Passport and the hourly record are a season asset, and an incentive layer would have a written record
 to weight against.
 
@@ -440,4 +440,4 @@ is the half-price tier — permanently, for as long as the wallet has an entry o
   the half-price tier, server-side scoring, deterministic replay.
 - **NEXT** — automated world reports, more agent roles, community-issued challenges.
 - **NOT A CLAIM** — this is not a conscious fly, not a complete biological simulation, and
-  not a financial product. No token, yield or future value is promised.
+  not a financial product. No yield or future value is promised.

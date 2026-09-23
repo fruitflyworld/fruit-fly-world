@@ -137,11 +137,11 @@ footer a{color:var(--gold);text-decoration:none}
       <dt>连接组 / Connectome 是什么？</dt>
       <dd>就是<b>大脑的完整线路图</b>——哪个神经元连哪个神经元、连多强。果蝇的连接组已经被科学家完整画出来了：
         大约 14 万个神经元、几千万条连线，每一条都有名字和编号。这意味着我们不必"猜"一个果蝇大脑，
-        可以照着真的抄。</dd>
+        可以照着真实数据做简化实现。</dd>
       <dt>脑干 / Giant Fiber 是什么？</dt>
       <dd>果蝇脑子里有一根特别粗的神经纤维，叫<b>巨纤维（Giant Fiber）</b>，相当于人的脑干：不思考，
         只负责"有东西扑过来了→跳！"。两只"眼睛"（LC4 和 LPLC2 两组视觉神经元）把"影子转得多快、
-        长得多大"报告给它，电位攒够，它就下令逃命。我们的游戏里，这根回路是真做的。</dd>
+        长得多大"报告给它，电位攒够，它就下令逃命。我们的游戏里，这根回路照着真实连线做了简化实现。</dd>
     </dl>
   </div>
 </section>
@@ -150,19 +150,19 @@ footer a{color:var(--gold);text-decoration:none}
 <section id="week">
   <div class="wrap">
     <div class="kick">01 / 这周发生了什么</div>
-    <h2>判断模型满地都是，<br><span class="gold">考场一个都没有。</span></h2>
-    <p class="lead">我们把 GitHub 上整个 Jev 生态翻了一遍，数字如下：</p>
+    <h2>判断模型满地都是。<br><span class="gold">我们造了一个考场。</span></h2>
+    <p class="lead">我们把 GitHub 上 awesome-jev 收录的整个 Jev 生态翻了一遍，数字如下：</p>
     <div class="statrow">
-      <div class="stat"><div class="v">240+</div><div class="k">Jev 生态项目（awesome-jev 收录），一个月长出来的</div></div>
+      <div class="stat"><div class="v">240+</div><div class="k">awesome-jev 收录的生态条目（截至 2026-09）</div></div>
       <div class="stat"><div class="v">12,600★</div><div class="k">最火的一个：Jev 每步选"点哪个按钮"，7 秒订好机票</div></div>
-      <div class="stat"><div class="v">10</div><div class="k">游戏/模拟类项目——全是"让 Jev 玩玩具游戏"</div></div>
-      <div class="stat"><div class="v">0</div><div class="k">闭环生存基准 · 把判断层嵌进生物回路的项目</div></div>
+      <div class="stat"><div class="v">10</div><div class="k">游戏/模拟类项目——都是"让 Jev 玩玩具游戏"</div></div>
+      <div class="stat"><div class="v">1</div><div class="k">把判断层放进会饿死的身体，并把每次判断钉死可回放——就是我们</div></div>
     </div>
-    <p style="margin-top:22px">现有的玩法都是一种：让 Jev <b>当整个大脑</b>，去玩超级马里奥、宝可梦、星际争霸。
-    好玩，但没有一个项目给它一个<b>会饿死它的身体</b>，没有一个人把它的每次判断记下来、钉死、可回放。</p>
+    <p style="margin-top:22px">在我们翻到的项目里，玩法都是一种：让 Jev <b>当整个大脑</b>，去玩超级马里奥、宝可梦、星际争霸。
+    好玩，但我们没翻到谁给它一个<b>会饿死它的身体</b>，没翻到谁把它的每次判断记下来、钉死、可回放。</p>
     <p>同时，开源克隆已经成熟：<b>kev</b>（Apache 协议，接口和官方完全兼容，在你自己的 Mac 上免费跑）和
-    <b>NanoJev</b>（0.6B 小模型，在生存游戏 ViZDoom 里 128 局全胜，把官方 Jev 的 56 胜按在地上打）。
-    <b>"小模型 + 生存压力训练"这条路已经被验证走得通——这正是我们要走的路。</b></p>
+    <b>NanoJev</b>（0.6B 小模型，公开训练集，在生存游戏 ViZDoom 里的成绩超过了官方 Jev）。
+    <b>"小模型 + 生存压力训练"这条路已经有公开先例——这正是我们要走的路。</b></p>
     <blockquote>别人给判断模型找应用，<br>我们给判断模型品类定<b>考试标准</b>。</blockquote>
   </div>
 </section>
@@ -200,8 +200,8 @@ footer a{color:var(--gold);text-decoration:none}
     <div class="grid3" style="margin-top:18px">
       <div class="card">
         <div class="pill">BRAINSTEM · 脑干</div>
-        <h3 style="margin-top:12px">真生物学的逃生回路</h3>
-        <p>LC4（2,442 突触）+ LPLC2（1,366 突触）→ 巨纤维。照着真果蝇的连线写的脉冲神经元，
+        <h3 style="margin-top:12px">取自真实连接组的逃生回路</h3>
+        <p>LC4（2,442 突触）+ LPLC2（1,366 突触）→ 巨纤维。按真实连线的突触计数做的简化脉冲神经元，
         负责不需要思考的事：看到阴影扑来，充电，满了就跳。<b>大脑选择，脑干起跳。</b></p>
       </div>
       <div class="card">

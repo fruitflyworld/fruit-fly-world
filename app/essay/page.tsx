@@ -57,7 +57,7 @@ export default function EssayPage() {
       <section>
         <h2>3 · The brainstem is the real biology</h2>
         <p>Underneath every brain in the game sits an escape circuit we did not invent. In the actual fruit-fly connectome (Ache et al. 2019; MaleCNS v1.0), two visual neurons dominate the Giant Fiber — the command cell for the escape jump: <b>LC4</b>, sensitive to angular velocity (2,442 synapses of GF visual input), and <b>LPLC2</b>, sensitive to looming — a shape growing as it closes in (1,366 synapses). Together they account for ~99.6% of the GF&apos;s visual input. In the game they are a leaky integrate-and-fire module: loom builds membrane potential, READY lights up, and the jump happens in the same narrow window a real fly has.</p>
-        <p>The module ships with a control experiment you can run from the menu: <b>real connectivity versus shuffled connectivity</b>. The real wiring escapes <b>100%</b> of telegraphed lunges; the shuffled wiring escapes <b>68%</b>. Same seed, same runs, reproducible by anyone from one number. That gap — not a vibe, a count — is what &quot;the wiring matters&quot; looks like when you can measure it.</p>
+        <p>The module ships with a control experiment you can run from the menu: <b>real connectivity versus shuffled connectivity</b>. The shuffle keeps both visual channels and their synapse counts, but swaps which one leads the escape decision. The real wiring escapes <b>100%</b> of telegraphed lunges; the shuffled wiring escapes <b>68%</b>. Same seed, same runs, reproducible by anyone from one number — and 100% is itself a simplification: a real fly also has slower escape routes that do not go through the Giant Fiber. That gap — not a vibe, a count — is what &quot;the wiring matters&quot; looks like when you can measure it.</p>
         <p>The honest boundary, stated on the site and repeated here: this is a <b>connectome-inspired</b> circuit, not a brain simulation. Not FlyWire, not MaleCNS at runtime, not a claim about animal behavior. It is three cells done carefully instead of a hundred thousand done vaguely.</p>
       </section>
 
@@ -102,7 +102,7 @@ export default function EssayPage() {
 
       <section>
         <h2>8 · What we refuse</h2>
-        <p>No token. No chain-native economy inside the game. The Passport on the site is a soul-bound marker, and the incentive layer written up in <Link href="/economics">/economics</Link> is labelled design exercise, no date, nothing on sale. Nothing in the game depends on it. And no cosplay of rigor: the boundaries page says what the model is not, the exam page calls its own failures bug reports, and every public number in this essay is either measured on the live system or attributed to whoever measured it.</p>
+        <p>Nothing is on sale today, and no chain-native economy runs inside the game. The Passport on the site is a soul-bound marker, and the incentive layer written up in <Link href="/economics">/economics</Link> is labelled design exercise, no date, nothing on sale. Nothing in the game depends on it. And no cosplay of rigor: the boundaries page says what the model is not, the exam page calls its own failures bug reports, and every public number in this essay is either measured on the live system or attributed to whoever measured it.</p>
       </section>
 
       <section>

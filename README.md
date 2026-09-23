@@ -114,8 +114,9 @@ in the game depends on it.
 
 - **The world model is connectome-inspired.** It is not a simulation of a real fly brain, not a
   FlyWire or MaleCNS runtime, and not a claim about animal behavior.
-- **No token, no chain-native economy inside the game.** `/economics` is a design exercise —
-  labelled roadmap, no date, nothing on sale. Nothing in this repository depends on it shipping.
+- **Nothing is on sale today.** No chain-native economy runs inside the game. `/economics` is a
+  design exercise — labelled roadmap, no date, nothing on sale. Nothing in this repository
+  depends on it shipping.
 - **Testnet, not mainnet.** The Passport is on Sepolia; the contract cannot be upgraded into a
   mainnet deployment.
 - **The exam grades the wiring, not the model's worth.** One seed is one row of a table, not a
