@@ -107,8 +107,9 @@ caps instead of secrecy to keep it honest. Quickstart: `FFW_AGENT_KEY=0x… FFW_
 
 ## The Passport (secondary layer)
 
-The Genesis Passport is a soul-bound ERC-721 + ERC-5192 marker on Ethereum Sepolia
-([contract](contracts/src/FruitFlyPassport.sol), 11 tests). It cannot be transferred, and nothing
+The Genesis Passport is a soul-bound ERC-721 + ERC-5192 marker on Robinhood Chain mainnet
+([contract](contracts/src/FruitFlyPassport.sol), 11 tests), earned by playing: quests unlock a
+freemint, and the mint is free. It cannot be transferred, and nothing
 in the game depends on it.
 
 ## Boundaries (read before you plan around it)
@@ -118,8 +119,8 @@ in the game depends on it.
 - **Nothing is on sale today.** No chain-native economy runs inside the game. `/economics` is a
   design exercise — labelled roadmap, no date, nothing on sale. Nothing in this repository
   depends on it shipping.
-- **Testnet, not mainnet.** The Passport is on Sepolia; the contract cannot be upgraded into a
-  mainnet deployment.
+- **Mainnet, and the contract is done.** The Passport lives on Robinhood Chain (chainId 4663).
+  The deployed contract is immutable — it cannot be upgraded into anything else.
 - **The exam grades the wiring, not the model's worth.** One seed is one row of a table, not a
   theorem. The exam room's own failures are bug reports.
 
@@ -138,7 +139,7 @@ brain contract, the bench, the proxy, anything unclear. Security issues go throu
 - ✅ Judgment layer — free local heuristic by default; pinned `jev-1.13.0` via the `/api/jev` proxy with visible fallback
 - ✅ Determinism exam — `?bench=1` double-runs at a fixed 60 Hz and verifies bit-identical decision hashes; Mutation Draft is seeded
 - ✅ Foraging Hour — hourly windows, published scoring, browser + agent lanes, parity-tested skill
-- ✅ CI on every push — build, types, 96 app tests, contract suite
+- ✅ CI on every push — build, types, 109 app tests, contract suite
 - ⏳ Brain vs brain — rival brain selection and spectator mode
 - ⏳ flyline-bench — multi-seed, multi-model reproducible comparison table
 - ⏳ The incentive layer in `/economics` — **design only**, no date

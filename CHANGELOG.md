@@ -11,6 +11,25 @@ summarises it in prose.
 
 ### Added
 
+- **Selectable brains** — the fly's brain is a slot: `manual`, `genes`, the FFW-CX/0.1
+  24-neuron spiking circuit, and a `judgment` layer (free local heuristic by default;
+  a pinned `jev-1.13.0` through the same-origin `/api/jev` proxy with your own key).
+  Every decision is sealed into a downloadable hash-chained log (`flyline-log/1`)
+- **Determinism exam** — `?bench=1` pauses the render loop and runs the same
+  `(seed, brain, generations)` twice at a fixed 60 Hz; matching decision hashes print
+  `IDENTICAL`. Mutation Draft is seeded; every report copies as a shareable challenge
+- **Beacon seeds** — `?seed=beacon` derives the exam seed from the latest Sepolia
+  block hash via `/api/beacon` (dual-RPC fallback, 12 s cache); the report links the
+  block on an explorer
+- **Death calibration** — the exam report scores each brain's own danger reads against
+  reality (danger buckets vs deaths within 5 s, Brier score), with the method and its
+  limits published at `/calibration`
+- **DISH quests** — in-game quests (SURVIVOR / FORAGER / REFLEX / EXAMINED) gate a
+  freemint; server-side evidence verification with a canonical-JSON SHA-256
+- **Game feel** — 3-step onboarding coach, visible wild-type rival, per-generation
+  predator escalation, half-speed death replay, shareable death cards
+- `/essay` (the long form), `/promo` (the 28 s film), a live gameplay clip on the
+  homepage, and the For Agents section
 - Repository hygiene: `LICENSE` (MIT), `SECURITY.md`, `CONTRIBUTING.md`,
   `CODE_OF_CONDUCT.md`, `CHANGELOG.md`, Dependabot config for npm and
   GitHub Actions, issue templates and a pull request template
@@ -20,9 +39,15 @@ summarises it in prose.
 
 ### Changed
 
+- **The Passport is on Robinhood Chain mainnet** (chainId 4663). Freemint is
+  quest-gated (AGENT / ARENA / DISH) plus a required X quote post; the deployed
+  contract is immutable and was previously on Sepolia
 - README rewritten around the four things a reader needs — the brief, the
   score, the two entry lanes, and the boundaries — with every figure quoted
   from the code rather than from prose
+- Rate limiting reads `X-Real-IP` (set by nginx) ahead of `X-Forwarded-For`;
+  security headers (frame DENY, nosniff, referrer, permissions, HSTS) on all
+  responses
 
 ## [0.1.0] - 2026-09-15
 
