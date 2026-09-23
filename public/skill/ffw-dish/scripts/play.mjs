@@ -146,6 +146,15 @@ try {
 
   if (!ev.result || !ev.result.result)
     await die("autopilot evaluate failed: " + JSON.stringify(ev).slice(0, 400));
+  // surface page-side errors properly — a policy that throws (e.g. references
+  // module-scope bindings that did not survive serialization) must be reported
+  // as what it is, not as a JSON parse failure one step later
+  const exd = ev.result.exceptionDetails;
+  if (exd) {
+    const what = (exd.exception && (exd.exception.description || exd.exception.value)) || exd.text;
+    await die("the page threw during the run (if this names an undefined variable, your policy "
+      + "function references module-scope bindings — policies must be self-contained): " + what);
+  }
   if (ev.result.result.subtype === "error")
     await die("page threw: " + ev.result.result.description);
 
