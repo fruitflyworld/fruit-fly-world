@@ -43,13 +43,20 @@ export async function GET() {
   if (cache && Date.now() - cache.ts < CACHE_MS) {
     return NextResponse.json({ ...cache, cached: true });
   }
+  const errors: string[] = [];
   for (const url of RPCS) {
     try {
       const hexNum = await rpc(url, "eth_blockNumber", []);
-      if (typeof hexNum !== "string" || !/^0x[0-9a-f]+$/i.test(hexNum)) continue;
+      if (typeof hexNum !== "string" || !/^0x[0-9a-f]+$/i.test(hexNum)) {
+        errors.push(`${new URL(url).host}: bad blockNumber`);
+        continue;
+      }
       const block = await rpc(url, "eth_getBlockByNumber", [hexNum, false]);
       const hash = (block as { hash?: string })?.hash;
-      if (typeof hash !== "string" || !/^0x[0-9a-f]{64}$/i.test(hash)) continue;
+      if (typeof hash !== "string" || !/^0x[0-9a-f]{64}$/i.test(hash)) {
+        errors.push(`${new URL(url).host}: bad block`);
+        continue;
+      }
       const chainIdHex = await rpc(url, "eth_chainId", []);
       cache = {
         chainId: parseInt(String(chainIdHex), 16),
@@ -59,9 +66,9 @@ export async function GET() {
         ts: Date.now(),
       };
       return NextResponse.json(cache);
-    } catch {
-      // try the next RPC
+    } catch (e) {
+      errors.push(`${new URL(url).host}: ${(e as Error)?.name || "error"}`);
     }
   }
-  return NextResponse.json({ error: "beacon unavailable; try a numeric seed" }, { status: 502 });
+  return NextResponse.json({ error: "beacon unavailable; try a numeric seed", errors }, { status: 502 });
 }
