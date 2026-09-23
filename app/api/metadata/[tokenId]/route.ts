@@ -15,14 +15,14 @@ export async function GET(_: Request, { params }: { params: { tokenId: string } 
 
   return NextResponse.json({
     name: `Fruit Fly Passport #${params.tokenId}`,
-    description: `A non-transferable Genesis Passport for Fruit Fly World, issued to the winner of a Foraging Hour window. ${rarityLabel(rarity)} tier, ${MAX_SUPPLY} in the campaign.`,
+    description: `A non-transferable Genesis Passport for Fruit Fly World, earned in the dish. ${rarityLabel(rarity)} tier, ${MAX_SUPPLY} in the campaign.`,
     image: `https://fruitfly.world/api/passport/${params.tokenId}.svg`,
     external_url: "https://fruitfly.world",
     attributes: [
       { trait_type: "World", value: "Fruit Fly World" },
       { trait_type: "Agent", value: "FF-001" },
       { trait_type: "Campaign", value: "Genesis" },
-      { trait_type: "Status", value: "Foraging Hour Winner" },
+      { trait_type: "Status", value: "Earned in the Dish" },
       { trait_type: "Transferability", value: "Soulbound" },
       { trait_type: "Rarity", value: rarityLabel(rarity) },
       { display_type: "number", trait_type: "Passport Number", value: tokenNum }

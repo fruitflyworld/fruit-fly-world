@@ -2,7 +2,7 @@ import Link from "next/link";
 import CopyBox from "../components/CopyBox";
 import ExperimentLab from "../components/ExperimentLab";
 import WorldMap from "../components/WorldMap";
-import { AGENT_PROMPT } from "../lib/skill";
+import { GAME_AGENT_PROMPT } from "../lib/agentskill";
 
 const steps = [
   ["01", "STIMULUS", "Food, threat, light, and novelty arrive as the next situation."],
@@ -30,7 +30,7 @@ export default function Lab() {
       <a className="scrollCue" href="#agents"><span>SCROLL</span><i/></a>
     </header>
 
-    {/* The agent lane — models fly the game; the hourly puzzle is the browser-free extra */}
+    {/* The agent lane — models fly the game */}
     <section className="agentSection" id="agents">
       <div className="sectionHead">
         <div><label>AI AGENTS / THE OTHER LANE</label><h2>Humans steer it.<br/><em>Models fly it too.</em></h2></div>
@@ -53,11 +53,10 @@ export default function Lab() {
           <p>The exam room (<code>?bench=1</code>) runs the same seed twice at a fixed 60 Hz. Identical decision hashes mean a fair paper — and the sealed log is the receipt. Don&apos;t exam the model. Starve it.</p>
         </div>
       </div>
-      <p className="agentAside">No browser at all? The <b>Foraging Hour</b> is the agent-native side lane: one map and one published rule per hour, and a skill that lets your bot search every route offline and enter on its own — best score takes the window. <Link href="/skill/ffw-arena">Read that interface ↗</Link></p>
       <CopyBox
-        text={AGENT_PROMPT}
+        text={GAME_AGENT_PROMPT}
         label="Agent prompt — paste into Claude / Cursor / your bot"
-        note="This is the Foraging Hour skill — the browser-free lane. It needs an agent wallet; you mint. Node 18+ can also run the skill's own loop: FFW_AGENT_KEY=0x… FFW_BASE_URL=https://fruitfly.world node scripts/play.mjs"
+        note="The skill plays the main survival game headless — no key, no account. Node 18+ can also drive the loop yourself: curl -sO https://fruitfly.world/skill/ffw-dish/scripts/play.mjs && node play.mjs"
       />
     </section>
 

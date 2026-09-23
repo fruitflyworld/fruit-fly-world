@@ -99,7 +99,7 @@ export default function ParticipatePage() {
     <section className="docBoundary">
       <h2><Bi en="Status, stated plainly." zh="状态，直说。"/></h2>
       <div>
-        <article><b><Bi en="LIVE NOW" zh="现在已上线"/></b><p><Bi en="The playable lineage game, the connectome-inspired escape model, the reproducible control experiment, the deployed Sepolia Passport and the documented agent interface." zh="可玩的果蝇血统游戏、受连接组启发的逃脱模型、可复现的对照实验、已部署的 Sepolia 护照，以及有文档的 agent 接口。"/></p></article>
+        <article><b><Bi en="LIVE NOW" zh="现在已上线"/></b><p><Bi en="The playable lineage game, the connectome-inspired escape model, the reproducible control experiment, the deployed Genesis Passport and the documented agent interface." zh="可玩的果蝇血统游戏、受连接组启发的逃脱模型、可复现的对照实验、已部署的 Genesis 护照，以及有文档的 agent 接口。"/></p></article>
         <article><b><Bi en="NEXT" zh="接下来"/></b><p><Bi en="Deeper mutation behaviour, multi-predator encounters, and seeded daily challenges built on the same generation loop." zh="更深入的突变行为、多捕食者遭遇，以及建立在同一套「一代」循环之上的每日种子挑战。"/></p></article>
         <article><b><Bi en="NOT A CLAIM" zh="不是宣称"/></b><p><Bi en="This is not a complete fruit-fly brain, not a neuron-by-neuron simulation, and not a financial product. No token, yield or future value is promised." zh="这不是完整的果蝇大脑，不是逐神经元的仿真，也不是金融产品。不承诺任何代币、收益或未来价值。"/></p></article>
       </div>
@@ -110,7 +110,7 @@ export default function ParticipatePage() {
       <h2><Bi en={<>One generation.<br/><em>Fifty seconds.</em></>} zh={<>一代。<br/><em>五十秒。</em></>}/></h2>
       <div className="docActions">
         <Link className="primary" href="/play"><Bi en="PLAY" zh="开始游戏"/> <span>↗</span></Link>
-        <Link className="secondary" href="/skill/ffw-arena"><Bi en="FOR AGENTS" zh="给 agent"/> <span>→</span></Link>
+        <Link className="secondary" href="/#agents"><Bi en="FOR AGENTS" zh="给 agent"/> <span>→</span></Link>
       </div>
     </section>
     <footer className="pitchFooter">

@@ -9,26 +9,12 @@ npm run check     # typecheck + test + build
 Green on a clean checkout, with no `.env` at all. If a change makes an env file necessary to
 build, that is the bug — not a reason to add a secret.
 
-## The rules have one source of truth
+## One source of truth per surface
 
-`app/lib/arena.ts` defines the map, the walk rules and the scoring function. The route handlers
-and the browser panel both import it, so the client and the server cannot disagree about what a
-legal walk is. Do not fork it.
-
-`public/skill/ffw-arena/lib/arena.mjs` is a plain-JavaScript copy of `arena.ts` and
-`experiment.ts`, kept because a static file cannot import TypeScript and agents need to run the
-model offline. `tests/arena-parity.test.ts` asserts the two produce identical numbers. **If you
-change one, change the other in the same commit** — the test will tell you if you forget.
-
-## Changing the scoring, the map, or the caps
-
-These are published. The skill documents them cell by cell, the brief hands them to every
-entrant, and an agent may have searched the previous window's numbers offline. A change here is
-a change to a contract with everyone currently playing:
-
-- Update `SKILL.md` in the same commit. It is not commentary, it is the specification.
-- The search is meant to stay exhaustible. If a change makes it large, say so in the PR.
-- Windows in flight are not migrated. Nothing may retroactively alter a score already entered.
+The survival game's logic lives in `public/play/js/` and is driven by exactly one
+implementation — the game itself. The agent skill (`public/skill/ffw-dish/`) drives the
+real game through `FlyLabAPI.autopilot` and must never grow a second copy of the model.
+If you change game logic, run the skill end to end in the same commit.
 
 ## Copy rules
 
@@ -44,8 +30,8 @@ The site and the docs make claims, and some of them are load-bearing:
 ## Tests
 
 `node:test` via `tsx`, in `tests/`. Run one file with
-`npx tsx --test tests/arena.test.ts`. New behaviour in the arena, the reply parser, the world
-model or the mint maths should come with a test — those are the parts a mistake is expensive in.
+`npx tsx --test tests/bench.test.ts`. New behaviour in the world
+model, the bench or the mint maths should come with a test — those are the parts a mistake is expensive in.
 
 ## Commits and pull requests
 

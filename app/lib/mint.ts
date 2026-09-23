@@ -73,10 +73,10 @@ export function shareOwed(completed: readonly string[]): boolean {
 export const mintCopy: Record<MintState, { label: string; detail: string }> = {
   DISCONNECTED: { label: "Connect to enter", detail: "Connect a compatible wallet to choose your path into Fruit Fly World." },
   CHECKING_ELIGIBILITY: { label: "Checking access…", detail: "Reading mission proofs and Passport status." },
-  MINT_UNAVAILABLE: { label: "Mint not open yet", detail: "Complete one of three quests, share the post, or enter a Foraging Hour window now — or return when public mint opens." },
+  MINT_UNAVAILABLE: { label: "Mint not open yet", detail: "Complete a quest in the dish and share the post to mint free — or return when public mint opens." },
   SOLD_OUT: { label: "Genesis is complete", detail: "All 4,444 Genesis Passports have been issued." },
   READY_FREE_MINT: { label: "Quest + share verified", detail: "Mint your Passport free. You pay network gas only." },
-  READY_PARTICIPANT_MINT: { label: "Half price — you entered a window", detail: "You have a route in the Foraging Hour, so your Passport costs half the standard price." },
+  READY_PARTICIPANT_MINT: { label: "Half price — recorded activity", detail: "You took part in a recorded activity, so your Passport costs half the standard price." },
   READY_PAID_MINT: { label: "Enter immediately", detail: "Mint now with ETH, or complete one quest and share the post to mint free." },
   READY_TO_ACTIVATE: { label: "Activate mission status", detail: "Your existing Passport can now record your verified contribution." },
   AWAITING_SIGNATURE: { label: "Confirm in wallet", detail: "Review the contract and transaction before signing." },

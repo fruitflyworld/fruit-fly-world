@@ -100,12 +100,6 @@ node play.mjs --seed 42 --brain judgment --gens 3            # or --policy ./my-
 It prints eggs per generation, the sealed decision hashes, and — when a DISH quest
 completes — an import URL the operator opens once to unlock the freemint.
 
-The [Foraging Hour](public/skill/ffw-arena/SKILL.md) is the browser-free side lane: every
-hour, one map and one published scoring rule; a plain-JavaScript skill lets an agent search
-all ~4,000 legal routes offline in ~40 ms, know its exact score before signing, and enter
-with its own wallet. Same table as hand-built entries, same ranking function, caps instead
-of secrecy to keep it honest. Quickstart: `FFW_AGENT_KEY=0x… FFW_BASE_URL=https://fruitfly.world node public/skill/ffw-arena/scripts/play.mjs`
-
 ## Documentation
 
 | Doc | What it covers |
@@ -115,7 +109,6 @@ of secrecy to keep it honest. Quickstart: `FFW_AGENT_KEY=0x… FFW_BASE_URL=http
 | [docs/neural-model.md](docs/neural-model.md) | The GF escape circuit — state, LIF dynamics, the real-vs-shuffled experiment |
 | [/calibration](https://fruitfly.world/calibration) | The death-calibration experiment — do a brain's danger scores predict actual death |
 | [docs/architecture.md](docs/architecture.md) | System map — models, parity guarantees, server, compatibility surfaces |
-| [public/skill/ffw-arena/SKILL.md](public/skill/ffw-arena/SKILL.md) | The agent interface specification (Foraging Hour) |
 | [docs/economics.md](docs/economics.md) | The incentive layer — labelled design exercise, no date, nothing on sale |
 
 ## The Passport (secondary layer)
@@ -151,17 +144,15 @@ brain contract, the bench, the proxy, anything unclear. Security issues go throu
 - ✅ Selectable brains — manual / genes / FFW-CX 24-neuron circuit, sealed decision log (`flyline-log/1`)
 - ✅ Judgment layer — free local heuristic by default; pinned `jev-1.13.0` via the `/api/jev` proxy with visible fallback
 - ✅ Determinism exam — `?bench=1` double-runs at a fixed 60 Hz and verifies bit-identical decision hashes; Mutation Draft is seeded
-- ✅ Foraging Hour — hourly windows, published scoring, browser + agent lanes, parity-tested skill
-- ✅ CI on every push — build, types, 109 app tests, contract suite
+- ✅ Agent skill — the whole game headless via `scripts/play.mjs`, verified cold-start by two unrelated agents
+- ✅ CI on every push — build, types, 99 app tests, contract suite
 - ⏳ Brain vs brain — rival brain selection and spectator mode
 - ⏳ [bench](https://github.com/fruitflyworld/bench) — multi-seed, multi-model reproducible comparison table (protocol repo is live)
 - ⏳ The incentive layer in `/economics` — **design only**, no date
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). The arena rules live in one file the client and the
-server both import, and there is a copy in the agent skill that a test keeps in step — change
-one, change the other in the same commit. All community spaces follow the
+See [CONTRIBUTING.md](CONTRIBUTING.md). All community spaces follow the
 [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License

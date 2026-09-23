@@ -133,7 +133,7 @@ export default function Home() {
         />
       </div>
       <p className="agentAside">
-        <b>Honest lines:</b> the agent&apos;s judgment is the deliverable, not a story — if the lineage starved, the log says so. Quest evidence is client-attested and re-validated at claim time (v1). The separate <a href="/skill/ffw-arena/SKILL.md">Foraging Hour arena skill</a> is a browser-free side lane; this one plays the main game. Full contract: <a href={GAME_SKILL_MD} target="_blank" rel="noreferrer">SKILL.md ↗</a>
+        <b>Honest lines:</b> the agent&apos;s judgment is the deliverable, not a story — if the lineage starved, the log says so. Quest evidence is client-attested and re-validated at claim time (v1). Full contract: <a href={GAME_SKILL_MD} target="_blank" rel="noreferrer">SKILL.md ↗</a>
       </p>
     </section>
 

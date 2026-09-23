@@ -28,10 +28,9 @@ const passportAbi = [
 ] as const;
 
 const missions = [
-  { id: "AGENT", number: "01", title: "Bring an AI Agent", description: "A separate Agent wallet signs a one-time challenge and runs one constrained experiment. Do this once and your agent can enter an arena window every hour on its own.", proof: "AGENT WALLET" },
-  { id: "ARENA", number: "02", title: "Take an arena window", description: "Enter a route — from an agent, or by hand through the documented interface — and hold the best score when the clock hits zero. Nothing to claim when you win: the completion lands here on its own. Lose and the entry still earns you half-price minting.", proof: "BEST ROUTE IN A WINDOW" },
-  { id: "DISH", number: "03", title: "Survive the dish", description: "Complete one of four quests in the game: SURVIVOR (outlive a full 50s generation), FORAGER (3+ eggs in one generation), REFLEX (3 Giant Fiber escapes in one generation), or EXAMINED (an IDENTICAL double run in the exam room at ?bench=1). The quest records itself the moment you do it.", proof: "QUEST EVIDENCE FROM /PLAY" },
-  { id: "X_QUOTE", number: "04", title: "Share the signal — required", description: "The second half of the price. Publish the quote post with your wallet-bound code, quote the campaign announcement, and follow the project account. One verified post, checked by machine: code, tags, quote, follow. No post, no free mint — for anyone.", proof: "VERIFIED QUOTE POST" }
+  { id: "AGENT", number: "01", title: "Bring an AI Agent", description: "A separate Agent wallet signs a one-time challenge and runs one constrained experiment. Do this once and your agent can fly the dish on its own after that.", proof: "AGENT WALLET" },
+  { id: "DISH", number: "02", title: "Survive the dish", description: "Complete one of four quests in the game: SURVIVOR (outlive a full 50s generation), FORAGER (3+ eggs in one generation), REFLEX (3 Giant Fiber escapes in one generation), or EXAMINED (an IDENTICAL double run in the exam room at ?bench=1). The quest records itself the moment you do it.", proof: "QUEST EVIDENCE FROM /PLAY" },
+  { id: "X_QUOTE", number: "03", title: "Share the signal — required", description: "The second half of the price. Publish the quote post with your wallet-bound code, quote the campaign announcement, and follow the project account. One verified post, checked by machine: code, tags, quote, follow. No post, no free mint — for anyone.", proof: "VERIFIED QUOTE POST" }
 ];
 
 const dishQuests = [
@@ -272,7 +271,7 @@ export default function MintSection() {
         </div>
         <div className="passportCode">
           {tokenId ? `TOKEN #${tokenId}` : "NOT YET MINTED"}<br/>
-          ERC-721 · SEPOLIA · 4,444 SUPPLY
+          ERC-721 · {configuredChain(Number(process.env.NEXT_PUBLIC_CHAIN_ID || 11155111)).name.toUpperCase()} · 4,444 SUPPLY
         </div>
       </div>
 
@@ -280,7 +279,7 @@ export default function MintSection() {
         <div className="mintStatus"><span className={`statusDot ${displayState.toLowerCase()}`}/><small>{displayState.replaceAll("_", " ")}</small>{address && <b>{shortAddress}</b>}</div>
         <h3>{copy.label}</h3>
         <p>{copy.detail}</p>
-        <div className="missionProgress"><i style={{ width: `${eligible ? 100 : owesShare ? 66 : 33}%` }}/><span>{eligible ? "QUEST + SHARE VERIFIED · QUALIFIED" : owesShare ? "QUEST DONE · SHARE THE POST TO UNLOCK" : halfPriceOpen ? "WINDOW ENTERED · HALF PRICE" : "1 QUEST + 1 SHARE = FREE MINT · OR MINT NOW"}</span></div>
+        <div className="missionProgress"><i style={{ width: `${eligible ? 100 : owesShare ? 66 : 33}%` }}/><span>{eligible ? "QUEST + SHARE VERIFIED · QUALIFIED" : owesShare ? "QUEST DONE · SHARE THE POST TO UNLOCK" : "1 QUEST + 1 SHARE = FREE MINT · OR MINT AT THE PUBLIC PRICE"}</span></div>
         <div className="supplyBar" aria-label={`${supplyLabel} minted`}><i style={{ width: `${supplyPercent}%` }}/><span>{tokenId ? `YOUR TOKEN · #${tokenId}` : `${supplyLabel} MINTED`}</span></div>
         <div className="mintFacts">
           <span><small>PRICE</small><b>{eligible ? "FREE + GAS" : halfPriceOpen ? `${halfPrice} · HALF` : publicMintOpen ? paidPrice : "—"}</b></span>
@@ -296,7 +295,7 @@ export default function MintSection() {
         {displayState === "MINTED" && <button type="button" className="mintButton" disabled>{tokenId ? `PASSPORT ACTIVE · TOKEN #${tokenId}` : "PASSPORT ACTIVE"}</button>}
         {address && <button type="button" className="demoEligibility" onClick={() => void disconnect()}>Disconnect {shortAddress}</button>}
         {(authError || message) && <p className="mintError" role="status">{authError || message}</p>}
-        <p className="mintFine">One non-transferable Passport per wallet. Complete one quest and share the post to mint free, take part in a recorded activity to mint at half price, or mint at the on-chain price shown above. No yield, price, or future value is promised.</p>
+        <p className="mintFine">One non-transferable Passport per wallet. Complete one quest and share the post to mint free, or mint at the on-chain price when public mint opens. No yield, price, or future value is promised.</p>
       </div>
     </div>
 

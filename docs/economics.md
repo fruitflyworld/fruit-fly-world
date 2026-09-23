@@ -29,8 +29,8 @@ server ledger. Everything marked **ROADMAP** is a design that has not shipped an
 
 | Rung | What earns it | Bill | Flag at mint |
 | --- | --- | --- | --- |
-| **FREE** | win a Foraging Hour window, or a verified mission (agent experiment, X quote) | `0` + gas | `missionQualified = true` |
-| **HALF** | enter any Foraging Hour window — entering is enough, winning is not required | `mintPrice(true)` = `publicMintPrice / 2` | `false` |
+| **FREE** | a verified quest (dish survival, agent run) plus the verified X quote post | `0` + gas | `missionQualified = true` |
+| **HALF** | a recorded activity entry (historical) | `mintPrice(true)` = `publicMintPrice / 2` | `false` |
 | **FULL** | `publicMint()` directly — no voucher, no task, no history | `publicMintPrice` | `false` |
 
 All three mint the same asset: same artwork, same one-per-wallet right, drawn from the same 4,444.

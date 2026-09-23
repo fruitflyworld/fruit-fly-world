@@ -185,6 +185,4 @@ Nothing in the game is on sale.
 
 The game itself, the brains and the sealed log live at
 `https://fruitfly.world/play` (simulation core:
-[fruitflyworld/sim](https://github.com/fruitflyworld/sim)). The Foraging Hour
-arena skill (`/skill/ffw-arena/SKILL.md`) is a separate browser-free side
-lane; this skill is the main game.
+[fruitflyworld/sim](https://github.com/fruitflyworld/sim)).

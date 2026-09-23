@@ -131,7 +131,7 @@ shared code:
 | Model | Where | What it is |
 | --- | --- | --- |
 | Playable GF escape circuit | `public/play/js/gf-neuron.js` + `sim.js` | The 2-channel → 1-unit reflex described here, running live in the game loop |
-| Arena route scoring | `app/lib/arena.ts` (+ plain-JS copy in the skill) | Deterministic map/score model for the Foraging Hour — a separate route-scoring interface, **not** the same runtime as `/play` |
+| Selectable brains | `public/play/js/cx-circuit.js`, `brain-*.js` | The 24-neuron circuit and the judgment layer that can sit in the brain slot |
 | Vial population prototype | `app/lib/sim/` | Generational genetics simulation (food, temperature, mating, inheritance) — no predator, no GF |
 
 ## 7. Tests

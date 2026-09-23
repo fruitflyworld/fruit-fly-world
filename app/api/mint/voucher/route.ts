@@ -27,8 +27,7 @@ export async function POST(request: Request) {
 
     // A verified mint is a two-step price: one qualifying mission (AGENT /
     // ARENA / DISH) earns the free slot, and the verified X quote post
-    // (X_QUOTE) converts it. Having entered a Foraging Hour window is still
-    // worth half price on its own.
+    // (X_QUOTE) converts it.
     const tier: MintTier = await transaction(async (client) => {
       const missions = await client.query<{ mission_type: string }>(
         `SELECT mc.mission_type FROM mission_completions mc
@@ -43,13 +42,13 @@ export async function POST(request: Request) {
       let resolved: MintTier = "free";
       if (!freeMintUnlocked(completed)) {
         if (shareOwed(completed)) {
-          throw new Error("One step left: publish the quote post (mission 04 — code, tags, quote of the announcement) and the free mint unlocks");
+          throw new Error("One step left: publish the quote post (code, tags, quote of the announcement) and the free mint unlocks");
         }
         const entered = await client.query(
           "SELECT 1 FROM arena_entries WHERE participant_address=$1 LIMIT 1",
           [session.address]
         );
-        if (!entered.rowCount) throw new Error("Complete one verified quest, or enter a Foraging Hour window, first");
+        if (!entered.rowCount) throw new Error("Complete one verified quest first");
         resolved = "participant";
       }
       await client.query(

@@ -94,9 +94,8 @@ export default function EssayPage() {
 
       <section>
         <h2>7 · Agents at the door</h2>
-        <p>There are two ways for an AI agent to enter this world, and they are deliberately different:</p>
+        <p>There is one way for an AI agent to enter this world:</p>
         <p><b>Inside the dish — as a brain.</b> Any judgment model can be the fly. The sealed log is the deliverable: not &quot;the model said&quot; but <i>here are the 52 decisions, hashed, with the outcome</i>. This is the lane the slogan is about.</p>
-        <p><b>Outside the dish — as a player.</b> The <Link href="/skill/ffw-arena">Foraging Hour</Link> is the browser-free lane: every hour, one map and one published scoring rule; a plain-JavaScript skill lets an agent search all ~4,000 legal routes offline in ~40 ms, know its exact score before signing, and enter with its own wallet. Same table as hand-built entries, same ranking function, caps instead of secrecy to keep it honest.</p>
         <p>We looked for prior art before claiming the niche. The open catalogs list hundreds of &quot;model plays a game&quot; projects — but the Game &amp; Simulation corners are demos of play, not closed-loop <i>survival benchmarks</i>; and the nearest neighbor we found — a swarm of connectome-driven flies reacting to a market feed — has no judgment layer, no generations, no survival pressure. The combination (reflex circuit + judgment slot + sealed logs + determinism exam) appears to be an empty row. We would rather be corrected than first; the issue tracker is open.</p>
       </section>
 
@@ -111,7 +110,7 @@ export default function EssayPage() {
           <li><Link href="/play">Play a generation</Link> — no install, no account, no wallet. Try escaping on the reflex; then hand the fly to a circuit.</li>
           <li><Link href="/play?bench=1&seed=42&brain=judgment&gens=2">Run the exam</Link> — same seed, same brain, twice. Watch it print IDENTICAL.</li>
           <li><Link href="/promo">Watch the 28-second film</Link> — every frame captured from the live game.</li>
-          <li><Link href="/skill/ffw-arena">Point an agent at it</Link> — the skill and the rules are public plain JavaScript.</li>
+          <li><Link href="/skill/ffw-dish">Point an agent at it</Link> — the skill and the rules are public plain JavaScript.</li>
         </ul>
         <p className="essayOut">The dish is waiting.</p>
       </section>

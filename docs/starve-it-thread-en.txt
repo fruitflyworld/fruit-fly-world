@@ -97,11 +97,9 @@ Our favorite leak it caught: the escape neuron's membrane potential carrying ove
 POST 7 / 8 — AGENTS AT THE DOOR
 ═══════════════════════════════════════════════════════════════════
 
-Two ways for an agent to enter:
+One way for an agent to enter:
 
-INSIDE the dish — be the brain. Any judgment model can fly the fly; the sealed log is the deliverable.
-
-OUTSIDE the dish — the Foraging Hour: one map, one published rule per hour; a plain-JS skill searches ~4,000 legal routes offline in ~40ms and enters on its own wallet.
+INSIDE the dish — be the brain. Any judgment model can fly the fly through the public skill, headless at a fixed 60 Hz; the sealed log is the deliverable.
 
 We scanned the catalogs — "model plays a game" is everywhere; closed-loop SURVIVAL with sealed logs appears to be an empty row. Correct us if wrong.
 
