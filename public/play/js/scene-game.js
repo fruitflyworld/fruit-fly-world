@@ -84,6 +84,8 @@ export class GameScene extends Phaser.Scene {
     this.food=[]; this.slowmoT=0; this.dangerFlash=0; this.gfWasArmed=false;
     this.visitedCells=new Set();
     this.driveMode="manual"; this.touchVec=null; this.agentVec=null; this.agentVecTime=0;
+    // death-replay ring buffer: last ~6s of entity poses. Visual only — never read by the sim.
+    this.replayBuf=[]; this.replaying=false; this.replayT=0; this.replayFrames=null; this.replayDone=null;
 
     this.resetGenerationWorld();
 
@@ -336,7 +338,7 @@ export class GameScene extends Phaser.Scene {
     this.eggsGroup.clear(true,true);
     this.genTimeLeft=GEN_DURATION; this.genElapsed=0; this.nightFactor=0; this.ended=false;
     // fresh brain each generation: neuron state and decision log start clean
-    this.brainLog=[]; this.lastBrainBehavior="explore"; this.escapesThisGen=0;
+    this.brainLog=[]; this.lastBrainBehavior="explore"; this.escapesThisGen=0; this.replayBuf=[];
     if(this.brainDriver) this.brainDriver.reset();
 
     this.playerFly.traits=this.state.ownedTraits;
@@ -510,6 +512,40 @@ export class GameScene extends Phaser.Scene {
     this.tweens.add({targets:c,scaleX:(fly.isPlayer?1.15:1)*1.45,scaleY:(fly.isPlayer?1.15:1)*0.6,duration:70,yoyo:true,ease:"Quad.out"});
   }
 
+  // ============================== death replay (visual only) ==============================
+  // Poses the entities along the recorded ring buffer at half speed while the
+  // generation-end modal waits. No sim state is touched; bench mode never enters.
+  playDeathReplay(onDone){
+    if(this.__bench||this.replaying||this.replayBuf.length<30){ if(onDone) onDone(); return; }
+    this.replayFrames=this.replayBuf.slice(); this.replayT=0; this.replaying=true; this.replayDone=onDone||null;
+    document.dispatchEvent(new CustomEvent("flyline:replay",{detail:{sec:(this.replayFrames.length/60).toFixed(1)}}));
+  }
+  stepReplay(dtReal){
+    const F=this.replayFrames;
+    this.replayT+=dtReal*0.5; // half speed
+    const i=Math.min(F.length-1,Math.floor(this.replayT*60));
+    const f=F[i];
+    const pose=(v,o)=>{ const p=this.toPx(o.x,o.y); v.cont.setPosition(p.x,p.y).setRotation(o.a+Math.PI/2); v.cont.setVisible(true); };
+    pose(this.flyView.p,f.p);
+    if(f.r.alive) pose(this.flyView.r,f.r); else this.flyView.r.cont.setVisible(false);
+    const sp=this.toPx(f.e.x,f.e.y);
+    this.spiderCont.setVisible(true).setPosition(sp.x,sp.y).setRotation(f.e.a);
+    this.spiderBody.setScale(0.9*(f.e.lunge?1.15:1));
+    this.spiderCont.setDepth(f.e.lunge?13:11);
+    this.spiderLegs.clear(); this.spiderLegs.lineStyle(2.5,0xc83c50,0.85);
+    for(let k=0;k<4;k++){
+      const a=0.5+k*0.4, off=Math.sin(this.replayT*28+k)*5;
+      this.spiderLegs.lineBetween(0,0,Math.cos(a)*42,Math.sin(a)*42+off);
+      this.spiderLegs.lineBetween(0,0,Math.cos(-a)*42,Math.sin(-a)*42-off);
+    }
+    if(i>=F.length-1){
+      this.replaying=false;
+      const cb=this.replayDone; this.replayDone=null; this.replayFrames=null;
+      document.dispatchEvent(new CustomEvent("flyline:replaydone"));
+      if(cb) cb();
+    }
+  }
+
   updateFly(fly,dt){
     if(!fly.alive) return;
     fly.layCd=Math.max(0,fly.layCd-dt); fly.dashCdT=Math.max(0,fly.dashCdT-dt); fly.dashT=Math.max(0,fly.dashT-dt);
@@ -629,6 +665,8 @@ export class GameScene extends Phaser.Scene {
         pr.phase="lunge"; pr.lungeT=0;
         // JUICE: the commit moment — slow-mo + roar + zoom shake
         sfx.lunge(); this.cameras.main.shake(140,0.006); this.slowmoT=0.30;
+        if(!this.__bench&&pr.target===this.playerFly)
+          document.dispatchEvent(new CustomEvent("flyline:lunge"));
       }
     } else if(pr.phase==="lunge"){
       pr.lungeT+=dt;
@@ -764,6 +802,13 @@ export class GameScene extends Phaser.Scene {
       this.updateFly(this.playerFly,dt);
       this.updateFly(this.rivalFly,dt);
       this.updatePredator(dt);
+      if(!this.__bench){
+        this.replayBuf.push({
+          p:{x:this.playerFly.x,y:this.playerFly.y,a:this.playerFly.angle},
+          r:{x:this.rivalFly.x,y:this.rivalFly.y,a:this.rivalFly.angle,alive:this.rivalFly.alive},
+          e:{x:this.predator.x,y:this.predator.y,a:this.predator.angle,lunge:this.predator.phase==="lunge"}});
+        if(this.replayBuf.length>360) this.replayBuf.shift();
+      }
       this.updateBrain(dt);
       this.genTimeLeft-=dt;
       if(!this.playerFly.alive||this.genTimeLeft<=0) this.endGeneration();
@@ -774,6 +819,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   renderWorld(dtReal){
+    if(this.replaying){ this.stepReplay(dtReal); return; }
     // GF-ready sound edge
     if(this.playerFly.gf.armed&&!this.gfWasArmed) sfx.gfReady();
     this.gfWasArmed=this.playerFly.gf.armed;
