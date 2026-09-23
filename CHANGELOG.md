@@ -9,6 +9,8 @@ summarises it in prose.
 
 ## Unreleased
 
+## [0.2.0] - 2026-09-23
+
 ### Added
 
 - **Selectable brains** — the fly's brain is a slot: `manual`, `genes`, the FFW-CX/0.1
