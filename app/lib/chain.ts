@@ -15,7 +15,10 @@ export const robinhoodChain = defineChain({
   name: "Robinhood Chain",
   nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
   rpcUrls: { default: { http: ["https://rpc.mainnet.chain.robinhood.com"] } },
-  blockExplorers: { default: { name: "Blockscout", url: "https://robinhoodchain.blockscout.com" } }
+  blockExplorers: { default: { name: "Blockscout", url: "https://robinhoodchain.blockscout.com" } },
+  // canonical Multicall3 deployment, verified live on chain 4663 — without this
+  // entry viem's client.multicall() throws "does not support contract multicall3"
+  contracts: { multicall3: { address: "0xcA11bde05977b3631167028862bE2a173976CA11" } }
 });
 
 export const robinhoodChainTestnet = defineChain({
@@ -24,6 +27,7 @@ export const robinhoodChainTestnet = defineChain({
   nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
   rpcUrls: { default: { http: ["https://rpc.testnet.chain.robinhood.com"] } },
   blockExplorers: { default: { name: "Blockscout", url: "https://explorer.testnet.chain.robinhood.com" } },
+  contracts: { multicall3: { address: "0xcA11bde05977b3631167028862bE2a173976CA11" } },
   testnet: true
 });
 
