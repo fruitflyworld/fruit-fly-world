@@ -15,6 +15,14 @@
 
 export const MAX_SUPPLY = 4444;
 
+/** The chain stamp on the plate, read from the configured chain — never a
+ *  hardcoded network name. */
+function chainStamp(): string {
+  const id = Number(process.env.NEXT_PUBLIC_CHAIN_ID || 11155111);
+  const names: Record<number, string> = { 11155111: "SEPOLIA", 4663: "ROBINHOOD", 46630: "RBH TESTNET" };
+  return names[id] || `CHAIN ${id}`;
+}
+
 export type PassportRarity = "genesis" | "rare" | "epic" | "legendary";
 
 /** The tier boundaries, in one place. `app/api/metadata/[tokenId]` reads them from
@@ -185,7 +193,7 @@ export function passportSvg(tokenId: number): string {
     <text x="1108" y="172" font-size="15" text-anchor="end" letter-spacing="4" opacity=".6">CAMPAIGN GENESIS</text>
     <text x="92" y="1000" font-size="78" font-weight="700" letter-spacing="5">PASSPORT</text>
     <text x="96" y="1047" font-size="19" letter-spacing="4" opacity=".78">AGENT FF-001 &#183; NON-TRANSFERABLE</text>
-    <text x="1104" y="1004" font-size="19" text-anchor="end" letter-spacing="3">BASE</text>
+    <text x="1104" y="1004" font-size="19" text-anchor="end" letter-spacing="3">${chainStamp()}</text>
     <text x="1104" y="1047" font-size="16" text-anchor="end" letter-spacing="2" opacity=".78">SOULBOUND</text>
     <g opacity=".55" font-size="13" letter-spacing="2">
       <text x="1108" y="862" text-anchor="end">RARITY ${label.toUpperCase()}</text>
