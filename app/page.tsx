@@ -69,27 +69,27 @@ export default function Home() {
           <Link className="primary" href="/play">PLAY <span>↗</span></Link>
         </div>
       </div>
-      <div className="gameScreens">
-        <article className="gameScreenCard">
-          <img src="/launch-film/frames/frame-0294.jpg" alt="Concept frame of the Fruit Fly World dish during foraging"/>
-          <div className="gameScreenCopy"><span>01 / FORAGE</span><h3>Food becomes energy.</h3><p>Move toward sugar, yeast, and rot. Sugar is safe, yeast sits on the rim, rot is rich but leaves an odor the predator can follow.</p></div>
-        </article>
-        <article className="gameScreenCard">
-          <img src="/launch-film/frames/frame-0519.jpg" alt="Concept frame of the Fruit Fly World predator committing to a strike"/>
-          <div className="gameScreenCopy"><span>02 / READ THE LUNGE</span><h3>Threat commits.</h3><p>Watch the predator approach, then choose the narrow moment when the GF reflex lights up READY — too early wastes the escape, too late meets the trajectory.</p></div>
-        </article>
-        <article className="gameScreenCard">
-          <img src="/launch-film/frames/frame-0733.jpg" alt="Concept frame of the Fruit Fly World lineage continuing into another generation"/>
-          <div className="gameScreenCopy"><span>03 / CARRY IT FORWARD</span><h3>A lineage, not a reset.</h3><p>At generation end, compare your eggs with the wild type and draft one mutation for the next fly. Death ends a generation, not the lineage.</p></div>
-        </article>
-      </div>
       <div className="gameClipCard">
         <video className="gameClip" src="/gameplay/gameplay.mp4" poster="/gameplay/gameplay-poster.jpg" autoPlay loop muted playsInline/>
         <div className="gameClipCopy">
-          <span>04 / RECORDED IN THE DISH</span>
+          <span>01 / RECORDED IN THE DISH</span>
           <h3>The game, not a mockup.</h3>
-          <p>Above are concept frames; this is real footage, captured from a live browser run — the judgment layer flying the fly, food being read, the predator on its way. The brain decides where to go; the GF brainstem still owns the jump.</p>
+          <p>Real footage, captured from a live browser run — the judgment layer flying the fly, food being read, the predator on its way. The brain decides where to go; the GF brainstem still owns the jump.</p>
         </div>
+      </div>
+      <div className="gameScreens">
+        <article className="gameScreenCard">
+          <img src="/launch-film/frames/frame-0294.jpg" alt="Concept frame of the Fruit Fly World dish during foraging"/>
+          <div className="gameScreenCopy"><span>02 / FORAGE</span><h3>Food becomes energy.</h3><p>Move toward sugar, yeast, and rot. Sugar is safe, yeast sits on the rim, rot is rich but leaves an odor the predator can follow.</p></div>
+        </article>
+        <article className="gameScreenCard">
+          <img src="/launch-film/frames/frame-0519.jpg" alt="Concept frame of the Fruit Fly World predator committing to a strike"/>
+          <div className="gameScreenCopy"><span>03 / READ THE LUNGE</span><h3>Threat commits.</h3><p>Watch the predator approach, then choose the narrow moment when the GF reflex lights up READY — too early wastes the escape, too late meets the trajectory.</p></div>
+        </article>
+        <article className="gameScreenCard">
+          <img src="/launch-film/frames/frame-0733.jpg" alt="Concept frame of the Fruit Fly World lineage continuing into another generation"/>
+          <div className="gameScreenCopy"><span>04 / CARRY IT FORWARD</span><h3>A lineage, not a reset.</h3><p>At generation end, compare your eggs with the wild type and draft one mutation for the next fly. Death ends a generation, not the lineage.</p></div>
+        </article>
       </div>
     </section>
 
