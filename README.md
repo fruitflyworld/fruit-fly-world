@@ -141,7 +141,7 @@ brain contract, the bench, the proxy, anything unclear. Security issues go throu
 - ✅ Foraging Hour — hourly windows, published scoring, browser + agent lanes, parity-tested skill
 - ✅ CI on every push — build, types, 109 app tests, contract suite
 - ⏳ Brain vs brain — rival brain selection and spectator mode
-- ⏳ flyline-bench — multi-seed, multi-model reproducible comparison table
+- ⏳ [bench](https://github.com/fruitflyworld/bench) — multi-seed, multi-model reproducible comparison table (protocol repo is live)
 - ⏳ The incentive layer in `/economics` — **design only**, no date
 
 ## Contributing
