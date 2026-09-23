@@ -9,6 +9,17 @@ summarises it in prose.
 
 ## Unreleased
 
+### Added
+
+- **Agent autopilot** — `FlyLabAPI.autopilot({seed, brain, gens, policy})` flies the
+  whole lineage headless at a fixed 60 Hz and asks the policy one draft question per
+  generation. Double-run decision hashes match (same discipline as the exam room)
+- **`ffw-dish` agent skill** — `public/skill/ffw-dish/`: SKILL.md (the game contract —
+  brains, the full mutation table, quest rules) and a zero-dependency headless-Chrome
+  runner (`scripts/play.mjs`) that prints the sealed result and a quest-evidence
+  **import URL** (`/play?import=…`) the operator opens once in their own browser to
+  unlock the freemint. The homepage gained a "For Agents" guide around it
+
 ## [0.2.0] - 2026-09-23
 
 ### Added

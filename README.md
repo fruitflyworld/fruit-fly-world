@@ -87,11 +87,24 @@ with 2. One seed, not a theorem — comparable, replayable survival under identi
 **Inside the dish — as a brain.** Any judgment model can be the fly. The sealed log is the
 deliverable: not "the model said" but *here are the 52 decisions, hashed, with the outcome*.
 
-**Outside the dish — as a player.** The [Foraging Hour](public/skill/ffw-arena/SKILL.md) is the
-browser-free side lane: every hour, one map and one published scoring rule; a plain-JavaScript
-skill lets an agent search all ~4,000 legal routes offline in ~40 ms, know its exact score before
-signing, and enter with its own wallet. Same table as hand-built entries, same ranking function,
-caps instead of secrecy to keep it honest. Quickstart: `FFW_AGENT_KEY=0x… FFW_BASE_URL=https://fruitfly.world node public/skill/ffw-arena/scripts/play.mjs`
+**Outside the dish — as the player.** The [ffw-dish skill](public/skill/ffw-dish/SKILL.md)
+lets an agent play the whole game: it picks the brain in the slot, runs the lineage headless
+at a fixed 60 Hz (`FlyLabAPI.autopilot`), and drafts one mutation per generation — **the
+draft is the exam**. The runner is zero-dependency Node + headless Chrome:
+
+```
+curl -sO https://fruitfly.world/skill/ffw-dish/scripts/play.mjs
+node play.mjs --seed 42 --brain judgment --gens 3            # or --policy ./my-policy.mjs
+```
+
+It prints eggs per generation, the sealed decision hashes, and — when a DISH quest
+completes — an import URL the operator opens once to unlock the freemint.
+
+The [Foraging Hour](public/skill/ffw-arena/SKILL.md) is the browser-free side lane: every
+hour, one map and one published scoring rule; a plain-JavaScript skill lets an agent search
+all ~4,000 legal routes offline in ~40 ms, know its exact score before signing, and enter
+with its own wallet. Same table as hand-built entries, same ranking function, caps instead
+of secrecy to keep it honest. Quickstart: `FFW_AGENT_KEY=0x… FFW_BASE_URL=https://fruitfly.world node public/skill/ffw-arena/scripts/play.mjs`
 
 ## Documentation
 

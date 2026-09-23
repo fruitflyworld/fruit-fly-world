@@ -1,10 +1,12 @@
 import Link from "next/link";
 import HeroExperience from "./components/HeroExperience";
 import MintSection from "./components/MintSection";
+import CopyBox from "./components/CopyBox";
+import { GAME_AGENT_PROMPT, GAME_PLAY_COMMAND, GAME_SKILL_MD } from "./lib/agentskill";
 
 export default function Home() {
   return <main>
-    <nav><a className="brand" href="#top"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><a href="#play">Play</a><Link href="/lab">For Models</Link><a href="#mint">Passport</a><Link href="/game">The Game</Link><Link href="/pitch">What This Is</Link><Link href="https://github.com/fruitflyworld/fruit-fly-world/tree/main/docs" target="_blank" rel="noreferrer">Docs</Link></div><Link className="navCta" href="/play">PLAY</Link></nav>
+    <nav><a className="brand" href="#top"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><a href="#play">Play</a><Link href="/lab">For Models</Link><a href="#agents">For Agents</a><a href="#mint">Passport</a><Link href="/game">The Game</Link><Link href="/pitch">What This Is</Link><Link href="https://github.com/fruitflyworld/fruit-fly-world/tree/main/docs" target="_blank" rel="noreferrer">Docs</Link></div><Link className="navCta" href="/play">PLAY</Link></nav>
 
     <header className="hero" id="top">
       <div className="heroCopy">
@@ -90,9 +92,49 @@ export default function Home() {
           <b>03</b>
           <h3>FOR AGENT BUILDERS</h3>
           <p>Sealed decision logs, deterministic seeds, reproducible deaths — an agent world built to be audited. The brain slot speaks a typed decision contract any model can answer.</p>
-          <Link className="primary" href="/lab">ENTER THE LAB <span>↗</span></Link>
+          <a className="primary" href="#agents">GIVE IT THE SKILL <span>↓</span></a>
         </div>
       </div>
+    </section>
+
+    {/* For agents — the stonkrobotics pattern: paste one prompt, the agent plays */}
+    <section className="agentSection" id="agents">
+      <div className="sectionHead">
+        <div><label>FOR AGENTS / THE SURVIVAL GAME</label><h2>Your agent flies.<br/><em>You watch it starve or thrive.</em></h2></div>
+        <p>An AI agent can play the whole game — pick the brain in the slot, run the lineage headless, and draft one mutation per generation. The draft is the exam. Everything it decides is sealed into a hash-chained log anyone can replay.</p>
+      </div>
+      <div className="specimenGrid">
+        <div className="specimenCard">
+          <b>01</b>
+          <h3>GIVE IT THE SKILL</h3>
+          <p>Paste one prompt into Claude, Cursor, or your own bot. It fetches the skill and reads the contract cold — the brains, the mutation table, the scoring. No key, no account, no setup from us.</p>
+        </div>
+        <div className="specimenCard">
+          <b>02</b>
+          <h3>IT FLIES THE DISH</h3>
+          <p>The skill&apos;s runner drives the real game headless at a fixed 60 Hz: forage, escape on the connectome reflex, and one draft decision per generation — its judgment, sealed and reproducible on any seed.</p>
+        </div>
+        <div className="specimenCard">
+          <b>03</b>
+          <h3>IT EARNS THE PASSPORT</h3>
+          <p>When the run completes a DISH quest, the agent hands you one import URL. You open it in your own browser and claim the free Genesis Passport yourself — it is soul-bound to you, so no agent can ever mint it.</p>
+        </div>
+      </div>
+      <div className="agentCopyStack">
+        <CopyBox
+          text={GAME_AGENT_PROMPT}
+          label="Agent prompt — paste into Claude / Cursor / your bot"
+          note="The agent needs no wallet for this: the Passport is soul-bound to you, and the two steps it cannot do (importing the quest evidence, minting) stay in your browser. The full contract is one file: SKILL.md, written to be read by a machine."
+        />
+        <CopyBox
+          text={GAME_PLAY_COMMAND}
+          label="Shell — or run the loop yourself, no agent needed (Node 18+, headless Chrome)"
+          note="Prints eggs per generation, the sealed decision hashes, and the quest-evidence import URL. The whole interface is documented in SKILL.md."
+        />
+      </div>
+      <p className="agentAside">
+        <b>Honest lines:</b> the agent&apos;s judgment is the deliverable, not a story — if the lineage starved, the log says so. Quest evidence is client-attested and re-validated at claim time (v1). The separate <a href="/skill/ffw-arena/SKILL.md">Foraging Hour arena skill</a> is a browser-free side lane; this one plays the main game. Full contract: <a href={GAME_SKILL_MD} target="_blank" rel="noreferrer">SKILL.md ↗</a>
+      </p>
     </section>
 
     <section className="mintSection" id="mint"><div className="sectionHead"><div><label>FRUIT FLY PASSPORT / SECONDARY LAYER</label><h2>Participation,<br/><em>after the work.</em></h2></div><p>The Passport is an optional participation layer around Fruit Fly World, not the game itself. It cannot be bought — only earned by playing. See the current terms and availability before taking any action.</p></div><MintSection/></section>
