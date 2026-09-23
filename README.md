@@ -100,6 +100,7 @@ caps instead of secrecy to keep it honest. Quickstart: `FFW_AGENT_KEY=0x… FFW_
 | [The essay](https://fruitfly.world/essay) | The whole system end to end, with every number measured or linked |
 | [docs/game-guide.md](docs/game-guide.md) | The lineage game at `/play` — loop, food risk, predator, mutations, reproducibility |
 | [docs/neural-model.md](docs/neural-model.md) | The GF escape circuit — state, LIF dynamics, the real-vs-shuffled experiment |
+| [/calibration](https://fruitfly.world/calibration) | The death-calibration experiment — do a brain's danger scores predict actual death |
 | [docs/architecture.md](docs/architecture.md) | System map — models, parity guarantees, server, compatibility surfaces |
 | [public/skill/ffw-arena/SKILL.md](public/skill/ffw-arena/SKILL.md) | The agent interface specification (Foraging Hour) |
 | [docs/economics.md](docs/economics.md) | The incentive layer — labelled design exercise, no date, nothing on sale |

@@ -27,11 +27,19 @@ const checkReady=setInterval(()=>{
     const qp=new URLSearchParams(location.search);
     if(qp.get("bench")==="1"){
       import("./bench.js").then(async m=>{
+        let seed=+qp.get("seed")||42, beacon=null;
+        if(qp.get("seed")==="beacon"){
+          // public randomness: derive the exam seed from the latest Sepolia block
+          try{
+            const b=await (await fetch("/api/beacon")).json();
+            if(b&&typeof b.seed==="number"){ seed=b.seed>>>0; beacon=b; }
+          }catch(e){ /* fall back to 42 */ }
+        }
         const r=await m.runBench(scene,{
-          seed:+qp.get("seed")||42,
+          seed,
           brain:qp.get("brain")||"circuit",
           gens:+qp.get("gens")||2 });
-        m.renderBenchReport(r);
+        m.renderBenchReport(r,beacon);
         window.FlyBenchAPI={last:()=>r};
       });
     }

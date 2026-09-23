@@ -104,6 +104,6 @@ export default function Lab() {
 
     <section className="finalCta"><span>BACK TO THE DISH</span><h2>You have seen the lab.<br/><em>Now feed the fly.</em></h2><Link className="primary" href="/play">PLAY <span>↗</span></Link></section>
 
-    <footer><a className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><p>Independent connectome-inspired experiment.<br/>No affiliation or endorsement implied.</p><div><Link href="/">HOME</Link><Link href="/play">PLAY</Link><Link href="/essay">ESSAY</Link><a href="#top">BACK TO TOP ↑</a></div></footer>
+    <footer><a className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><p>Independent connectome-inspired experiment.<br/>No affiliation or endorsement implied.</p><div><Link href="/">HOME</Link><Link href="/play">PLAY</Link><Link href="/essay">ESSAY</Link><Link href="/calibration">CALIBRATION</Link><a href="#top">BACK TO TOP ↑</a></div></footer>
   </main>;
 }

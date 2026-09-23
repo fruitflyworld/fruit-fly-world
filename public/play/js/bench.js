@@ -10,6 +10,29 @@ import { contentHash } from "./brain.js";
 const DT = 1000 / 60;
 const MAX_GENS = 8;
 
+// Death calibration: when the brain reports danger, does death actually follow?
+// Pure function over one generation's sealed decision log: a decision is
+// "positive" if the fly died and the decision happened within K seconds of the
+// end. dangerScore 0–3 is read as P(death within K s) = dangerScore/3, which
+// also yields a Brier score. No sim state is touched.
+export function calibrateDeaths(log, died, finalTimeLeft, K = 5) {
+  const buckets = [0, 1, 2].map(() => ({ n: 0, deaths: 0 }));
+  let brierSum = 0, brierN = 0;
+  for (const rec of log) {
+    if (typeof rec.dangerScore !== "number") continue;
+    const tl = rec.state && typeof rec.state.timeLeft === "number" ? rec.state.timeLeft : null;
+    if (tl == null) continue;
+    const soon = died && tl >= finalTimeLeft && (tl - finalTimeLeft) <= K;
+    const b = Math.min(2, Math.max(0, Math.floor(rec.dangerScore)));
+    buckets[b].n++;
+    if (soon) buckets[b].deaths++;
+    const p = Math.min(1, Math.max(0, rec.dangerScore / 3));
+    brierSum += (p - (soon ? 1 : 0)) ** 2;
+    brierN++;
+  }
+  return { K, buckets, brier: brierN ? +(brierSum / brierN).toFixed(4) : null, n: brierN };
+}
+
 export async function runBench(scene, opts = {}) {
   const seed = (opts.seed || 42) >>> 0;
   const brain = ["circuit", "judgment", "genes", "manual"].includes(opts.brain) ? opts.brain : "circuit";
@@ -61,6 +84,7 @@ export async function runBench(scene, opts = {}) {
         await Promise.resolve(); // let sealed decisions (microtasks) land
       }
       const log = scene.brainLog.slice();
+      const calib = calibrateDeaths(log, !scene.playerFly.alive, Math.max(0, scene.genTimeLeft));
       out.push({
         gen: g,
         eggs: scene.playerFly.eggs,
@@ -69,6 +93,7 @@ export async function runBench(scene, opts = {}) {
         deathReason: scene.playerFly.alive ? "time" : scene.playerFly.deathReason || "predator",
         decisions: log.length,
         logHash: contentHash(log.map(r => r.contentHash)),
+        calib,
       });
       if (g < gens) {
         // deterministic player: always inherit the first offered card
@@ -119,11 +144,25 @@ export async function runBench(scene, opts = {}) {
     } catch (e) { /* private mode: report still shows */ }
   }
 
-  return { ...result, runA, runB };
+  // aggregate death calibration across generations (run A; run B is identical)
+  const calibration = (() => {
+    const buckets = [0, 1, 2].map(() => ({ n: 0, deaths: 0 }));
+    let brierSum = 0, brierN = 0, K = 5;
+    for (const g of runA) {
+      if (!g.calib) continue;
+      K = g.calib.K;
+      g.calib.buckets.forEach((b, i) => { buckets[i].n += b.n; buckets[i].deaths += b.deaths; });
+      if (g.calib.brier != null && g.calib.n) { brierSum += g.calib.brier * g.calib.n; brierN += g.calib.n; }
+    }
+    return { K, n: brierN, brier: brierN ? +(brierSum / brierN).toFixed(4) : null, buckets };
+  })();
+
+  return { ...result, calibration, runA, runB };
 }
 
 // Renders the exam report into the page (bench mode replaces the game UI).
-export function renderBenchReport(r) {
+// `beacon` (optional) is the public block the seed was derived from.
+export function renderBenchReport(r, beacon) {
   const old = document.getElementById("benchReport");
   if (old) old.remove();
   const el = document.createElement("div");
@@ -148,20 +187,36 @@ export function renderBenchReport(r) {
     `${r.eggsTotal} eggs · ${r.decisions} sealed decisions\n` +
     `Run the same exam and beat my eggs:\n` +
     `https://fruitfly.world/play?bench=1&seed=${r.seed}&brain=${r.brain}&gens=${r.gens}`;
+  const calibHtml = r.calibration && r.calibration.n
+    ? `<div class="benchH2">Death calibration — does a high danger score mean death within ${r.calibration.K}s?</div>` +
+      `<table><thead><tr><th>danger bucket</th><th>decisions</th><th>died within ${r.calibration.K}s</th><th>death rate</th></tr></thead><tbody>` +
+      r.calibration.buckets.map((b, i) => {
+        const rate = b.n ? (b.deaths / b.n * 100) : 0;
+        return `<tr><td class="mono">${i}–${i + 1}</td><td>${b.n}</td><td>${b.deaths}</td>` +
+          `<td>${b.n ? rate.toFixed(1) + "%" : "—"}</td></tr>`;
+      }).join("") +
+      `</tbody></table>` +
+      `<div class="benchFoot">Brier ${r.calibration.brier} treating danger/3 as P(death in ${r.calibration.K}s), over ${r.calibration.n} sealed decisions · ` +
+      `a calibrated brain's death rate rises with the bucket · one seed is one row, not a theorem · <a href="/calibration">the method</a></div>`
+    : "";
   el.innerHTML =
     `<div class="verdict ${r.identical ? "win" : "lose"}">${r.identical
       ? "IDENTICAL — same seed, same brain, same paper. Every decision hash and every outcome matched."
       : "DIVERGED — the two runs disagreed. This is a bug report, not a score."}</div>` +
-    `<div class="benchMeta">seed ${r.seed} · brain ${r.brain} · ${r.gens} generation${r.gens > 1 ? "s" : ""} ×2 runs · ` +
+    `<div class="benchMeta">seed ${r.seed}${beacon
+      ? ` · <a href="https://sepolia.etherscan.io/block/${beacon.blockNumber}" target="_blank" rel="noreferrer">Sepolia block ${beacon.blockNumber}</a> — nobody picked this seed, not even us`
+      : ""} · brain ${r.brain} · ${r.gens} generation${r.gens > 1 ? "s" : ""} ×2 runs · ` +
     `${r.decisions} sealed decisions · ${r.elapsedMs} ms ` +
     `<button type="button" class="benchCopy" id="benchCopyBtn">COPY RESULT AS CHALLENGE</button></div>` +
     `<table><thead><tr><th>gen</th><th>eggs</th><th>wild type</th><th>survived</th><th>decisions</th><th>decision-log hash</th></tr></thead>` +
     `<tbody>${rows}</tbody></table>` +
+    calibHtml +
     `<div class="benchH2">Recent exams (this browser)</div>` +
     `<table><thead><tr><th>when</th><th>seed</th><th>brain</th><th>gens</th><th>verdict</th><th>eggs</th><th>decisions</th></tr></thead>` +
     `<tbody>${brows}</tbody></table>` +
     `<div class="benchFoot">Don't exam the model. Starve it. — try <a href="?bench=1&seed=42&brain=judgment&gens=2">seed 42 · judgment</a> · ` +
-    `<a href="?bench=1&seed=1337&brain=circuit&gens=2">seed 1337 · circuit</a> · <a href="/play">← back to the dish</a></div>`;
+    `<a href="?bench=1&seed=1337&brain=circuit&gens=2">seed 1337 · circuit</a> · ` +
+    `<a href="?bench=1&seed=beacon&brain=${r.brain}&gens=${r.gens}">a seed nobody picked (block beacon)</a> · <a href="/play">← back to the dish</a></div>`;
   document.getElementById("gameWrap").appendChild(el);
   const btn = document.getElementById("benchCopyBtn");
   btn.addEventListener("click", () => {
