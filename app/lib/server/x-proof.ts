@@ -183,7 +183,7 @@ export function xPostText({ code, officialPostId }: { code: string; officialPost
   return [
     `Unlocking a @${X_HANDLE} Genesis Passport 🪰`,
     "",
-    "One 6×4 map an hour. Everyone gets the same seeds; the best route takes it.",
+    "Don't exam the model. Starve it. Kept one fly alive in the dish — earned, sealed, non-transferable.",
     "",
     String(code),
     "#FruitFlyWorld #StarveIt",
