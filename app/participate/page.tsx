@@ -22,7 +22,7 @@ const tiers: { n: string; title: Bilingual; price: string; body: Bilingual }[] =
 const guards: { title: Bilingual; body: Bilingual }[] = [
   { title: ["NOT TRANSFERABLE", "不可转让"], body: ["The contract blocks transfer, approval, listing and gifting. One wallet, one Passport, permanently — which also means no secondary market and no floor price.", "合约禁止转让、授权、挂单和赠予。一个钱包一份护照，永久有效——这同时意味着没有二级市场，也没有地板价。"] },
   { title: ["NO CUSTODY, NO GAS FOR YOU", "不托管，你不用付 gas"], body: ["Signing in is a signature, not a transaction. The site never takes custody of anything and never asks for a private key.", "登录只是一次签名，不是一笔交易。本站从不托管任何东西，也从不索要私钥。"] },
-  { title: ["NO TOKEN, NO YIELD", "没有代币，没有收益"], body: ["There is no token, no pool, no percentage and no date. The Passport records participation; it is not an investment and nothing here is an offer of a return.", "没有代币、没有池子、没有比例、没有时间表。护照记录的是参与，不是投资标的，本页也不构成任何收益要约。"] },
+  { title: ["NOTHING ON SALE TODAY", "今天没有任何东西在售"], body: ["No token, no pool, no percentage and no date. The Passport records participation; it is not an investment and nothing here is an offer of a return. If an incentive layer ever ships, it arrives as a separate, clearly labelled design.", "没有代币、没有池子、没有比例、没有时间表。护照记录的是参与，不是投资标的，本页也不构成任何收益要约。如果将来有激励层，它会以独立、明确标注的设计形式出现。"] },
   { title: ["THE MODEL IS PUBLIC", "模型是公开的"], body: ["The escape circuit, its synapse counts, the wiring check and the game's rules are all readable — you can reproduce the numbers instead of taking them on faith.", "逃脱回路、它的突触数、连线核对和游戏规则全部可读——你可以把数字复现出来，而不必凭信。"] }
 ];
 

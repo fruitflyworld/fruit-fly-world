@@ -2,7 +2,7 @@
   <img src="assets/logo.svg" width="120" alt="Fruit Fly World">
   <h1>Fruit Fly World</h1>
   <p><strong>Don't exam the model. <em>Starve it.</em></strong></p>
-  <p>A fruit-fly survival game with a slot for a brain — hands, genes, 24 neurons, or a judgment model.<br/>Every decision sealed. Every run replayable.</p>
+  <p>A fruit-fly survival game with a slot for a brain — hands, genes, 24 neurons, or a judgment model.<br/>Every decision sealed. Every deterministic run replayable.</p>
   <p><img src="docs/assets/gameplay.gif" alt="10 seconds of the survival game — a judgment-brain fly foraging while the predator stalks" width="560"></p>
   <p>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-baff35" alt="MIT"></a>
