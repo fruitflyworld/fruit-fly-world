@@ -318,7 +318,7 @@ footer a{color:var(--gold);text-decoration:none}
         （状态、问题、概率、模型版本、哈希）全部落日志——将来基准提交的就是这份日志，作弊无处藏。</p>
       </div>
     </div>
-    <p class="note">66 个测试守护这些数字。改坏任何一个，构建直接红。</p>
+    <p class="note">105 个测试守护这些数字。改坏任何一个，构建直接红。</p>
   </div>
 </section>
 
@@ -344,7 +344,7 @@ footer a{color:var(--gold);text-decoration:none}
     <ul style="margin-top:10px;padding-left:20px">
       <li>这是<b>简化、连接组启发的</b>逃生回路，不是完整果蝇大脑，不是 FlyWire 全脑运行时，更不是"造出了有意识的果蝇"。</li>
       <li>判断层说的是<b>"System One 兼容接口"</b>——只有你真填了 key，才叫 Jev 驱动。默认的本地启发式会老老实实标成 local-heuristic。</li>
-      <li>闭环基准（flyline-bench）正在建设中：先出游戏内的确定性验证和本地榜，再谈公开榜。不抢跑宣布。</li>
+      <li>闭环基准的第一层已经上线：游戏内双跑确定性验证、纯 Node 的 <b>world.js 回放</b>（seed-42 金标准 2026-09-24 生产复核），以及一个<b>服务端评分器</b>（/api/exam/replay）——服务器自己重放确定性谱系、逐字段判定 claim。公开榜是下一层，还没宣布。</li>
       <li>不接 token、不接支付、不绑任何一家模型厂商的 API。</li>
     </ul>
     <blockquote style="margin-top:26px">Trust nothing that cannot <span class="gold">starve</span>.</blockquote>
