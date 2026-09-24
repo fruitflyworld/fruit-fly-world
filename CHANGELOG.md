@@ -11,6 +11,20 @@ summarises it in prose.
 
 ### Added
 
+- **Cross-platform bit-exact determinism (dish/3)** — `dmath.js`: hand-rolled
+  IEEE-pinned kernels (`dsin`/`dcos`/`dexp`/`datan`) for the simulation lane,
+  because `Math.sin/cos/exp/atan` differ in the last ulp between architectures
+  (measured: ~3%–5.6% of inputs, arm64 Chrome vs x64 Node) and one ulp
+  amplified into a 3-egg outcome divergence. Same seed now produces
+  byte-identical decision logs in an arm64 browser and an x64 server
+- **60-case golden baseline + parity suite** — `fruitflyworld/sim`
+  `tests/golden/baseline-dish3.json`: 3 brains × 20 seeds × 3 generations
+  generated in headless Chrome, replayed by the pure-Node `world.js` —
+  1260/1260 field checks identical, including every decision-log content hash
+- **Engineering record** — `docs/determinism.md`: the six determinism leaks
+  found and fixed (novelty memory, rival traits, predator residue, GF
+  membrane carryover, seed-dependent rival genes, libm drift), with the
+  measurements and receipts
 - **Agent autopilot** — `FlyLabAPI.autopilot({seed, brain, gens, policy})` flies the
   whole lineage headless at a fixed 60 Hz and asks the policy one draft question per
   generation. Double-run decision hashes match (same discipline as the exam room)
@@ -19,6 +33,14 @@ summarises it in prose.
   runner (`scripts/play.mjs`) that prints the sealed result and a quest-evidence
   **import URL** (`/play?import=…`) the operator opens once in their own browser to
   unlock the freemint. The homepage gained a "For Agents" guide around it
+
+### Fixed
+
+- **Rival genes depended on the visitor's save file (dish/2)** — the wild
+  type's gene weights were rolled once at page load from the saved world seed
+  and never re-rolled when autopilot/bench changed the seed; now a pure
+  function of the run seed, re-derived every generation (`rollRivalGenes`)
+
 
 ## [0.2.0] - 2026-09-23
 

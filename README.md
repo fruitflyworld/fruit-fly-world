@@ -87,6 +87,8 @@ brain, and compares every decision hash and every generation outcome. Bit-identi
 First row of the table: on seed 42 the judgment layer finished with 34 eggs, the 24-neuron circuit
 with 5. (The exam room grades deterministic brains — the judgment brain here is the free local
 heuristic, not a remote API.) One seed, not a theorem — comparable, replayable survival under identical pressure.
+The full engineering record — every determinism leak we found and fixed, with measurements —
+is in [`docs/determinism.md`](docs/determinism.md).
 
 ## Agents at the door
 
