@@ -1140,3 +1140,72 @@ html[data-lang="zh"] .biZh{display:inline}
 .dishQuestRow a{font:10px DM Mono,monospace;color:#9fb29c;text-decoration:none;letter-spacing:.08em}
 .dishQuestRow button{margin:0}
 .dishQuestDone{font:10px DM Mono,monospace;color:var(--acid);letter-spacing:.08em}
+
+/* ── /race — the weekly race ───────────────────────────────────────────── */
+.racePage{background:var(--bg);min-height:100vh}
+.raceHero{padding:72px max(4vw,28px) 40px;max-width:1180px;margin:0 auto}
+.raceHero h1{font-size:clamp(30px,4.6vw,52px);line-height:1.06;letter-spacing:-.02em;font-weight:800;margin:18px 0 16px}
+.raceHero h1 em{color:var(--acid);font-style:normal}
+.raceHero p{color:var(--muted);max-width:44em;line-height:1.7;font-size:15px}
+.raceHeroMeta{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:18px;color:var(--muted);font:500 10px DM Mono,monospace;letter-spacing:.08em;text-transform:uppercase}
+.raceHeroMeta span:before{content:'▸ ';color:var(--acid)}
+.raceWrap{max-width:1180px;margin:0 auto;padding:0 max(4vw,28px) 40px}
+.raceGrid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:18px;align-items:start}
+@media(max-width:920px){.raceGrid{grid-template-columns:1fr}}
+.racePanel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}
+.raceSide{display:grid;gap:18px}
+.racePhaseRow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.raceChip{font:700 10px DM Mono,monospace;letter-spacing:.1em;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.raceChip.phase-commit{color:var(--acid);border-color:#baff3555;background:#baff350d}
+.raceChip.phase-reveal{color:var(--amber);border-color:#ffbd3e55;background:#ffbd3e0d}
+.raceChip.phase-closed{color:var(--danger);border-color:#ff593f55}
+.raceMono{font-family:DM Mono,monospace;font-size:12px;letter-spacing:.04em}
+.raceCount{margin-left:auto;font:600 13px DM Mono,monospace;color:var(--cream)}
+.raceMuted{color:var(--muted);font-size:13px;line-height:1.65;margin:8px 0}
+.raceMuted a{color:var(--acid);text-decoration:underline}
+.raceLabel{display:block;font:700 10px DM Mono,monospace;letter-spacing:.14em;color:var(--cream);margin:18px 0 8px}
+.raceWallet{display:flex;align-items:center;gap:12px;margin:14px 0 4px}
+.raceAddr{color:var(--acid)}
+.raceOk{color:#7ee08a;font-size:13px}
+.raceError{color:var(--danger);font-size:13px;margin-top:10px}
+.raceNote{color:var(--cream);font-size:13px;margin-top:10px}
+.raceBtn{padding:12px 18px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--ink);font:700 11px DM Mono,monospace;letter-spacing:.1em}
+.raceBtn.primary{background:var(--acid);color:#091006;border-color:var(--acid)}
+.raceBtn:hover{filter:brightness(1.1)}
+.raceForm{margin-top:6px}
+.raceBrains{display:grid;gap:8px}
+.raceBrain{display:grid;gap:4px;text-align:left;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);color:var(--ink)}
+.raceBrain b{font:700 12px DM Mono,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--cream)}
+.raceBrain span{color:var(--muted);font-size:12px;line-height:1.5}
+.raceBrain.on{border-color:var(--acid)}
+.raceBrain.on b{color:var(--acid)}
+.raceTraits{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.raceTrait{display:grid;gap:3px;text-align:left;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--ink)}
+.raceTrait b{font-size:12px;font-weight:700;color:var(--cream)}
+.raceTrait span{color:var(--muted);font-size:11px;line-height:1.4}
+.raceTrait.rarity-rare b:after{content:' ·RARE';color:var(--amber);font:600 8px DM Mono,monospace;letter-spacing:.08em}
+.raceTrait.rarity-epic b:after{content:' ·EPIC';color:#c79bff;font:600 8px DM Mono,monospace;letter-spacing:.08em}
+.raceTrait.on{border-color:var(--acid)}
+.raceTrait.on b{color:var(--acid)}
+.racePrefList{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:6px}
+.racePrefList li{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px dashed var(--line);border-radius:8px;font-size:13px;color:var(--cream)}
+.racePrefList li>span{color:var(--acid)}
+.raceReorder{margin-left:auto;display:flex;gap:4px;font-style:normal}
+.raceReorder button{width:26px;height:26px;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--muted);line-height:1}
+.raceReorder button:hover:not(:disabled){color:var(--acid)}
+.raceCanonical{background:#060a06;border:1px solid var(--line);border-radius:10px;padding:12px;font:400 11px/1.6 DM Mono,monospace;color:var(--muted);overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin:0 0 12px}
+.racePaste{width:100%;background:#060a06;border:1px solid var(--line);border-radius:10px;color:var(--ink);font:400 12px DM Mono,monospace;padding:10px;margin-bottom:10px}
+.raceTable{width:100%;border-collapse:collapse;font-size:12px}
+.raceTable th{text-align:left;font:700 9px DM Mono,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line)}
+.raceTable td{padding:8px;border-bottom:1px solid #29342a55;color:var(--cream)}
+.raceTable tr.me td{background:#baff350a}
+.raceSeed{font-size:16px;color:var(--acid);font-weight:600}
+.raceProtocol{padding-bottom:80px}
+.raceProtocol .sectionHead{margin-bottom:24px}
+.raceProtocol h2{font-size:clamp(22px,3vw,34px);font-weight:800;letter-spacing:-.01em}
+.raceProtocol h2 em{color:var(--acid);font-style:normal}
+.raceSteps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:20px 0}
+.raceStep{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.raceStep b{font:600 11px DM Mono,monospace;color:var(--acid)}
+.raceStep h3{font:700 13px DM Mono,monospace;letter-spacing:.12em;margin:8px 0 6px;color:var(--cream)}
+.raceStep p{color:var(--muted);font-size:12px;line-height:1.6}

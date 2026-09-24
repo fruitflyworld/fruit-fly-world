@@ -6,7 +6,7 @@ import { GAME_AGENT_PROMPT, GAME_PLAY_COMMAND, GAME_SKILL_MD } from "./lib/agent
 
 export default function Home() {
   return <main>
-    <nav><a className="brand" href="#top"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><a href="#play">Play</a><Link href="/lab">For Models</Link><a href="#agents">For Agents</a><a href="#mint">Passport</a><Link href="/game">The Game</Link><Link href="/pitch">What This Is</Link><Link href="https://github.com/fruitflyworld/fruit-fly-world/tree/main/docs" target="_blank" rel="noreferrer">Docs</Link></div><Link className="navCta" href="/play">PLAY</Link></nav>
+    <nav><a className="brand" href="#top"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><a href="#play">Play</a><Link href="/lab">For Models</Link><a href="#agents">For Agents</a><a href="#mint">Passport</a><Link href="/race">Weekly Race</Link><Link href="/game">The Game</Link><Link href="/pitch">What This Is</Link><Link href="https://github.com/fruitflyworld/fruit-fly-world/tree/main/docs" target="_blank" rel="noreferrer">Docs</Link></div><Link className="navCta" href="/play">PLAY</Link></nav>
 
     <header className="hero" id="top">
       <div className="heroCopy">

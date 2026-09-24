@@ -1,6 +1,10 @@
 // race-core.ts — the pure rules of the weekly race. No DB, no server-only
 // imports, so tests can pin them.
 //
+// The browser-shared half (weeks, canonical policy, sign messages) lives in
+// app/lib/race-shared.ts so the race page never imports server code; this
+// file re-exports it and adds the node-crypto commitment.
+//
 // The fairness protocol mirrors the WeeklyRace contract:
 //   1. COMMIT — before the cutoff, an entrant locks brain + a sha256
 //      commitment of their draft-preference policy.
@@ -10,43 +14,28 @@
 //   4. GRADE — the server replays every revealed entry with the same seed via
 //      the vendored world.js and ranks by eggs.
 import { createHash } from "node:crypto";
+import {
+  canonicalPolicyJson,
+  commitMessage,
+  phaseOf,
+  revealMessage,
+  weekBounds,
+  weekOf,
+  type Phase,
+  type RaceBrain,
+  type RacePolicy,
+  DRAW_WINDOW_SECONDS,
+  RACE_BRAINS,
+  RACE_GENS,
+  WEEK_SECONDS,
+} from "../race-shared";
 
-export const WEEK_SECONDS = 604_800; // 7 days, epoch-aligned
-export const DRAW_WINDOW_SECONDS = 86_400; // the last 24h of a week: draw + reveal
-export const RACE_GENS = 3;
-export const RACE_BRAINS = ["genes", "circuit", "judgment"] as const;
-export type RaceBrain = (typeof RACE_BRAINS)[number];
-
-export function weekOf(tsMs: number): number {
-  return Math.floor(tsMs / 1000 / WEEK_SECONDS);
-}
-
-export function weekBounds(week: number): { startMs: number; cutoffMs: number; endMs: number } {
-  const startMs = week * WEEK_SECONDS * 1000;
-  return { startMs, cutoffMs: startMs + (WEEK_SECONDS - DRAW_WINDOW_SECONDS) * 1000, endMs: startMs + WEEK_SECONDS * 1000 };
-}
-
-export type Phase = "commit" | "reveal" | "closed";
-
-export function phaseOf(nowMs: number, week: number): Phase {
-  const { cutoffMs, endMs } = weekBounds(week);
-  if (nowMs < cutoffMs) return "commit";
-  if (nowMs < endMs) return "reveal";
-  return "closed";
-}
-
-// ---- commitment ----
-
-/** Trait ids in priority order; at each draft, the offered card ranked
- *  earliest in this list is picked; if none is listed, the first card. */
-export type RacePolicy = { brain: RaceBrain; preference: string[] };
-
-/** Canonical JSON — key-sorted, no whitespace — so the sha256 is stable
- *  across runtimes and the commitment binds the exact policy. */
-export function canonicalPolicyJson(week: number, policy: RacePolicy): string {
-  const sorted = [...policy.preference].sort();
-  return JSON.stringify({ brain: policy.brain, preference: sorted, week });
-}
+export {
+  canonicalPolicyJson, commitMessage, revealMessage,
+  weekOf, weekBounds, phaseOf,
+  DRAW_WINDOW_SECONDS, RACE_BRAINS, RACE_GENS, WEEK_SECONDS,
+};
+export type { Phase, RaceBrain, RacePolicy };
 
 export function commitmentOf(week: number, policy: RacePolicy): string {
   return "0x" + createHash("sha256").update(canonicalPolicyJson(week, policy)).digest("hex");
@@ -67,16 +56,6 @@ export function policyFn(policy: RacePolicy) {
     }
     return best;
   };
-}
-
-// ---- EIP-191 sign payloads ----
-
-export function commitMessage(week: number, brain: string, commitment: string): string {
-  return `Fruit Fly World — weekly race commit\nweek: ${week}\nbrain: ${brain}\ncommitment: ${commitment}\nthis locks my exam entry; the policy reveal comes after the draw`;
-}
-
-export function revealMessage(week: number, commitment: string): string {
-  return `Fruit Fly World — weekly race reveal\nweek: ${week}\ncommitment: ${commitment}\nthis publishes my committed policy for grading`;
 }
 
 // ---- ranking ----
