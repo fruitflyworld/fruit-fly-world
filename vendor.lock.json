@@ -5,7 +5,7 @@
       "repo": "fruitflyworld/game",
       "dirEnv": "FFW_GAME_DIR",
       "stripPrefix": "public/play/",
-      "rev": "cd9fae5c1868839b4faf7f6b6da4e055fc822b3c",
+      "rev": "316780533a09d300fe0f460ffddbbd10001ae5f4",
       "files": {
         "public/play/index.html": "sha256:b0fe4ae50f3f617d69958f2620a58d4fa54f7e1b5b5fba371c4d68628c6b1e6f",
         "public/play/style.css": "sha256:cff50851025c09620e7b6dd9926c9ae91ddb8c5b67e923cd7a38c3c097a18425",
@@ -29,9 +29,9 @@
         "public/play/js/gf-neuron.js": "sha256:d007d789068c2f140860728b5e00b3e8e24b340d3d5cb8e144f3319656ba807c",
         "public/play/js/main.js": "sha256:d2542470e17b2c4c7977fff4d9d1bdcf3c1a65eb10b4d06ffb596ec56fd9ff60",
         "public/play/js/scene-boot.js": "sha256:c78e043a54d31d6999360a0235a35d98f409802c99e99963732044980351c78d",
-        "public/play/js/scene-game.js": "sha256:9187c2549a0e98bb04a2e0340a5349c5f92307e2e4fcc1b840afb8c75fe7408f",
-        "public/play/js/sim.d.ts": "sha256:869c83e01b8e7577d75d50e48eaa8199541f8f3a9e03a57875b561904fbd11b4",
-        "public/play/js/sim.js": "sha256:6eac13a066c2d66475bb6cdf1cd3f3911352aa1c2fee6b2649876eba52dd0203",
+        "public/play/js/scene-game.js": "sha256:3bb43db7f421a3a0863bac532445a6d895c06e31c69eeb67c3ea8bfcc6882c14",
+        "public/play/js/sim.d.ts": "sha256:7f3a462216e4a1ebd269a75ee225372584db90693b8d5eaac59c7625e596d92e",
+        "public/play/js/sim.js": "sha256:d35d466d6b1f6dc3204551a24e5b617b17ad59fb7b6c49f25a42f48828fe70de",
         "public/play/js/ui.js": "sha256:71b5bab530bfbbf39e199a17dbe04384ab207452829e8f2a061b302f6be57c77"
       }
     }

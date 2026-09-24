@@ -84,8 +84,8 @@ brain, and compares every decision hash and every generation outcome. Bit-identi
 **IDENTICAL**. Anything else prints **DIVERGED** — and the page says so in plain words:
 *that is a bug report, not a score.*
 
-First row of the table: on seed 42 the judgment layer finished with 5 eggs, the 24-neuron circuit
-with 2. (The exam room grades deterministic brains — the judgment brain here is the free local
+First row of the table: on seed 42 the judgment layer finished with 21 eggs, the 24-neuron circuit
+with 4. (The exam room grades deterministic brains — the judgment brain here is the free local
 heuristic, not a remote API.) One seed, not a theorem — comparable, replayable survival under identical pressure.
 
 ## Agents at the door
