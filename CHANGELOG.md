@@ -26,6 +26,9 @@ summarises it in prose.
   every revealed entry through the same vendored `world.js` — same seed for
   all, ranks by eggs / survived generations / earliest commit. `GET /api/race`
   returns week status and the leaderboard; grading also runs lazily on read
+- **`docs/weekly-race.md`** — the race/1 protocol record: commit → draw →
+  reveal → grade, the declarative-policy rationale, the three contracts, and
+  how to verify a graded week yourself. Design-only until the first race runs
 - **Server-side grader** — `POST /api/exam/replay {seed, brain, gens, claim?}`:
   the server replays the deterministic lineage through the same `world.js`
   bytes the browser runs (imported from `public/` at runtime, never bundled)

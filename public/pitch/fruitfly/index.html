@@ -87,6 +87,7 @@ footer a{color:var(--gold);text-decoration:none}
 .step:last-child{border-bottom:none}
 .step .n{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--gold)}
 .step h3{margin-bottom:4px}
+.step .ok{font-size:.72rem;color:#4ade80;letter-spacing:.06em;margin-left:8px;font-weight:600}
 </style>
 </head>
 <body>
@@ -328,10 +329,10 @@ footer a{color:var(--gold);text-decoration:none}
     <div class="kick">06 / 路线</div>
     <h2>四步，每步都先出能玩的东西。</h2>
     <div style="margin-top:14px">
-      <div class="step"><div class="n">1</div><div><h3>回路进培养皿</h3><p>24 神经元 FFW-CX 回路成为可选大脑，HUD 实时显示它的"思考"。已开工。</p></div></div>
-      <div class="step"><div class="n">2</div><div><h3>判断层接入</h3><p>本地启发式默认免费跑；有 key 的换 Jev 或本地 kev。决策日志可下载。</p></div></div>
-      <div class="step"><div class="n">3</div><div><h3>闭环考场</h3><p>同种子双跑、逐字节比对、页内出"identical"验证；本地同种子排行榜。口号拿到收据。</p></div></div>
-      <div class="step"><div class="n">4</div><div><h3>脑对脑</h3><p>你的大脑 vs 我的大脑 vs 打乱连线，同一个世界对局。判断模型品类的第一张生存榜。</p></div></div>
+      <div class="step"><div class="n">1</div><div><h3>回路进培养皿 <span class="ok">✓ 已上线</span></h3><p>24 神经元 FFW-CX 回路成为可选大脑，HUD 实时显示它的"思考"。</p></div></div>
+      <div class="step"><div class="n">2</div><div><h3>判断层接入 <span class="ok">✓ 已上线</span></h3><p>本地启发式默认免费跑；有 key 的换 Jev 或本地 kev。决策日志可下载。</p></div></div>
+      <div class="step"><div class="n">3</div><div><h3>闭环考场 <span class="ok">✓ 已上线</span></h3><p>同种子双跑、逐字节比对、服务端评分器；周赛协议（先交卷、后出题、人人可重算）已实现为 API 与合约，公开榜还没开赛。</p></div></div>
+      <div class="step"><div class="n">4</div><div><h3>脑对脑</h3><p>你的大脑 vs 我的大脑 vs 对调连线，同一个世界对局。判断模型品类的第一张生存榜。</p></div></div>
     </div>
   </div>
 </section>
@@ -345,7 +346,7 @@ footer a{color:var(--gold);text-decoration:none}
       <li>这是<b>简化、连接组启发的</b>逃生回路，不是完整果蝇大脑，不是 FlyWire 全脑运行时，更不是"造出了有意识的果蝇"。</li>
       <li>判断层说的是<b>"System One 兼容接口"</b>——只有你真填了 key，才叫 Jev 驱动。默认的本地启发式会老老实实标成 local-heuristic。</li>
       <li>闭环基准的第一层已经上线：游戏内双跑确定性验证、纯 Node 的 <b>world.js 回放</b>（seed-42 金标准 2026-09-24 生产复核），以及一个<b>服务端评分器</b>（/api/exam/replay）——服务器自己重放确定性谱系、逐字段判定 claim。公开榜是下一层，还没宣布。</li>
-      <li>不接 token、不接支付、不绑任何一家模型厂商的 API。</li>
+      <li>今天<b>没有任何 NFT、代币或支付在售</b>。Fly NFT、每周大考和项目代币是设计稿：合约已写好并通过测试（本仓库 contracts/，欢迎审计），周赛协议已实现为 /api/race，但都没有部署、没有开赛。任何自称 Fruit Fly World 的代币都是假的。我们不绑任何一家模型厂商的 API。</li>
     </ul>
     <blockquote style="margin-top:26px">Trust nothing that cannot <span class="gold">starve</span>.</blockquote>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">

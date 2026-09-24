@@ -126,6 +126,21 @@ The Genesis Passport is a soul-bound ERC-721 + ERC-5192 marker on Robinhood Chai
 freemint, and the mint is free. It cannot be transferred, and nothing
 in the game depends on it.
 
+## What's next (design only — nothing on sale)
+
+- **Fly NFTs** — each NFT is one lineage with its own genes and record
+  ([FlyNFT.sol](contracts/src/FlyNFT.sol), written and forge-tested, not deployed)
+- **The weekly race** — commit your fly's policy hash, then the paper is drawn
+  from an Ethereum block mined after the cutoff; the server replays every entry
+  through the same `world.js` ([/api/race](docs/weekly-race.md),
+  [WeeklyRace.sol](contracts/src/WeeklyRace.sol))
+- **One project token** — won in the weekly race, spent on breeding and
+  mutations; fixed supply, burn-only sinks ([FlyToken.sol](contracts/src/FlyToken.sol))
+- Later: the fly exchange — lineage shares traded in the same token
+
+None of this is live. There is no token and nothing to buy.
+Any token claiming to be Fruit Fly World is fake.
+
 ## Boundaries (read before you plan around it)
 
 - **The world model is connectome-inspired.** It is not a simulation of a real fly brain, not a
