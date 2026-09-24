@@ -33,6 +33,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      # public/play/ is vendored from fruitflyworld/game — fingerprints must match
+      # vendor.lock.json. If this fails, the change belongs upstream; see AGENTS.md.
+      - run: node scripts/sync-vendor.mjs check
       - run: npm ci
       - run: npm run build
       - run: npm run typecheck

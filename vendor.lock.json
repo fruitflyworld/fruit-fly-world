@@ -1,0 +1,39 @@
+{
+  "_comment": "vendored from fruitflyworld/game — run scripts/sync-vendor.mjs check|pull. Never edit public/play directly; change it in the game repo (or sim/bench upstream) and re-sync.",
+  "sources": {
+    "game": {
+      "repo": "fruitflyworld/game",
+      "dirEnv": "FFW_GAME_DIR",
+      "stripPrefix": "public/play/",
+      "rev": "cd9fae5c1868839b4faf7f6b6da4e055fc822b3c",
+      "files": {
+        "public/play/index.html": "sha256:b0fe4ae50f3f617d69958f2620a58d4fa54f7e1b5b5fba371c4d68628c6b1e6f",
+        "public/play/style.css": "sha256:cff50851025c09620e7b6dd9926c9ae91ddb8c5b67e923cd7a38c3c097a18425",
+        "public/play/vendor/phaser.min.js": "sha256:62081f6a1b51d040473f919ffedef9009953c20833518e146da5a8d1c9405ea8",
+        "public/play/js/audio.js": "sha256:4b91e75cc110aae91b579b26680c763fecc3d44f9d7f4c37f268f2ee95d51399",
+        "public/play/js/bench.d.ts": "sha256:435decd3a2cdb530d32789416afe6bcabcf729987c5c90e224ee901390c58e3a",
+        "public/play/js/bench.js": "sha256:32867774e92f66120025b99a3243cab37a6f5cf386bc04dbf8d62e1d8b31dcfa",
+        "public/play/js/brain-circuit.d.ts": "sha256:4db1def8a8991c7bba7747343bdf56cadf785fd8e6ab035f65584d6ee1babd2a",
+        "public/play/js/brain-circuit.js": "sha256:813f6778378d4b4385143db1c0bd12546fd5bfb10d2e9c25265afb4dd79d39a5",
+        "public/play/js/brain-driver.d.ts": "sha256:2814c71ad03448246515c065e4da9e0282e388744c8f866da26aa9b5da941016",
+        "public/play/js/brain-driver.js": "sha256:4fb311de98c0cbed16325dede9c30ff747bef8575d311c7d00013f7eb50d64e7",
+        "public/play/js/brain-jev.d.ts": "sha256:fb9f978bbfa104ef59f38369d4aadb09950e6e9830f2ba7b3a37849e021ae8f0",
+        "public/play/js/brain-jev.js": "sha256:ce59fd04d40a72e972ce213cfc2afdc3cd4716d5a8aa0cba836c5633a1ee0824",
+        "public/play/js/brain-local.d.ts": "sha256:b13a6cf049e4145941e3ad7b698873a6039dfeb0c4510826212fdf6fed3b4205",
+        "public/play/js/brain-local.js": "sha256:bc0ec916fa2777491c1642d159e00a5c4cf1c594939c23f9d4a764dddfe9962c",
+        "public/play/js/brain.d.ts": "sha256:fd204c4a46ca0766d9e722c5594e5cf48da0ef7e6aa3cd5b7f45125bb9628717",
+        "public/play/js/brain.js": "sha256:905d5bdffec19ff987183364fd006049848d9c5f98d166d327add8c24ab592e2",
+        "public/play/js/cx-circuit.d.ts": "sha256:5a2daa3cecf936ed632856a037d0bf6e7545353cb0779f13c81b82b8cede7948",
+        "public/play/js/cx-circuit.js": "sha256:a797a85ac3af942f601ef0e657e6093f59ed103a3892e8f65018e3b301c2ea42",
+        "public/play/js/gf-neuron.d.ts": "sha256:9c04f9a04d40dad6b9eb17707e91130460c1743e004e9bf553e320543fb023db",
+        "public/play/js/gf-neuron.js": "sha256:d007d789068c2f140860728b5e00b3e8e24b340d3d5cb8e144f3319656ba807c",
+        "public/play/js/main.js": "sha256:d2542470e17b2c4c7977fff4d9d1bdcf3c1a65eb10b4d06ffb596ec56fd9ff60",
+        "public/play/js/scene-boot.js": "sha256:c78e043a54d31d6999360a0235a35d98f409802c99e99963732044980351c78d",
+        "public/play/js/scene-game.js": "sha256:9187c2549a0e98bb04a2e0340a5349c5f92307e2e4fcc1b840afb8c75fe7408f",
+        "public/play/js/sim.d.ts": "sha256:869c83e01b8e7577d75d50e48eaa8199541f8f3a9e03a57875b561904fbd11b4",
+        "public/play/js/sim.js": "sha256:6eac13a066c2d66475bb6cdf1cd3f3911352aa1c2fee6b2649876eba52dd0203",
+        "public/play/js/ui.js": "sha256:71b5bab530bfbbf39e199a17dbe04384ab207452829e8f2a061b302f6be57c77"
+      }
+    }
+  }
+}
