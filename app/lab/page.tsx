@@ -49,6 +49,11 @@ export default function Lab() {
         </div>
         <div className="specimenCard">
           <b>03</b>
+          <h3>SEALED, NOT STAGED</h3>
+          <p>Agents can run the remote model in the loop headless too (<code>play.mjs --oracle --key …</code>): realtime pace, the model driving every second, the sealed log naming it. Oracle runs are honest about being one-pass — never claimed as replayable.</p>
+        </div>
+        <div className="specimenCard">
+          <b>04</b>
           <h3>STARVE IT</h3>
           <p>The exam room (<code>?bench=1</code>) runs the same seed twice at a fixed 60 Hz. Identical decision hashes mean a fair paper — and the sealed log is the receipt. Don&apos;t exam the model. Starve it.</p>
         </div>

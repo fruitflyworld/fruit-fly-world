@@ -9,6 +9,7 @@
 
      node play.mjs --seed 42 --brain judgment --gens 3
      node play.mjs --seed 7 --brain circuit --gens 5 --policy ./my-policy.mjs
+     node play.mjs --seed 9 --brain judgment --gens 2 --oracle --key sk-...
    ------------------------------------------------------------------------- */
 import { spawn } from "node:child_process";
 import { mkdtempSync, writeFileSync } from "node:fs";
@@ -29,15 +30,25 @@ const GENS = Math.max(1, Math.min(8, Number(flag("gens", 3)) || 3));
 const POLICY_PATH = flag("policy", null);
 const OUT = flag("out", "ffw-run.json");
 const TIMEOUT_MS = Number(flag("timeout", 600000)) || 600000;
+// oracle mode: a remote System One model (pinned jev-1.13.0 via the same-origin
+// proxy) drives the fly in-loop. The run is sealed but NOT replayable.
+const KEY = flag("key", process.env.FFW_JEV_KEY || null);
+const ORACLE = args.includes("--oracle") || !!KEY;
 
 if (args.includes("--help") || args.includes("-h")) {
   console.log(`usage: node play.mjs [--seed N] [--brain manual|genes|circuit|judgment] [--gens 1-8]
                 [--policy ./my-policy.mjs] [--base https://fruitfly.world]
-                [--out ffw-run.json] [--timeout ms]
+                [--out ffw-run.json] [--timeout ms] [--oracle] [--key sk-...]
 
   --policy   a module whose default export is (cards, state) => traitId —
              your draft decision, called once per generation. May be async.
-             Without it the run uses the built-in economy-first default.`);
+             Without it the run uses the built-in economy-first default.
+  --oracle   model-in-loop: requires --brain judgment and a System One key
+             (--key or env FFW_JEV_KEY). The remote model drives the fly in
+             real time (1 decision/s; ~50s per generation — a 3-gen run takes
+             ~3 minutes). The sealed log names the model; oracle runs are NOT
+             replayable and never IDENTICAL. Without --oracle everything is
+             deterministic and free.`);
   process.exit(0);
 }
 
@@ -134,11 +145,13 @@ try {
   if (!ready) await die("the game never became ready at " + BASE + "/play");
 
   console.log(`# fruitfly.world — autopilot run`);
-  console.log(`# seed ${SEED} · brain ${BRAIN} · gens ${GENS} · policy ${policySrc ? "custom" : "default-economy"}`);
+  console.log(`# seed ${SEED} · brain ${BRAIN} · gens ${GENS} · policy ${policySrc ? "custom" : "default-economy"}`
+    + (ORACLE ? " · ORACLE (remote model in-loop, realtime pace, not replayable)" : ""));
   const started = Date.now();
   const expression = `(async()=>{
+    ${ORACLE ? `localStorage.setItem("flyline_jev_key", ${JSON.stringify(String(KEY))});` : ""}
     const policy = ${policySrc ? `eval("(" + ${JSON.stringify(policySrc)} + ")")` : "null"};
-    const r = await FlyLabAPI.autopilot({ seed: ${SEED}, brain: "${BRAIN}", gens: ${GENS}, policy });
+    const r = await FlyLabAPI.autopilot({ seed: ${SEED}, brain: "${BRAIN}", gens: ${GENS}, policy${ORACLE ? ", oracle: true, key: " + JSON.stringify(String(KEY)) : ""} });
     return JSON.stringify(r);
   })()`;
   const ev = await send("Runtime.evaluate",
@@ -152,8 +165,9 @@ try {
   const exd = ev.result.exceptionDetails;
   if (exd) {
     const what = (exd.exception && (exd.exception.description || exd.exception.value)) || exd.text;
-    await die("the page threw during the run (if this names an undefined variable, your policy "
-      + "function references module-scope bindings — policies must be self-contained): " + what);
+    await die("the page threw during the run: " + what
+      + " (if this names an undefined variable inside your policy function, it references"
+      + " module-scope bindings — policies must be self-contained)");
   }
   if (ev.result.result.subtype === "error")
     await die("page threw: " + ev.result.result.description);
@@ -168,6 +182,12 @@ try {
       + ` · ${g.decisions} decisions · logHash ${g.logHash.slice(0, 12)}`);
   }
   console.log(`  total: ${result.eggsTotal} eggs · ${result.decisions} sealed decisions · ${((Date.now() - started) / 1000).toFixed(1)}s`);
+  if (result.oracle && result.oracle.live) {
+    console.log(`  oracle: ${result.oracle.model} drove the fly — SEALED, not replayable.`);
+    console.log(`  claim "model-in-loop" with this log; never claim IDENTICAL for an oracle run.`);
+  } else {
+    console.log(`  replayable: deterministic brain — a rerun with the same seed must match every logHash.`);
+  }
   console.log(`  full run + sealed log: ${OUT}`);
 
   const questKeys = Object.keys(result.quests || {});

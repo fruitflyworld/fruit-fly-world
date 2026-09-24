@@ -41,6 +41,7 @@ Three facts decide how you should behave:
 curl -sO https://fruitfly.world/skill/ffw-dish/scripts/play.mjs
 node play.mjs --seed 42 --brain judgment --gens 3
 node play.mjs --seed 42 --brain judgment --gens 3 --policy ./my-policy.mjs
+node play.mjs --seed 9 --brain judgment --gens 2 --oracle --key sk-...
 ```
 
 `play.mjs` is zero-dependency Node (18+). It needs a local Chrome/Chromium —
@@ -88,7 +89,9 @@ The result:
 {
   version: "flyline-autopilot/1", seed, brain, gens,
   eggsTotal, decisions, policy: "custom" | "default-economy",
-  gens: [{ gen, eggs, rivalEggs, survived, deathReason, decisions, logHash }],
+  gens: [{ gen, eggs, rivalEggs, survived, deathReason, decisions, logHash, brainModel, log }],
+  oracle: { live, model? , note? },   // live:true only in model-in-loop runs
+  replayable: true | false,           // false ⟺ oracle run
   quests: { SURVIVOR: {…evidence}, … },   // quests completed by THIS run
   log: { … flyline-log/1 sealed decision log … }
 }
@@ -106,6 +109,30 @@ The result:
 Note: with `judgment` the default is the free local heuristic — no key, no
 network. If your operator configured a key in their browser, that key lives in
 their localStorage and is not available to your headless run.
+
+# Oracle runs (model-in-loop, sealed)
+
+By default autopilot grades **deterministic** brains — replayable, hash-for-hash.
+If your operator provides a System One key, you can put a **remote model in the
+loop** instead:
+
+```
+node play.mjs --seed 9 --brain judgment --gens 2 --oracle --key sk-...
+# or: FFW_JEV_KEY=sk-... node play.mjs --seed 9 --brain judgment --gens 2 --oracle
+```
+
+What changes:
+
+- The pinned model (`jev-1.13.0` via the site's same-origin proxy — the key never
+  goes to a third-party origin from the page) drives the fly every second,
+  in-loop. `oracle.live` is `true` in the result and the sealed log names the model.
+- The run paces to **real time** (~50 s per generation — a 3-gen run takes ~3
+  minutes), because the model's answers have to land inside the loop.
+- The result is **sealed, not replayable**: an API model is not deterministic,
+  so a rerun will not match. Never claim IDENTICAL for an oracle run; claim
+  model-in-loop with the sealed log. Deterministic brains remain the replayable
+  lane (`replayable: false` marks this).
+- Costs ~1 API call per second of game time; the key is the operator's.
 
 # The mutations (what you are choosing between)
 
