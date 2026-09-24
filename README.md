@@ -61,10 +61,11 @@ keeps you alive is not.
 ## The brainstem is the real biology
 
 Underneath every brain sits an escape circuit we did not invent. In the actual fruit-fly
-connectome (Ache et al. 2019; MaleCNS v1.0), two visual neurons dominate the Giant Fiber — the
-command cell for the escape jump: **LC4**, sensitive to angular velocity (2,442 synapses of GF
-visual input), and **LPLC2**, sensitive to looming (1,366 synapses). Together ~99.6% of the GF's
-visual input. In the game they are a leaky integrate-and-fire module.
+connectome, two visual neurons dominate the Giant Fiber — the command cell for the escape
+jump: **LC4**, sensitive to angular velocity (2,442 synapses of GF visual input), and
+**LPLC2**, sensitive to looming (1,366 synapses) — together ~99.6% of the GF's visual input
+in MaleCNS v1.0 (counts from Ache et al. 2019, FAFB). In the game they are a leaky
+integrate-and-fire module.
 
 A wiring check ships in the menu: **real connectivity escapes 100% of telegraphed
 lunges; swapped connectivity escapes 68%.** Same seed, same runs, reproducible from one number.

@@ -140,8 +140,8 @@ export default function PitchPage() {
       </div>
       <div className="docCards">{circuit.map((card) => <article key={card.tag[0]}><span><Bi en={card.tag[0]} zh={card.tag[1]}/></span><h3>{card.value}</h3><p><Bi en={card.label[0]} zh={card.label[1]}/></p></article>)}</div>
       <div className="docNote"><b><Bi en="THE NUMBERS — " zh="那些数字——"/></b><Bi
-        en="LC4 carries 2,442 synapses and LPLC2 carries 1,366; together they account for roughly 99.6% of the Giant Fiber's visual input. Source: Ache et al. 2019 / MaleCNS v1.0."
-        zh="LC4 有 2,442 个突触，LPLC2 有 1,366 个；两者合计约占 Giant Fiber 视觉输入的 99.6%。来源：Ache et al. 2019 / MaleCNS v1.0。"/></div>
+        en="LC4 carries 2,442 synapses and LPLC2 carries 1,366 (counts from Ache et al. 2019, FAFB); together they account for roughly 99.6% of the Giant Fiber's visual input in the MaleCNS v1.0 connectome."
+        zh="LC4 有 2,442 个突触，LPLC2 有 1,366 个（计数来自 Ache et al. 2019，FAFB 数据集）；在 MaleCNS v1.0 连接组中，两者合计约占 Giant Fiber 视觉输入的 99.6%。"/></div>
     </section>
 
     <section className="docSection">
