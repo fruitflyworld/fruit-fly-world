@@ -23,7 +23,7 @@ const guards: { title: Bilingual; body: Bilingual }[] = [
   { title: ["NOT TRANSFERABLE", "不可转让"], body: ["The contract blocks transfer, approval, listing and gifting. One wallet, one Passport, permanently — which also means no secondary market and no floor price.", "合约禁止转让、授权、挂单和赠予。一个钱包一份护照，永久有效——这同时意味着没有二级市场，也没有地板价。"] },
   { title: ["NO CUSTODY, NO GAS FOR YOU", "不托管，你不用付 gas"], body: ["Signing in is a signature, not a transaction. The site never takes custody of anything and never asks for a private key.", "登录只是一次签名，不是一笔交易。本站从不托管任何东西，也从不索要私钥。"] },
   { title: ["NO TOKEN, NO YIELD", "没有代币，没有收益"], body: ["There is no token, no pool, no percentage and no date. The Passport records participation; it is not an investment and nothing here is an offer of a return.", "没有代币、没有池子、没有比例、没有时间表。护照记录的是参与，不是投资标的，本页也不构成任何收益要约。"] },
-  { title: ["THE MODEL IS PUBLIC", "模型是公开的"], body: ["The escape circuit, its synapse counts, the control experiment and the game's rules are all readable — you can reproduce the numbers instead of taking them on faith.", "逃脱回路、它的突触数、对照实验和游戏规则全部可读——你可以把数字复现出来，而不必凭信。"] }
+  { title: ["THE MODEL IS PUBLIC", "模型是公开的"], body: ["The escape circuit, its synapse counts, the wiring check and the game's rules are all readable — you can reproduce the numbers instead of taking them on faith.", "逃脱回路、它的突触数、连线核对和游戏规则全部可读——你可以把数字复现出来，而不必凭信。"] }
 ];
 
 export default function ParticipatePage() {
@@ -99,7 +99,7 @@ export default function ParticipatePage() {
     <section className="docBoundary">
       <h2><Bi en="Status, stated plainly." zh="状态，直说。"/></h2>
       <div>
-        <article><b><Bi en="LIVE NOW" zh="现在已上线"/></b><p><Bi en="The playable lineage game, the connectome-inspired escape model, the reproducible control experiment, the deployed Genesis Passport and the documented agent interface." zh="可玩的果蝇血统游戏、受连接组启发的逃脱模型、可复现的对照实验、已部署的 Genesis 护照，以及有文档的 agent 接口。"/></p></article>
+        <article><b><Bi en="LIVE NOW" zh="现在已上线"/></b><p><Bi en="The playable lineage game, the connectome-inspired escape model, the reproducible wiring check, the deployed Genesis Passport and the documented agent interface." zh="可玩的果蝇血统游戏、受连接组启发的逃脱模型、可复现的连线核对、已部署的 Genesis 护照，以及有文档的 agent 接口。"/></p></article>
         <article><b><Bi en="NEXT" zh="接下来"/></b><p><Bi en="Deeper mutation behaviour, multi-predator encounters, and seeded daily challenges built on the same generation loop." zh="更深入的突变行为、多捕食者遭遇，以及建立在同一套「一代」循环之上的每日种子挑战。"/></p></article>
         <article><b><Bi en="NOT A CLAIM" zh="不是宣称"/></b><p><Bi en="This is not a complete fruit-fly brain, not a neuron-by-neuron simulation, and not a financial product. No token, yield or future value is promised." zh="这不是完整的果蝇大脑，不是逐神经元的仿真，也不是金融产品。不承诺任何代币、收益或未来价值。"/></p></article>
       </div>
@@ -115,7 +115,7 @@ export default function ParticipatePage() {
     </section>
     <footer className="pitchFooter">
       <Link className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></Link>
-      <p><Bi en="The escape model, its control experiment and the game rules are public. Reproduce the numbers yourself." zh="逃脱模型、它的对照实验和游戏规则都是公开的。数字你自己复现。"/></p>
+      <p><Bi en="The escape model, its wiring check and the game rules are public. Reproduce the numbers yourself." zh="逃脱模型、它的连线核对和游戏规则都是公开的。数字你自己复现。"/></p>
       <div className="docNavLinks"><Link href="/pitch">PITCH ↗</Link><Link href="/economics">ECONOMICS ↗</Link><Link href="/">LIVE WORLD ↗</Link></div>
     </footer>
   </main>;

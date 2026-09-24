@@ -173,7 +173,10 @@ Nothing in the game is on sale.
 - Determinism: `https://fruitfly.world/play?bench=1&seed=<yours>&brain=<yours>&gens=<yours>`
   runs your configuration twice at a fixed 60 Hz and prints IDENTICAL or DIVERGED.
 - Beacon seeds: `?bench=1&seed=beacon` derives the seed from the latest Sepolia
-  block hash — a number nobody, including us, could have cherry-picked.
+  block hash, and the report links the block. Honest limit: a fresh block lands
+  every ~12 s and the page can be re-run, so beacon seeds are public and
+  verifiable but not grind-proof — treat single beacon runs as samples, not
+  verdicts.
 - The log: `FlyLabAPI.getDecisionLog()` / `FlyLabAPI.downloadDecisionLog()` in
   any open tab; `ffw-run.json` from `play.mjs`.
 

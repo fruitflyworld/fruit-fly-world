@@ -116,8 +116,8 @@ The end-of-generation screen compares your eggs against its eggs; the long game 
 
 - **Seed** — the whole world (food layout, rival draft, predator spawn) derives from one
   seed, editable in the menu (default `1337`). Same seed, same world.
-- **Connectivity toggle** — switch the escape circuit between `real` and `shuffled`
-  wiring and feel the difference in READY timing (the published experiment says it is
+- **Connectivity toggle** — switch the escape circuit between `real` and `swapped`
+  wiring and feel the difference in READY timing (the wiring check says it is
   ~0.02 s of lead time; the game lets you try to notice it).
 - **Agent drive** — `window.FlyLabAPI` exposes `getState()`, `setControl({x,y})`,
   `dash()` and `setMode("manual"|"auto"|"agent")`, so an autonomous process can play the

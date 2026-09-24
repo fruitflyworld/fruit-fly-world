@@ -24,8 +24,8 @@ const circuit: { tag: Bilingual; value: string; label: Bilingual }[] = [
 
 const trial: { tag: Bilingual; value: string; label: Bilingual }[] = [
   { tag: ["FIXED SEED", "固定种子"], value: "1337", label: ["Every trial starts from the same seed, so the run is the same run for everyone who repeats it.", "每次试验都从同一个种子开始，所以谁重复跑，跑的都是同一轮。"] },
-  { tag: ["PAIRED TRIALS", "配对试验"], value: "200", label: ["Real connectivity against shuffled connectivity, same seeds, same loomings, same predator.", "真实连接 对 打乱连接：同样的种子、同样的 looming、同样的捕食者。"] },
-  { tag: ["THE RESULT", "结果"], value: "100% vs 68%", label: ["Real connectivity escapes 100% of the time with 0.202 s of lead; shuffled escapes 68% with 0.183 s. The gap is the connectivity.", "真实连接 100% 逃脱，领先 0.202 秒；打乱连接 68%，领先 0.183 秒。差距就是连接本身。"] }
+  { tag: ["PAIRED TRIALS", "配对试验"], value: "200", label: ["Real connectivity against swapped connectivity, same seeds, same loomings, same predator.", "真实连接 对 对调连接：同样的种子、同样的 looming、同样的捕食者。"] },
+  { tag: ["THE RESULT", "结果"], value: "100% vs 68%", label: ["Real connectivity escapes 100% of the time with 0.202 s of lead; swapped escapes 68% with 0.183 s. A simplified two-channel assay: the gap says channel order matters in this circuit.", "真实连接 100% 逃脱，领先 0.202 秒；对调连接 68%，领先 0.183 秒。这是一个简化的双通道试验：差距说明的是通道顺序在这条回路里起作用。"] }
 ];
 
 const lineage: { tag: Bilingual; value: string; label: Bilingual }[] = [
@@ -37,7 +37,7 @@ const lineage: { tag: Bilingual; value: string; label: Bilingual }[] = [
 const boundary: { tag: Bilingual; value: string; label: Bilingual }[] = [
   { tag: ["WHAT IT IS", "它是什么"], value: "A MODEL", label: ["A simplified, connectome-inspired escape circuit, plus a game built on top of it.", "一条简化的、受连接组启发的逃脱回路，以及建在它上面的游戏。"] },
   { tag: ["WHAT IT ISN'T", "它不是什么"], value: "NOT A BRAIN", label: ["Not a complete fruit-fly brain, not a full FlyWire or MaleCNS runtime, and not a neuron-by-neuron simulation.", "不是完整的果蝇大脑，不是完整的 FlyWire 或 MaleCNS 运行环境，也不是逐神经元的仿真。"] },
-  { tag: ["WHAT YOU CAN CHECK", "你能核对什么"], value: "RUN IT", label: ["The control experiment ships with the game: same seed, real connectivity versus shuffled, and the numbers are reproducible.", "对照实验随游戏一起提供：同一个种子，真实连接 对 打乱连接，数字可以复现。"] }
+  { tag: ["WHAT YOU CAN CHECK", "你能核对什么"], value: "RUN IT", label: ["The wiring check ships with the game: same seed, real connectivity versus swapped, and the numbers are reproducible.", "连线核对随游戏一起提供：同一个种子，真实连接 对 对调连接，数字可以复现。"] }
 ];
 
 export default function PitchPage() {
@@ -146,12 +146,12 @@ export default function PitchPage() {
 
     <section className="docSection">
       <div className="docHead">
-        <span><Bi en="03 · THE CONTROL EXPERIMENT" zh="03 · 对照实验"/></span>
+        <span><Bi en="03 · THE WIRING CHECK" zh="03 · 连线核对"/></span>
         <div>
-          <h2><Bi en={<>Same seed.<br/><em>Real wiring vs shuffled.</em></>} zh={<>同一个种子，<br/><em>真实连接 对 打乱连接。</em></>}/></h2>
+          <h2><Bi en={<>Same seed.<br/><em>Real wiring vs swapped.</em></>} zh={<>同一个种子，<br/><em>真实连接 对 对调连接。</em></>}/></h2>
           <p><Bi
-            en="This is the part you can check without trusting us. The game ships a control experiment: run the same loomings against the real connectivity and against a shuffled version of it, and see whether the wiring is doing any work."
-            zh="这是你不用信我们就能核对的部分。游戏自带一个对照实验：让同样的 looming 分别跑真实连接和它的打乱版本，看这套接线到底有没有在起作用。"/></p>
+            en="This is the part you can check without trusting us. Run the same loomings against the real connectivity and against a version with the two channel weights swapped, and see whether the channel order is doing any work. It is a simplified two-channel assay, not an experiment on the connectome."
+            zh="这是你不用信我们就能核对的部分。让同样的 looming 分别跑真实连接和把两个通道权重对调的版本，看通道顺序到底有没有在起作用。这是一个简化的双通道试验，不是对连接组做的实验。"/></p>
         </div>
       </div>
       <div className="docCards">{trial.map((card) => <article key={card.tag[0]}><span><Bi en={card.tag[0]} zh={card.tag[1]}/></span><h3>{card.value}</h3><p><Bi en={card.label[0]} zh={card.label[1]}/></p></article>)}</div>

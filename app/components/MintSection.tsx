@@ -29,7 +29,7 @@ const passportAbi = [
 
 const missions = [
   { id: "AGENT", number: "01", title: "Bring an AI Agent", description: "A separate Agent wallet signs a one-time challenge and runs one constrained experiment. Do this once and your agent can fly the dish on its own after that.", proof: "AGENT WALLET" },
-  { id: "DISH", number: "02", title: "Survive the dish", description: "Complete one of four quests in the game: SURVIVOR (outlive a full 50s generation), FORAGER (3+ eggs in one generation), REFLEX (3 Giant Fiber escapes in one generation), or EXAMINED (an IDENTICAL double run in the exam room at ?bench=1). The quest records itself the moment you do it.", proof: "QUEST EVIDENCE FROM /PLAY" },
+  { id: "DISH", number: "02", title: "Survive the dish", description: "Complete one of four quests in the game. The real-play quests: SURVIVOR (outlive a full 50s generation), FORAGER (3+ eggs in one generation), REFLEX (3 Giant Fiber escapes in one generation). EXAMINED (an IDENTICAL double run in the exam room) is the free taste — it proves the world is deterministic, not that you survived anything. The quest records itself the moment you do it.", proof: "QUEST EVIDENCE FROM /PLAY" },
   { id: "X_QUOTE", number: "03", title: "Share the signal — required", description: "The second half of the price. Publish the quote post with your wallet-bound code, quote the campaign announcement, and follow the project account. One verified post, checked by machine: code, tags, quote, follow. No post, no free mint — for anyone.", proof: "VERIFIED QUOTE POST" }
 ];
 
@@ -37,7 +37,7 @@ const dishQuests = [
   { id: "SURVIVOR", hint: "Outlive a full 50-second generation in the dish." },
   { id: "FORAGER", hint: "Lay 3 or more eggs in one generation." },
   { id: "REFLEX", hint: "Land 3 Giant Fiber escapes in one generation." },
-  { id: "EXAMINED", hint: "Run the exam room (?bench=1) until it prints IDENTICAL." }
+  { id: "EXAMINED", hint: "Run the exam room (?bench=1) until it prints IDENTICAL. The free taste — it tests the world, not you." }
 ] as const;
 
 const passportPreviews = [

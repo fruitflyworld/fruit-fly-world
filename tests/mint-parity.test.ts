@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { freeMintUnlocked, MINT_VOUCHER_TYPE, mintVoucherTypes, shareOwed } from "../app/lib/mint";
+import { dailyMintCap, freeMintUnlocked, MINT_VOUCHER_TYPE, mintVoucherTypes, shareOwed } from "../app/lib/mint";
 
 /**
  * The signer and the contract must agree on the voucher struct down to the byte, or every
@@ -41,4 +41,16 @@ test("shareOwed marks the one-step-left state the UI and voucher both message", 
   assert.equal(shareOwed(["AGENT", "X_QUOTE"]), false);
   assert.equal(shareOwed(["X_QUOTE"]), false, "nothing is owed when no quest is done yet");
   assert.equal(shareOwed([]), false);
+});
+
+/* Daily issuance cap: the ops knob that bounds how fast a sybil wave can fill
+ * the Genesis holder list while quest evidence is client-attested. */
+test("dailyMintCap parses MINT_DAILY_CAP defensively", () => {
+  assert.equal(dailyMintCap(undefined), 40, "unset → default 40");
+  assert.equal(dailyMintCap(""), 40, "empty → default 40");
+  assert.equal(dailyMintCap("0"), 0, "0 is the explicit unlimited escape hatch");
+  assert.equal(dailyMintCap("25"), 25);
+  assert.equal(dailyMintCap("-5"), 40, "negative is invalid, not unlimited");
+  assert.equal(dailyMintCap("12.5"), 40, "non-integer is invalid");
+  assert.equal(dailyMintCap("abc"), 40, "garbage is invalid");
 });

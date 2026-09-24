@@ -4,7 +4,7 @@ import { configuredChain } from "../../../lib/chain";
 import { opaqueToken, tokenHash } from "../../../lib/canonical";
 import { transaction } from "../../../lib/server/db";
 import { smallJson } from "../../../lib/server/input";
-import { freeMintUnlocked, shareOwed } from "../../../lib/mint";
+import { dailyMintCap, freeMintUnlocked, shareOwed } from "../../../lib/mint";
 import {
   MINT_CAMPAIGN, MINT_CAMPAIGN_HASH, mintSigningConfiguration, mintVoucherTypes,
   passportPricingAbi, type MintTier
@@ -50,6 +50,19 @@ export async function POST(request: Request) {
         );
         if (!entered.rowCount) throw new Error("Complete one verified quest first");
         resolved = "participant";
+      }
+      // Daily issuance cap (MINT_DAILY_CAP, 0 = unlimited): bounds how fast a
+      // sybil wave can fill the Genesis holder list while quest evidence is
+      // still client-attested. Vouchers expire in 10 minutes, so counting
+      // issued vouchers per UTC day is a faithful-enough proxy for mints.
+      const cap = dailyMintCap(process.env.MINT_DAILY_CAP);
+      if (cap > 0) {
+        const today = await client.query<{ n: string }>(
+          "SELECT count(*) AS n FROM mint_vouchers WHERE created_at >= date_trunc('day', now())"
+        );
+        if (Number(today.rows[0]?.n ?? 0) >= cap) {
+          throw new Error("Today's mint allocation is used up — come back tomorrow");
+        }
       }
       await client.query(
         "INSERT INTO mint_vouchers(nonce,campaign_id,participant_address,tier,deadline) VALUES($1,$2,$3,$4,to_timestamp($5))",

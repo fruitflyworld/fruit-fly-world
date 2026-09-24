@@ -52,9 +52,10 @@ behavior (approach / avoid / explore / freeze) and a confidence.
 | `circuit` | **FFW-CX/0.1** — a 24-neuron spiking circuit with connectome-inspired structure, firing at 10 Hz, softmax over four motor programs. Its randomness is entirely at construction time, which is what makes it examinable. |
 | `judgment` | A System One judgment model in the slot. Free local heuristic by default; with a key the fly runs on pinned `jev-1.13.0` through the same-origin `/api/jev` proxy — bodies capped, rate-limited, key never logged, automatic fallback to the local brain on any failure. |
 
-Every decision from every brain — signals in, distribution out, behavior, confidence, danger
-read — is sealed with a content hash and written to a downloadable log (`flyline-log/1`).
-**The brain chooses; the brainstem jumps.** High-level decisions are pluggable; the reflex that
+Every decision a deciding brain makes — signals in, distribution out, behavior, confidence, danger
+read — is sealed with a content hash and written to a downloadable log (`flyline-log/1`). (The
+GENES autopilot steers by fixed weights and logs no judgment decisions — its log is empty by
+design.) **The brain chooses; the brainstem jumps.** High-level decisions are pluggable; the reflex that
 keeps you alive is not.
 
 ## The brainstem is the real biology
@@ -65,8 +66,10 @@ command cell for the escape jump: **LC4**, sensitive to angular velocity (2,442 
 visual input), and **LPLC2**, sensitive to looming (1,366 synapses). Together ~99.6% of the GF's
 visual input. In the game they are a leaky integrate-and-fire module.
 
-The control experiment ships in the menu: **real connectivity escapes 100% of telegraphed
-lunges; shuffled connectivity escapes 68%.** Same seed, same runs, reproducible from one number.
+A wiring check ships in the menu: **real connectivity escapes 100% of telegraphed
+lunges; swapped connectivity escapes 68%.** Same seed, same runs, reproducible from one number.
+It is a simplified two-channel assay — the swap moves the large weight onto the lagging channel —
+and it shows channel order matters in this circuit, nothing grander.
 Honest boundary: this is a connectome-*inspired* circuit, not a brain simulation.
 Details: [docs/neural-model.md](docs/neural-model.md).
 
@@ -80,7 +83,8 @@ brain, and compares every decision hash and every generation outcome. Bit-identi
 *that is a bug report, not a score.*
 
 First row of the table: on seed 42 the judgment layer finished with 5 eggs, the 24-neuron circuit
-with 2. One seed, not a theorem — comparable, replayable survival under identical pressure.
+with 2. (The exam room grades deterministic brains — the judgment brain here is the free local
+heuristic, not a remote API.) One seed, not a theorem — comparable, replayable survival under identical pressure.
 
 ## Agents at the door
 
@@ -106,7 +110,7 @@ completes — an import URL the operator opens once to unlock the freemint.
 | --- | --- |
 | [The essay](https://fruitfly.world/essay) | The whole system end to end, with every number measured or linked |
 | [docs/game-guide.md](docs/game-guide.md) | The lineage game at `/play` — loop, food risk, predator, mutations, reproducibility |
-| [docs/neural-model.md](docs/neural-model.md) | The GF escape circuit — state, LIF dynamics, the real-vs-shuffled experiment |
+| [docs/neural-model.md](docs/neural-model.md) | The GF escape circuit — state, LIF dynamics, the real-vs-swapped wiring check |
 | [/calibration](https://fruitfly.world/calibration) | The death-calibration experiment — do a brain's danger scores predict actual death |
 | [docs/architecture.md](docs/architecture.md) | System map — models, parity guarantees, server, compatibility surfaces |
 | [docs/economics.md](docs/economics.md) | The incentive layer — labelled design exercise, no date, nothing on sale |
@@ -140,7 +144,7 @@ brain contract, the bench, the proxy, anything unclear. Security issues go throu
 ## Status & roadmap
 
 - ✅ The lineage game — foraging, committed-predator lunges, GF escape reflex, mutation drafts
-- ✅ The brainstem — LC4 + LPLC2 → Giant Fiber, published control experiment (100% vs 68%)
+- ✅ The brainstem — LC4 + LPLC2 → Giant Fiber, published wiring check (100% vs 68% in a simplified two-channel assay)
 - ✅ Selectable brains — manual / genes / FFW-CX 24-neuron circuit, sealed decision log (`flyline-log/1`)
 - ✅ Judgment layer — free local heuristic by default; pinned `jev-1.13.0` via the `/api/jev` proxy with visible fallback
 - ✅ Determinism exam — `?bench=1` double-runs at a fixed 60 Hz and verifies bit-identical decision hashes; Mutation Draft is seeded

@@ -1,7 +1,8 @@
 // /api/beacon — a public randomness beacon for exam seeds.
 // `?seed=beacon` in the exam room derives the world seed from the latest
-// Sepolia block hash: a number nobody (including us) could have cherry-picked
-// before the run. The block is returned so anyone can verify it on an explorer.
+// Sepolia block hash. Public and verifiable, but NOT grind-proof: a fresh
+// block lands every ~12 s and the page can be re-run, so beacon runs are
+// samples, not verdicts (stated in the report UI).
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";

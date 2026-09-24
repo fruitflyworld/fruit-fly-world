@@ -88,7 +88,7 @@ const gearTable: { gear: Bilingual; generic: Bilingual; ffw: Bilingual }[] = [
   { gear: ["SINK · CONSUME", "消耗 · SINK"], generic: ["buy hardware, burn it in the mine", "买硬件，在矿里烧掉"], ffw: ["a verified mission unlocks the free rung; taking part once unlocks the half rung, permanently", "通过任务解锁免费档；参与过一次就永久解锁半价档"] },
   { gear: ["RETENTION · COME BACK", "留存 · 回来"], generic: ["the machine pays out daily, so you return to claim", "矿机每天产出，所以每天回来领"], ffw: ["a generation lasts fifty seconds and a lineage spans many of them; the cheapest rung is the one that requires showing up", "一代只有五十秒，而一条血脉横跨很多代；最便宜的那一档，恰恰要求你到场"] },
   { gear: ["SCARCITY · COMPETE", "稀缺 · 竞争"], generic: ["output floats with total hashrate — zero-sum", "产出随全网算力浮动——零和"], ffw: ["4,444 seats, one per wallet, non-transferable; and the egg count is compared against the wild type, not against another player", "4,444 个座位、一钱包一份、不可转让；而卵数是跟野生型比，不是跟另一个玩家比"] },
-  { gear: ["COMPOSABLE · ECOSYSTEM", "可组合 · 生态"], generic: ["third-party rigs, pools, dashboards", "第三方矿机、矿池、面板"], ffw: ["the escape model, its control experiment and the game rules are public code with a documented agent interface; third parties build against the same simulation", "逃脱模型、它的对照实验和游戏规则是公开代码，agent 接口有文档；第三方对着同一套仿真就能做东西"] }
+  { gear: ["COMPOSABLE · ECOSYSTEM", "可组合 · 生态"], generic: ["third-party rigs, pools, dashboards", "第三方矿机、矿池、面板"], ffw: ["the escape model, its wiring check and the game rules are public code with a documented agent interface; third parties build against the same simulation", "逃脱模型、它的连线核对和游戏规则是公开代码，agent 接口有文档；第三方对着同一套仿真就能做东西"] }
 ];
 
 /** ROADMAP: the key a pool would be split by. Every input already exists; the pool does not. */

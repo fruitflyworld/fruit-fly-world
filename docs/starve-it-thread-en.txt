@@ -27,9 +27,9 @@ POST 2 / 8 — THE NEURONS
 
 The escape reflex isn't invented. It's the real fruit-fly connectome.
 
-Two visual neurons feed the Giant Fiber — the command cell for the escape jump: LC4 (angular velocity, 2,442 synapses) and LPLC2 (looming, 1,366). Together ~99.6% of its visual input.
+Two visual neurons feed the Giant Fiber — the command cell for the escape jump: LC4 (angular velocity, 2,442 synapses) and LPLC2 (looming, 1,366). Together ~99.6% of its visual input (Ache et al. 2019).
 
-In-game it's a leaky integrate-and-fire circuit. The control experiment: real wiring escapes 100% of telegraphed lunges. Shuffled wiring: 68%.
+In-game it's a leaky integrate-and-fire circuit. The wiring check: real wiring escapes 100% of telegraphed lunges; with the two channel weights swapped, 68%. A simplified two-channel assay — it shows channel order matters in this circuit.
 
 Same seed. Same runs. One number apart.
 
@@ -71,7 +71,7 @@ Pinned versions only. Free offline brain by default. No lock-in.
 POST 5 / 8 — THE SEALED LOG
 ═══════════════════════════════════════════════════════════════════
 
-Every decision from every brain — signals in, distribution out, behavior, confidence, danger read — is sealed with a content hash and downloadable at generation's end (flyline-log/1).
+Every decision a deciding brain makes — signals in, distribution out, behavior, confidence, danger read — is sealed with a content hash and downloadable at generation's end (flyline-log/1). (The genes autopilot logs nothing by design — it makes no judgment decisions.)
 
 Not "the model said." Instead: here are the 52 decisions, hashed, with the outcome.
 

@@ -70,6 +70,19 @@ export function shareOwed(completed: readonly string[]): boolean {
   return !completed.includes("X_QUOTE") && completed.some((mission) => QUALIFYING_MISSIONS.includes(mission));
 }
 
+/** Daily cap on voucher issuance. Quest evidence is client-attested in v1, so
+ * a sybil wave could farm the Genesis holder list; capping daily issuance
+ * bounds the damage until server-side re-simulation (v2) lands. Free minters
+ * pay their own gas — this cap guards the list, not the deployer's balance.
+ * Parses MINT_DAILY_CAP: unset/invalid → 40; "0" → unlimited (ops escape
+ * hatch); otherwise a positive integer. */
+export function dailyMintCap(raw: string | undefined): number {
+  if (raw === undefined || raw === "") return 40;
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n < 0) return 40;
+  return n;
+}
+
 export const mintCopy: Record<MintState, { label: string; detail: string }> = {
   DISCONNECTED: { label: "Connect to enter", detail: "Connect a compatible wallet to choose your path into Fruit Fly World." },
   CHECKING_ELIGIBILITY: { label: "Checking access…", detail: "Reading mission proofs and Passport status." },

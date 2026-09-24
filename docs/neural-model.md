@@ -17,7 +17,7 @@ looming predator
    ├── angular velocity ──> LC4  (2,442 synapses)
    ├── angular size     ──> LPLC2 (1,366 synapses)
    │                          │
-   │                    weighted sum (real or shuffled)
+   │                    weighted sum (real or swapped)
    │                          ↓
    └───────────────> GF membrane potential (leaky integrate-and-fire)
                               │
@@ -67,13 +67,14 @@ threatening at a particular apparent size, not the largest one.
 **Integration** — the two channels combine under one of two connectivity conditions:
 
 ```text
-real:     (2442 × lc4  + 1366 × lplc2) / 3808
-shuffled: (2442 × lplc2 + 1366 × lc4)  / 3808
+real:    (2442 × lc4  + 1366 × lplc2) / 3808
+swapped: (2442 × lplc2 + 1366 × lc4)  / 3808
 ```
 
-`real` puts the large weight on the **leading** channel (velocity); `shuffled` swaps the
-weights onto the wrong channels, so the large weight rides the **lagging** channel (size).
-This is the control condition of the experiment below.
+`real` puts the large weight on the **leading** channel (velocity); `swapped` moves it onto
+the **lagging** channel (size). (The code identifier for the swapped condition is the string
+`"shuffled"` — a compatibility surface kept for saved runs and tests; in prose we call it
+what it is: two weights swapped.) This is the comparison condition of the wiring check below.
 
 **Membrane** — one leaky integrate-and-fire step:
 
@@ -100,7 +101,7 @@ The module deliberately owns **only** the neural state:
 - `tryDash` (behavior) decides *when to jump* and calls `fireGF`. The player is the escape
   decision: the circuit says READY, you press Space.
 
-## 5. The reproducible experiment
+## 5. The reproducible wiring check
 
 `simEscapeTrial(mode, seed)` ([`sim.js`](../public/play/js/sim.js)) is a single-loom assay:
 one looming strike with seed-randomized initial distance, velocity and acceleration; escape
@@ -109,7 +110,7 @@ between arms is the connectivity condition.
 
 `runExperiment(worldSeed)` runs 200 trials per arm. Pinned, reproducible result:
 
-| | real | shuffled |
+| | real | swapped |
 | --- | --- | --- |
 | escape rate | **100 %** | **68 %** |
 | mean lead time | **0.2023 s** | **0.1828 s** |
@@ -119,9 +120,16 @@ so any change to the circuit that moves the published numbers fails the build. T
 itself is deterministic per seed; `simEscapeTrial("real", 12345)` always returns
 `lead = 0.18333…`.
 
-Read this as a statement about *this model*: velocity-led wiring buys lead time over
-size-lagged wiring under a looming strike. It is connectome-inspired, connectome-referenced,
-and it is not a claim about fly behavior in the world.
+**What this check is, stated plainly — it is a demonstration, not an experiment on the
+connectome.** The model is two scalar sensory channels summed into one leaky unit. The real
+condition is *defined* as the one that puts the large weight on the leading channel, so
+real-beats-swapped holds by construction **within this model**; the specific escape rates
+(100% / 68%) are a function of the hand-set parameters (`VEL_GAIN`, `SIZE_PEAK`,
+`THRESHOLD`, leak rate). The assay also runs at a membrane leak of `15 s⁻¹`, while the
+playable game loop runs `10 s⁻¹` — the number describes the assay, not the in-game reflex.
+What the pinned numbers prove is reproducibility and sensitivity to channel order. A
+parameter-sweep showing over how wide a range real beats swapped is not yet done; until it
+is, this check should not be quoted as a headline result.
 
 ## 6. Three models, one honest boundary
 
@@ -142,6 +150,6 @@ shared code:
 - zero stimulus leaks the membrane monotonically to `< 0.01`
 - threshold crossing arms once; firing resets the membrane and enforces the refractory
   window; the unit re-arms only after it
-- real and shuffled connectivity are distinguishable and reproducible
+- real and swapped connectivity are distinguishable and reproducible
 - the assay and experiment numbers above stay pinned
 - `makeFly` carries the canonical state shape
