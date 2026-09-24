@@ -11,6 +11,21 @@ summarises it in prose.
 
 ### Added
 
+- **P5: Fly NFT + weekly race + token (contracts)** — `contracts/src/`:
+  `FlyNFT` (one lineage per token — seed, brain, five gene weights, immutable
+  at mint; recorder-writable race record; transfers lock while entered),
+  `FlyToken` (fixed 444,444,444 supply minted once, burn-only sinks), and
+  `WeeklyRace` (commit the policy hash before the draw, draw the seed from a
+  post-cutoff block, reveal against the commitment, grade within a per-week
+  pool cap, burn the entry fee). 21 new forge tests. Design-only until
+  deployed and announced
+- **P5: the weekly race server** — `POST /api/race/commit` (EIP-191 signed
+  entry; the server stores the sha256 commitment, never the plaintext policy),
+  the beacon draw (latest Sepolia block after the cutoff), `POST
+  /api/race/reveal` (must hash-match the commitment), and grading that replays
+  every revealed entry through the same vendored `world.js` — same seed for
+  all, ranks by eggs / survived generations / earliest commit. `GET /api/race`
+  returns week status and the leaderboard; grading also runs lazily on read
 - **Server-side grader** — `POST /api/exam/replay {seed, brain, gens, claim?}`:
   the server replays the deterministic lineage through the same `world.js`
   bytes the browser runs (imported from `public/` at runtime, never bundled)
