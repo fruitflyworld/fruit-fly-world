@@ -1,6 +1,16 @@
 {
   "_comment": "vendored from fruitflyworld/game — run scripts/sync-vendor.mjs check|pull. Never edit public/play directly; change it in the game repo (or sim/bench upstream) and re-sync.",
   "sources": {
+    "sim": {
+      "repo": "fruitflyworld/sim",
+      "dirEnv": "FFW_SIM_DIR",
+      "stripPrefix": "public/play/",
+      "rev": "8ca764df54382649c2193f427ea7d10d448fbd09",
+      "files": {
+        "public/play/js/world.js": "sha256:b3fcb6f04d334faa1a618e8b4d09d1af9bf7fdef9b96dcd7a5c5f64c089d9813",
+        "public/play/js/world.d.ts": "sha256:3e860ee3e08b6ae40225f9dca3ee1ccadc2093d453b55dfc21060402fa6846b4"
+      }
+    },
     "game": {
       "repo": "fruitflyworld/game",
       "dirEnv": "FFW_GAME_DIR",

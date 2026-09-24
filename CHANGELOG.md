@@ -11,6 +11,11 @@ summarises it in prose.
 
 ### Added
 
+- **Server-side grader** — `POST /api/exam/replay {seed, brain, gens, claim?}`:
+  the server replays the deterministic lineage through the same `world.js`
+  bytes the browser runs (imported from `public/` at runtime, never bundled)
+  and grades a submitted claim field by field (`match` / `mismatch`). The
+  browser proves determinism for yourself; the server proves it for everyone
 - **Cross-platform bit-exact determinism (dish/3)** — `dmath.js`: hand-rolled
   IEEE-pinned kernels (`dsin`/`dcos`/`dexp`/`datan`) for the simulation lane,
   because `Math.sin/cos/exp/atan` differ in the last ulp between architectures

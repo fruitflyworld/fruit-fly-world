@@ -91,11 +91,24 @@ https://fruitfly.world/play?bench=1&seed=42&brain=judgment&gens=2
 
 # in Node — replay the same lineage headless:
 git clone https://github.com/fruitflyworld/sim && cd sim
-node cli.mjs --seed 42 --brain judgment --gens 3
+node cli.mjs --seed 42 --brain judgment --gens=3
 
 # the 60-case golden parity suite:
 npm test          # includes tests/world-parity.test.ts
+
+# the server-side grader — the server replays the run and grades a claim:
+curl -X POST https://fruitfly.world/api/exam/replay \
+  -H 'Content-Type: application/json' \
+  -d '{"seed":42,"brain":"judgment","gens":2,
+       "claim":{"gens":[{"gen":1,"eggs":7,"logHash":"38834a61"},...]}}'
+# → { "worldVersion": "dish/3", "gens": [...], "claim": { "verdict": "match" } }
 ```
+
+The grader imports `public/play/js/world.js` from disk at runtime — the exact
+bytes the browser runs — so browser, Node CLI and server all read one file.
+Grades deterministic brains only (`genes` / `circuit` / `judgment` = the free
+local heuristic); oracle runs with a remote model are sealed, not replayed,
+and are never claimed identical.
 
 One seed is one row, not a theorem. The point is not that judgment beats the
 circuit on seed 42 — it is that anyone, on any machine, can re-run the exam
