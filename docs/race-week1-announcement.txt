@@ -1,0 +1,100 @@
+FRUIT FLY WORLD — WEEK-1 RACE ANNOUNCEMENT (single post)
+"Don't exam the model. Starve it."
+Use: X / Threads pinned-candidate · @fruitflyworld
+Date context: week 2960 · commits close Wed Sep 30 00:00 UTC · reveal closes Thu Oct 1 00:00 UTC
+Link targets: https://fruitfly.world/race (enter) · /play (game) · /essay (long form)
+Suggested visual: the 28s film MP4 (public/promo/fruit-fly-world-promo.mp4) or a
+screenshot of the /race page (phase chip + countdown + trait cards).
+
+═══════════════════════════════════════════════════════════════════
+EN — FULL (fits X long posts / Threads 500)
+═══════════════════════════════════════════════════════════════════
+
+🪰 THE WEEKLY RACE IS OPEN — Week 1 starts now.
+
+A survival exam for any brain: your own reflexes, a gene auto-pilot, a 24-neuron
+spiking circuit, or a judgment model. One dish. One seed. Same rules.
+
+How a week works:
+
+1) COMMIT — pick your brain, rank the mutation cards you want, sign once with
+your wallet. We store only the sha256 of your plan. Nobody can see it — not
+even us.
+
+2) DRAW — after the cutoff, the exam seed is derived from an Ethereum block
+mined AFTER it. Nobody has seen the paper when you hand yours in.
+
+3) GRADE — every entry is replayed on the same seed through the same world
+file the browser runs. Most eggs wins. Anyone can re-run any entry themselves,
+to the egg.
+
+✍️ Commits close Sep 30, 00:00 UTC → fruitfly.world/race
+
+No gas — commit and reveal are wallet signatures, free.
+Bragging rights only. No token, nothing on sale.
+Any token claiming to be Fruit Fly World is fake.
+
+Play the game: fruitfly.world/play
+The receipts: fruitfly.world/essay
+
+#FruitFlyWorld #StarveIt #AIagents
+
+═══════════════════════════════════════════════════════════════════
+EN — SHORT (≤280 chars, X standard)
+═══════════════════════════════════════════════════════════════════
+
+Week 1 of the Fruit Fly World race is open.
+
+Commit your fly's plan (hash only) before Sep 30 00:00 UTC. Then an Ethereum
+block nobody has seen picks the exam seed. Everyone replays the same world —
+most eggs wins, and anyone can re-run every entry.
+
+Free (signature, no gas):
+fruitfly.world/race
+
+#FruitFlyWorld #StarveIt
+
+═══════════════════════════════════════════════════════════════════
+ZH — FULL
+═══════════════════════════════════════════════════════════════════
+
+🪰 果蝇世界每周大赛，第 1 周现在开跑。
+
+这是一个给"任何大脑"的生存考试：你自己的反应、基因自动驾驶、24 神经元脉冲
+回路，或者一个判断模型。同一个培养皿，同一道题，同一套规则。
+
+一周怎么玩：
+
+1）交卷 —— 选你的大脑，给突变卡排好想要的顺序，用钱包签一次名。服务器只
+存计划的 sha256 哈希，没人能看到你的答案——连我们也看不到。
+
+2）出题 —— 截止之后，考卷种子从截止后新挖出的以太坊区块推导。你交卷时，
+世界上没人见过这张卷子。
+
+3）判卷 —— 所有参赛者在同一个种子上、跑同一个世界文件重放。卵最多的人赢。
+任何名次，任何人都能自己重跑复核，一个卵都不差。
+
+✍️ 交卷截止：9 月 30 日 00:00 UTC → fruitfly.world/race
+
+免费参加（只需钱包签名，无 gas）。
+只比荣誉：没有代币，没有任何东西在售。
+任何自称 Fruit Fly World 的代币都是假的。
+
+玩游戏：fruitfly.world/play
+完整论证：fruitfly.world/essay
+
+#FruitFlyWorld #StarveIt
+
+═══════════════════════════════════════════════════════════════════
+ZH — SHORT（转发用短版）
+═══════════════════════════════════════════════════════════════════
+
+果蝇世界每周大赛第 1 周开跑。
+
+9 月 30 日 00:00 UTC 前交卷（只交哈希，免费签名）。之后由一个没人见过的
+以太坊区块抽出考卷种子，所有人跑同一个世界，卵最多者胜。每个名次任何人
+都能自己重跑复核。
+
+fruitfly.world/race
+
+#FruitFlyWorld #StarveIt

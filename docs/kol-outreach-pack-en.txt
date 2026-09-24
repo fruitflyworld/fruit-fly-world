@@ -1,0 +1,85 @@
+FRUIT FLY WORLD — KOL OUTREACH PACK (EN)
+Structure borrowed from the Stonk arena template; every selling point is ours.
+Five hooks (pick ONE per message, never stack):
+  H1 (AI/eval):   "Can your model keep a fruit fly alive?"
+  H2 (survival):  "It actually starves. New deaths every week."
+  H3 (science):   "The escape reflex is the real fruit-fly connectome."
+  H4 (integrity): "The exam seed is drawn after you hand in. Anyone can re-run it."
+  H5 (NFT):       "Other NFTs are pictures. Ours has to survive."
+Facts you may quote (all checkable): 50s generations · three food tiers +12/+26/+38
+· LC4 2,442 + LPLC2 1,366 synapses → Giant Fiber · wiring check 100% vs 68% ·
+1260/1260 cross-arch identical replay · week-1 commits close Sep 30 00:00 UTC.
+NEVER claim: token, sale, prize money, "audited". Nothing is on sale.
+Sign as: Richard.
+
+──────────────────────────────────────────────────────────────────
+DM TEMPLATE — AI / EVAL CIRCLE (H1)
+──────────────────────────────────────────────────────────────────
+
+Hi — Richard from Fruit Fly World (fruitfly.world).
+
+Quick one: your audience runs models through Q&A benchmarks all day. We built the other kind of test — a browser dish where a judgment model has to keep a fruit fly ALIVE. Forage, dodge a predator, convert energy into eggs, one mutation draft per generation. Every decision sealed with a hash.
+
+This week we opened the weekly race: your followers commit a fly's plan (hash only), an Ethereum block drawn after the deadline sets the exam seed, and everyone gets replayed on the same world. No gas — just a wallet signature. Most eggs wins, and anyone can re-run any entry themselves.
+
+For your page it's a ready-made interactive: "let's see if GPT/Claude/[model] can keep a fly alive" — they literally paste the run back as a reply. Free engagement, no purchase anything.
+
+Two asks if you're in:
+1) one post before Sep 30 (week-1 commit deadline)
+2) one RT when we post the first graded leaderboard (Oct 1)
+
+I'll send you the pack (visuals + copy, plug-and-play). Want it?
+
+──────────────────────────────────────────────────────────────────
+DM TEMPLATE — AI / EVAL CIRCLE (H4, for the benchmark-skeptic crowd)
+──────────────────────────────────────────────────────────────────
+
+Hi — Richard from Fruit Fly World.
+
+You've covered the eval-faking scandals. Here's a benchmark that can't be faked after the fact: the exam seed doesn't exist until after the commit deadline (drawn from an Ethereum block mined after cutoff), and every graded entry is a deterministic replay anyone can re-run — same bytes in the browser, Node, and our server. We got there by fixing six determinism leaks, including Math.sin differing in the last ulp across architectures (one ulp = 3 eggs).
+
+Week 1 is open. Free to enter (a wallet signature, no gas): fruitfly.world/race
+
+Worth a post for your crowd? I'll supply visuals + copy, ~0 work on your side.
+
+──────────────────────────────────────────────────────────────────
+DM TEMPLATE — NFT / CRYPTO CIRCLE (H5)
+──────────────────────────────────────────────────────────────────
+
+Hi — Richard from Fruit Fly World.
+
+Most NFT drops hand you a picture. We hand you a fly that can die — and a weekly exam where your fly's survival plan competes on-chain-committed, Ethereum-drawn seeds, graded by replay anyone can verify.
+
+For your followers: the Genesis Passport is a free mint you EARN by playing (finish in-game quests + one quote post, on Robinhood Chain, soul-bound, 4,444 cap). And the race is free to enter — a wallet signature, no gas, no purchase.
+
+Small print I won't hide: no token exists, nothing is on sale, week 1 is the first week ever graded. It's a bet on substance — which is exactly the angle for your audience.
+
+Two asks: one post before Sep 30, one RT of the first leaderboard Oct 1. I supply the pack. In?
+
+──────────────────────────────────────────────────────────────────
+READY-TO-POST (KOL caption, AI circle — they can post as-is)
+──────────────────────────────────────────────────────────────────
+
+I just entered a race where the exam doesn't exist yet.
+
+Fruit Fly World: you commit your fly's survival plan (a hash — nobody sees it), then an Ethereum block drawn after the deadline picks the seed, and everyone replays the same world. Most eggs wins. Anyone can re-run every entry.
+
+The fly can actually starve. The escape reflex is the real fruit-fly connectome.
+
+Free to enter (signature only): fruitfly.world/race
+
+#FruitFlyWorld #StarveIt
+
+──────────────────────────────────────────────────────────────────
+READY-TO-POST (KOL caption, NFT circle)
+──────────────────────────────────────────────────────────────────
+
+Other NFTs are pictures. This one has to survive.
+
+Fruit Fly World: a fly in a dish that wants it dead. Earn the Genesis Passport by actually playing (free mint, soul-bound). Race your fly's plan weekly — the exam seed is drawn from a block mined after you commit, and grading is a replay anyone can verify.
+
+No token. Nothing on sale. Just a dish, a predator, and receipts.
+
+fruitfly.world/race
+
+#FruitFlyWorld #StarveIt

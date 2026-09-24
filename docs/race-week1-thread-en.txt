@@ -1,0 +1,119 @@
+FRUIT FLY WORLD — WEEK-1 RACE LAUNCH THREAD (EN)
+"Don't exam the model. Starve it."
+Platform: X (each post ≤280 chars) — also fits Threads
+Posted by: @fruitflyworld · Target: AI/eval crowd + crypto-curious
+Link targets: /race (enter) · /play (game) · /essay (long form) · /promo (film)
+Suggested visuals —
+  Post 1 → 28s film MP4 or gameplay GIF;
+  Post 4 → screenshot of the /race page (trait cards + countdown);
+  Post 5 → screenshot of a bench report printing IDENTICAL;
+  Post 6 → the wiring-check graphic (real vs swapped: 100% vs 68%).
+
+═══════════════════════════════════════════════════════════════════
+POST 1 / 8 — THE OPENING
+═══════════════════════════════════════════════════════════════════
+
+Week 1 of the Fruit Fly World race starts today.
+
+Hand in your fly's survival plan before anyone has seen the exam. An Ethereum block drawn after the deadline sets the paper. Everyone replays the same world. Most eggs wins.
+
+Don't exam the model. Starve it.
+
+Enter: fruitfly.world/race
+
+#FruitFlyWorld #StarveIt
+
+═══════════════════════════════════════════════════════════════════
+POST 2 / 8 — THE EXAM
+═══════════════════════════════════════════════════════════════════
+
+The exam is a dish that wants you dead.
+
+50-second generations. Three foods: sugar (+12, safe), yeast (+26, risky), rot (+38, but it exposes you for 6 seconds). A predator that telegraphs its lunge. Energy becomes eggs. Death ends a generation — not the lineage.
+
+That's the paper. Every week, a new one.
+
+fruitfly.world/play
+
+═══════════════════════════════════════════════════════════════════
+POST 3 / 8 — THE BRAIN SLOT
+═══════════════════════════════════════════════════════════════════
+
+The fly's brain is a slot. Four brains, one dish:
+
+• manual — you. the baseline.
+• genes — fixed weights, the wild type
+• circuit — 24 spiking neurons, connectome-inspired
+• judgment — a System One judgment layer
+
+The race lane grades deterministic brains only, so every entry replays bit-exact. Oracle (remote-model) runs exist, but they race sealed, never graded.
+
+/race
+
+═══════════════════════════════════════════════════════════════════
+POST 4 / 8 — WHY YOU CAN'T CHEAT
+═══════════════════════════════════════════════════════════════════
+
+You commit before the paper exists.
+
+1. Commit: your brain + ranked mutation picks, signed. Server stores only the sha256.
+2. Draw: the seed comes from an Ethereum block mined AFTER the cutoff.
+3. Reveal: your published plan must hash to your commitment, or the entry is void.
+
+Plans are ordered trait lists, not code — nothing untrusted runs on our server.
+
+/race
+
+═══════════════════════════════════════════════════════════════════
+POST 5 / 8 — THE RECEIPTS
+═══════════════════════════════════════════════════════════════════
+
+Why "anyone can re-run it" is a fact, not a slogan:
+
+Same seed + same brain = byte-identical decision logs on arm64 Chrome, x64 Node, and our server. 1260/1260 field checks identical.
+
+The war story: Math.sin differs in the last ulp between architectures. One ulp amplified into a 3-egg divergence. We hand-rolled IEEE-pinned kernels to kill it.
+
+fruitfly.world/essay
+
+═══════════════════════════════════════════════════════════════════
+POST 6 / 8 — THE BRAINSTEM
+═══════════════════════════════════════════════════════════════════
+
+Under every brain sits a reflex we didn't invent.
+
+In the real fruit-fly connectome, two visual neurons feed the Giant Fiber — the escape-jump command cell: LC4 (angular velocity, 2,442 synapses) and LPLC2 (looming, 1,366). ~99.6% of its visual input.
+
+Wiring check, same seed, 200 encounters: real wiring escapes 100%, swapped 68%.
+
+The brain chooses. The brainstem jumps.
+
+═══════════════════════════════════════════════════════════════════
+POST 7 / 8 — WEEK 1 LOGISTICS
+═══════════════════════════════════════════════════════════════════
+
+Week 1, open now:
+
+✍️ Commits close Wed Sep 30, 00:00 UTC
+🎲 Draw + reveal: last 24h (to Oct 1, 00:00 UTC)
+🏆 Rank: eggs → survived generations → earliest commit
+💸 Cost: a wallet signature. No gas, no entry fee, no purchase
+🏅 Prize: bragging rights and a public, recomputable record
+
+Enter: fruitfly.world/race
+
+═══════════════════════════════════════════════════════════════════
+POST 8 / 8 — THE BOUNDARIES
+═══════════════════════════════════════════════════════════════════
+
+Honest small print:
+
+No week has been graded yet — week 1 is the first. The grading operator is trusted but auditable: re-run any entry yourself (github.com/fruitflyworld/sim).
+
+No token. Nothing on sale. Any token claiming to be Fruit Fly World is fake.
+
+Play: fruitfly.world/play
+Enter: fruitfly.world/race
+Watch: fruitfly.world/promo
+
+#FruitFlyWorld #StarveIt #AIagents
