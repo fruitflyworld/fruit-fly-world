@@ -1,5 +1,5 @@
 {
-  "_comment": "vendored from fruitflyworld/game — run scripts/sync-vendor.mjs check|pull. Never edit public/play directly; change it in the game repo (or sim/bench upstream) and re-sync.",
+  "_comment": "vendored from fruitflyworld/game \u2014 run scripts/sync-vendor.mjs check|pull. Never edit public/play directly; change it in the game repo (or sim/bench upstream) and re-sync.",
   "sources": {
     "sim": {
       "repo": "fruitflyworld/sim",
@@ -15,9 +15,9 @@
       "repo": "fruitflyworld/game",
       "dirEnv": "FFW_GAME_DIR",
       "stripPrefix": "public/play/",
-      "rev": "90bff0df1d7f4488b22dd669ab8a9cf87443ea1e",
+      "rev": "9b2a83d1ede7dd60fcad6003005787d4814e5fd1",
       "files": {
-        "public/play/index.html": "sha256:b0fe4ae50f3f617d69958f2620a58d4fa54f7e1b5b5fba371c4d68628c6b1e6f",
+        "public/play/index.html": "sha256:88bcf314848e47801b9b5e7516f1aa11fce3ed29ea2124eed5435c624b9f69e6",
         "public/play/style.css": "sha256:cff50851025c09620e7b6dd9926c9ae91ddb8c5b67e923cd7a38c3c097a18425",
         "public/play/vendor/phaser.min.js": "sha256:62081f6a1b51d040473f919ffedef9009953c20833518e146da5a8d1c9405ea8",
         "public/play/js/audio.js": "sha256:4b91e75cc110aae91b579b26680c763fecc3d44f9d7f4c37f268f2ee95d51399",
@@ -41,10 +41,10 @@
         "public/play/js/gf-neuron.js": "sha256:3760be10a5c234cc3cab8120824c925cab0e33bc8b8e104d4d925cd34492f29f",
         "public/play/js/main.js": "sha256:d2542470e17b2c4c7977fff4d9d1bdcf3c1a65eb10b4d06ffb596ec56fd9ff60",
         "public/play/js/scene-boot.js": "sha256:c78e043a54d31d6999360a0235a35d98f409802c99e99963732044980351c78d",
-        "public/play/js/scene-game.js": "sha256:6852391f36a5637063b4f8d383c25378324d66a540f58fa915ffd0a20914c4be",
-        "public/play/js/sim.d.ts": "sha256:7f3a462216e4a1ebd269a75ee225372584db90693b8d5eaac59c7625e596d92e",
-        "public/play/js/sim.js": "sha256:17a5fbe52b621b7d053712f68e004ce73e0e883a34b70d492a0083244e3ff5bd",
-        "public/play/js/ui.js": "sha256:71b5bab530bfbbf39e199a17dbe04384ab207452829e8f2a061b302f6be57c77"
+        "public/play/js/scene-game.js": "sha256:c368a9d6f179f5a9eb5b7654a7142dab64e3ea55294562e19913a153933dcc63",
+        "public/play/js/sim.d.ts": "sha256:7be8170d14fe04dbdeaa86c29e7a54d36c6f86f1404ebf9ab356ff3b5caf5a87",
+        "public/play/js/sim.js": "sha256:d7311d9f27edd7bdc52fcaae35d897a88e40c1c2586c9fba9dcc660090571733",
+        "public/play/js/ui.js": "sha256:f9e6d7f4a82881f531779d899eaa805974c86a013997e1d6ee03fd2f69cdda52"
       }
     }
   }
