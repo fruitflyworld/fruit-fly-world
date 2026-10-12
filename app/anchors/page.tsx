@@ -1,9 +1,26 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { readFileSync } from "node:fs";
 import { Bi } from "../components/Bi";
-import { ANCHORS, explorerUrl, memoFor } from "../lib/anchors";
+import { ANCHORS, explorerUrl, memoFor, type Anchor } from "../lib/anchors";
 import { TOKEN } from "../lib/token";
-import status from "../../anchors/status.json";
+import committedStatus from "../../anchors/status.json";
+
+/**
+ * The daily anchor job writes on chain from the server, outside the release directory, so that a
+ * deploy cannot wipe the record. This page therefore reads the live files when they exist and falls
+ * back to the committed snapshot — which is what CI enforces — everywhere else (a fresh clone, a
+ * build, a reviewer reading the repository).
+ */
+export const dynamic = "force-dynamic";
+
+const RUNTIME_MANIFEST = process.env.ANCHORS_RUNTIME_FILE || "/srv/fruit-fly-world/anchors.json";
+const RUNTIME_STATUS = process.env.ANCHORS_STATUS_FILE || "/srv/fruit-fly-world/anchors-status.json";
+
+type StatusEntry = { season: number; ok: boolean; problem: string | null };
+const readJson = <T,>(file: string): T | null => {
+  try { return JSON.parse(readFileSync(file, "utf8")) as T; } catch { return null; }
+};
 
 export const metadata: Metadata = {
   title: "Daily anchors — Fruit Fly World",
@@ -12,11 +29,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/anchors" }
 };
 
-const verified = new Map(
-  (status.entries as { season: number; ok: boolean; problem: string | null }[]).map((e) => [e.season, e])
-);
-
 export default function AnchorsPage() {
+  const runtimeManifest = readJson<{ anchors: Anchor[] }>(RUNTIME_MANIFEST);
+  const live = Boolean(runtimeManifest?.anchors?.length);
+  const anchors: Anchor[] = live ? runtimeManifest!.anchors : ANCHORS;
+  const runtimeStatus = readJson<{ entries: StatusEntry[] }>(RUNTIME_STATUS);
+  const verified = new Map(((runtimeStatus?.entries ?? committedStatus.entries) as StatusEntry[]).map((e) => [e.season, e]));
+
   return <main className="pitchPage docPage">
     <nav className="pitchNav docNav">
       <Link className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></Link>
@@ -30,7 +49,7 @@ export default function AnchorsPage() {
         en={<>Every closed UTC day, the day&apos;s last sealed chain head is written on chain as a memo. Recompute the day from the code and you get the same hash — or you have caught us. That is the whole point: the site can be changed, the chain cannot.</>}
       /></p>
       <div className="pitchPromise">
-        <span><Bi en={`${ANCHORS.length} ANCHORED DAY${ANCHORS.length === 1 ? "" : "S"}`} /></span>
+        <span><Bi en={`${anchors.length} ANCHORED DAY${anchors.length === 1 ? "" : "S"}`} /></span>
         <span><Bi en="SHA-256 FROM SEASON 3" /></span>
         <span><Bi en="RECOMPUTABLE BY ANYONE" /></span>
       </div>
@@ -47,14 +66,14 @@ export default function AnchorsPage() {
         </div>
       </div>
 
-      {ANCHORS.length === 0
+      {anchors.length === 0
         ? <div className="docNote">
           <b>NO ANCHORS YET — </b>
           the first one is written once the next UTC day closes (00:00 UTC), from the project&apos;s anchor wallet.
           Until then there is nothing on chain to point at, and this page says so instead of showing an empty table as if it were a result.
           Seasons 0 and 1 have already closed and their heads are recomputable from this repository today.
         </div>
-        : <div className="docLadder">{ANCHORS.map((anchor) => {
+        : <div className="docLadder">{anchors.map((anchor) => {
           const check = verified.get(anchor.season);
           const diverged = check ? !check.ok : false;
           return <article key={anchor.season}>
@@ -83,13 +102,19 @@ export default function AnchorsPage() {
         fails if a hash disagrees. A divergence is never silently re-anchored — it is marked here in red.
       </div>
       <div className="docNote">
+        <b>WHERE THIS LIST COMES FROM — </b>
+        {live
+          ? "the site's server, which is where the daily job appends each confirmed memo. The same file is published in the repository as anchors/anchors.json, and CI recomputes every entry in it on every push."
+          : "the committed snapshot in this repository (anchors/anchors.json). The live list appears here as soon as the server has anchored its first day."}
+      </div>
+      <div className="docNote">
         <b>ANCHOR WALLET — </b>
         <code>{TOKEN.anchorWallet}</code> — the only key that writes these memos. It holds a few
         cents of SOL for fees and nothing else, and every memo it has ever sent is listed above.
       </div>
       <div className="docNote">
         <b>MEMO FORMAT — </b>
-        <code>{ANCHORS.length ? memoFor(ANCHORS[ANCHORS.length - 1].season, ANCHORS[ANCHORS.length - 1].chainHash) : memoFor(0, "55bdf958")}</code>
+        <code>{anchors.length ? memoFor(anchors[anchors.length - 1].season, anchors[anchors.length - 1].chainHash) : memoFor(0, "55bdf958")}</code>
         {" "}(the latest entry, or season 0&apos;s head before the first anchor lands)
       </div>
     </section>

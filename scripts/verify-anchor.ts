@@ -12,7 +12,7 @@
 
 import { Connection } from "@solana/web3.js";
 import { readMemo } from "./solana-memo";
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { ANCHORS, checkManifest, parseMemo, recomputeDay, type Anchor } from "../app/lib/anchors";
 
@@ -25,10 +25,16 @@ const RPC: Record<string, string> = {
 
 async function main() {
   const day = arg("day");
+  const manifestPath = arg("manifest");
+  const statusPath = arg("status") || path.join(process.cwd(), "anchors", "status.json");
+  /** The runtime manifest when the server passes one, else the committed snapshot. */
+  const pool: Anchor[] = manifestPath
+    ? (() => { try { return (JSON.parse(readFileSync(manifestPath, "utf8")).anchors ?? []) as Anchor[]; } catch { return []; } })()
+    : ANCHORS;
 
   const selected = day
-    ? ANCHORS.filter((a) => a.date === day || String(a.season) === day)
-    : ANCHORS;
+    ? pool.filter((a) => a.date === day || String(a.season) === day)
+    : pool;
 
   if (!selected.length) {
     console.log(day ? `no anchor recorded for ${day}.` : "no anchors recorded yet — nothing to verify.");
@@ -80,10 +86,10 @@ async function main() {
     const status = {
       _comment: "Written by `npm run verify:anchors -- --write`. The page at /anchors renders this; CI (tests/anchors.test.ts) recomputes every anchor and fails if this file is stale or wrong.",
       verifiedAt: new Date().toISOString(),
-      entries: checkManifest(ANCHORS).map((c) => ({ season: c.season, date: c.date, ok: c.ok, recomputed: c.recomputed, problem: c.problem ?? null }))
+      entries: checkManifest(pool).map((c) => ({ season: c.season, date: c.date, ok: c.ok, recomputed: c.recomputed, problem: c.problem ?? null }))
     };
-    writeFileSync(path.join(process.cwd(), "anchors", "status.json"), JSON.stringify(status, null, 2) + "\n");
-    console.log("recorded anchors/status.json");
+    writeFileSync(statusPath, JSON.stringify(status, null, 2) + "\n");
+    console.log(`recorded ${statusPath}`);
   }
 
   process.exit(failures === 0 ? 0 : 1);

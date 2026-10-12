@@ -20,7 +20,6 @@ import { buildMemoTransaction, memoFromSerialized, signAndVerifyLocally } from "
 import { ANCHORS, LAST_TICK_OF_SEASON, memoFor, recomputeDay, type Anchor } from "../app/lib/anchors";
 import { seasonClock, EPOCH_MS, TICK_MS, TICKS_PER_SEASON } from "../app/lib/market/fly";
 
-const MANIFEST = path.join(process.cwd(), "anchors", "anchors.json");
 const RPC: Record<string, string> = {
   solana: process.env.SOLANA_RPC_URL || "https://api.mainnet-beta.solana.com",
   "solana-devnet": process.env.SOLANA_DEVNET_RPC_URL || "https://api.devnet.solana.com"
@@ -31,6 +30,9 @@ const arg = (name: string): string | undefined => {
   return i >= 0 ? process.argv[i + 1] : undefined;
 };
 const flag = (name: string) => process.argv.includes(`--${name}`);
+
+/** The manifest to read and append to. The server points this outside the release dir. */
+const MANIFEST = arg("manifest") || path.join(process.cwd(), "anchors", "anchors.json");
 
 /** `--day` accepts a date (2026-10-10) or a season number (0). */
 function seasonFromDay(day: string): number {
@@ -63,8 +65,9 @@ async function main() {
   }
 
   // 2. One anchor per day.
-  if (ANCHORS.some((a) => a.season === season)) {
-    console.error(`season ${season} is already anchored (${ANCHORS.find((a) => a.season === season)!.tx}). Anchors are never rewritten.`);
+  const existing: Anchor[] = (() => { try { return (JSON.parse(readFileSync(MANIFEST, "utf8")).anchors ?? []) as Anchor[]; } catch { return ANCHORS; } })();
+if (existing.some((a) => a.season === season)) {
+    console.error(`season ${season} is already anchored (${existing.find((a) => a.season === season)!.tx}). Anchors are never rewritten.`);
     process.exit(2);
   }
 
