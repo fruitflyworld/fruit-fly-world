@@ -32,13 +32,16 @@ tested; the terms are not settled.
 | [`weekly-race.md`](weekly-race.md) | The race protocol — signed commit, beacon draw, replay grading |
 | [`economics.md`](economics.md) | The incentive layer as a labelled design exercise — no date, nothing on sale |
 
-## Records and outreach
+## Records
 
 | Doc | Read it for |
 | --- | --- |
-| [`review-2026-09-24.md`](review-2026-09-24.md) | The dated external-review snapshot: what was live, what was design-only, what was open — kept as written, links and all |
-| `race-week1-*.txt`, `genesis-thread-*.txt`, `kol-outreach-pack-*.txt`, `starve-it-*.txt` | Announcement drafts and threads (EN/ZH) for past campaign weeks |
 | [`legacy/`](legacy/) | Superseded material, kept so links and history survive: the old Fly Lab prototype and the Chinese-language Jev-week brief |
+
+Marketing drafts, outreach packs, announcement threads and the dated external-review snapshot are
+**not** in this public repository. They live in the organisation's private `ops` repository, because
+a public marketing script is a liability: it tells a reader exactly which claims are choreography.
+If a document here ever links to one of them, the link is a bug.
 
 ## Conventions
 
@@ -46,5 +49,5 @@ tested; the terms are not settled.
   "written and tested, not live" — never in the present tense next to something live.
 - **Numbers carry their source.** If a doc quotes a measurement (escape rates, test counts, hash
   chains), the test or endpoint that produced it is named in the same sentence.
-- **Dated files are history.** Files named with a date (`review-2026-09-24.md`) are snapshots and
-  are not updated afterwards; the live status lives in the README.
+- **Marketing material is private.** Announcement drafts, KOL packs, giveaway lists and dated review
+  snapshots go to `ops`, never here. `AGENTS.md` records the rule so coding agents follow it too.

@@ -1,5 +1,18 @@
 # AGENTS.md — rules for AI agents editing this repo
 
+## What never belongs in this public repository
+
+Marketing drafts, KOL outreach packs, announcement threads, giveaway or airdrop lists, and dated
+external-review snapshots. They live in the organisation's private `ops` repository.
+
+- **English only** in tracked files. The site's own language is a product decision; the repository's
+  working language is English.
+- Never add a secret, a key, an `.env` file, a server address or a hosting-city reference.
+- If a doc here links to something private, delete the link — do not "just link it once".
+
+The reason is not tidiness: a public marketing script tells a reviewer exactly which claims are
+choreography, and a leaked wallet list is somebody's safety.
+
 ## Layout
 
 - `app/` — the Next.js site (pages, API routes, mint/mission server logic)
