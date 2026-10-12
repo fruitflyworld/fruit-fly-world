@@ -351,8 +351,8 @@ export default function RaceSection() {
         <CopyBox
           label="RE-RUN ANY GRADED LINEAGE"
           text={status.draw
-            ? `git clone https://github.com/fruitflyworld/sim && cd sim\nnode cli.mjs --seed ${status.draw.seed} --brain judgment --gens=${status.worldGens}`
-            : "git clone https://github.com/fruitflyworld/sim && cd sim\nnode cli.mjs --seed <draw.seed> --brain <brain> --gens=3"}
+            ? `git clone https://github.com/musefly-ai/sim && cd sim\nnode cli.mjs --seed ${status.draw.seed} --brain judgment --gens=${status.worldGens}`
+            : "git clone https://github.com/musefly-ai/sim && cd sim\nnode cli.mjs --seed <draw.seed> --brain <brain> --gens=3"}
           note="Eggs must match the leaderboard row, to the egg. The server replays the same vendored world.js bytes the browser runs."
         />
         <p className="raceMuted">Bragging rights only — no token, no prize pool attached to this board yet. When a week is graded, anyone can recompute every row from the public draw seed.</p>

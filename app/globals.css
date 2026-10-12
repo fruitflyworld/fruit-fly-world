@@ -917,12 +917,6 @@ h1,h2{margin:20px 0;letter-spacing:-.065em;line-height:.88}h1{font-size:clamp(60
 }
 
 /* Economics + participation documents */
-.biZh{display:none}
-html[data-lang="zh"] .biEn{display:none}
-html[data-lang="zh"] .biZh{display:inline}
-.langToggle{display:flex;padding:3px;border:1px solid var(--line);background:#0b110c}
-.langToggle button{padding:7px 10px;border:0;background:transparent;color:#8d9889;font:500 10px DM Mono,monospace;letter-spacing:.08em}
-.langToggle button.on{background:var(--acid);color:#091006}
 .docNavEnd{display:flex;align-items:center;gap:18px}
 .docClock{border-bottom:1px solid var(--line);background:#070b08}
 .docClockPulse{display:flex;align-items:center;gap:9px;padding:14px max(5vw,32px);border-bottom:1px solid var(--line);color:#7c8878;font:9px DM Mono,monospace;letter-spacing:.12em}

@@ -28,14 +28,14 @@ const beats = [
   ["00:11", "THE RECEIPTS", "Every signal in, one behavior out — sealed with a content hash, downloadable at the end of every generation."],
   ["00:15", "THE BRAINS", "The fly's brain is a slot: your hands, the genes auto-pilot, a 24-neuron spiking circuit, or a judgment model."],
   ["00:18", "THE EXAM", "Same seed, run twice at a fixed 60 Hz. Identical decision hashes or it's a bug report, not a score."],
-  ["00:24", "THE DOOR", "fruitfly.world/play — no install, no account, no wallet."]
+  ["00:24", "THE DOOR", "fruitfly.world — no install, no account, no wallet."]
 ];
 
 export default function PromoPage() {
   return <main className="promoPage">
     <nav className="promoNav">
       <Link className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></Link>
-      <div><Link href="/play">PLAY THE GAME</Link><Link href="/">← BACK TO THE WORLD</Link></div>
+      <div><Link href="/fly/dusty">SEE DUSTY LIVE</Link><Link href="/">← BACK TO THE WORLD</Link></div>
     </nav>
 
     <header className="promoHead">
@@ -63,8 +63,7 @@ export default function PromoPage() {
     </section>
 
     <section className="promoFinal">
-      <Link className="primary" href="/play">PLAY IT YOURSELF <span>↗</span></Link>
-      <Link className="secondary" href="/play?bench=1&seed=42&brain=judgment&gens=2">RUN THE EXAM <span>→</span></Link>
+      <Link className="primary" href="/fly/dusty">SEE DUSTY LIVE <span>↗</span></Link>
     </section>
 
     <footer className="promoFooter">

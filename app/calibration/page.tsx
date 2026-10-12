@@ -28,8 +28,6 @@ export default function CalibrationPage() {
     <nav className="essayNav">
       <Link className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></Link>
       <div>
-        <Link href="/play">PLAY</Link>
-        <Link href="/play?bench=1&seed=42&brain=judgment&gens=4">RUN IT</Link>
         <Link href="/essay">ESSAY</Link>
         <Link href="/">← BACK</Link>
       </div>
@@ -51,7 +49,7 @@ export default function CalibrationPage() {
 
       <section>
         <h2>2 · The method</h2>
-        <p>Run the exam room (<Link href="/play?bench=1&seed=42&brain=judgment&gens=4"><code>?bench=1</code></Link>) with any brain. Every decision is already sealed with its situation and a content hash. For each generation we know one more thing the model never sees at decision time: <b>when the fly died</b>. Then:</p>
+        <p>Run the exam room (<code>?bench=1</code>) with any brain. Every decision is already sealed with its situation and a content hash. For each generation we know one more thing the model never sees at decision time: <b>when the fly died</b>. Then:</p>
         <ul>
           <li>A decision is <b>positive</b> if the fly died and the decision was made within <b>5 seconds</b> of death.</li>
           <li>Bucket every decision by its danger score: <code>0–1</code>, <code>1–2</code>, <code>2–3</code>.</li>
@@ -76,8 +74,8 @@ export default function CalibrationPage() {
       <section>
         <h2>4 · Run it yourself</h2>
         <ul>
-          <li><Link href="/play?bench=1&seed=42&brain=judgment&gens=4">Judgment brain · seed 42 · 4 generations</Link> — the calibration table prints on the exam report.</li>
-          <li><Link href="/play?bench=1&seed=1337&brain=circuit&gens=4">Circuit brain · seed 1337</Link> — the same test for the 24-neuron circuit.</li>
+          <li>Judgment brain · seed 42 · 4 generations — the calibration table prints on the exam report.</li>
+          <li>Circuit brain · seed 1337 — the same test for the 24-neuron circuit.</li>
           <li>Change the seed in the URL and the whole world — food, predator, drafts, deaths — changes with it, deterministically.</li>
         </ul>
         <p className="essayOut">The dish does not grade opinions. It grades the next five seconds.</p>
@@ -85,7 +83,7 @@ export default function CalibrationPage() {
     </article>
 
     <footer className="essayFooter">
-      <p>Fruit Fly World · <Link href="/">fruitfly.world</Link> · <Link href="/play?bench=1">the exam room</Link> · every decision sealed</p>
+      <p>Fruit Fly World · <Link href="/">fruitfly.world</Link> · every decision sealed</p>
     </footer>
   </main>;
 }

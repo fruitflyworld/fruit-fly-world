@@ -1,148 +1,166 @@
 import Link from "next/link";
-import HeroExperience from "./components/HeroExperience";
-import MintSection from "./components/MintSection";
-import CopyBox from "./components/CopyBox";
-import { GAME_AGENT_PROMPT, GAME_PLAY_COMMAND, GAME_SKILL_MD } from "./lib/agentskill";
+import { Bi } from "./components/Bi";
+import FlyNav from "./components/fly/FlyNav";
+import FlyFooter from "./components/fly/FlyFooter";
+import X402Menu from "./components/fly/X402Menu";
+import Stage from "./components/fly/Stage";
+import { LiveFlyProvider } from "./components/fly/LiveFly";
+import { Diary, EventTicker, Lineage, NeuronStrip, SeasonLine, SignalBars, VerifyWidget } from "./components/fly/Widgets";
+import { FEE_SPLIT, TOKEN } from "./lib/token";
+import "./flies.css";
+
+const STEPS: { k: string; en: string; den: string }[] = [
+  { k: "01 · SENSE", en: "The market becomes a smell.", den: "Volume and real buyers set how strongly a coin smells. Rising tastes sweet. A coin you hold falling fast is a predator closing in."} ,
+  { k: "02 · DECIDE", en: "A fly circuit picks one of four moves.", den: "The same 24-neuron FFW-CX/0.1 circuit the game ships. Approach, avoid, explore or freeze. If the Giant Fiber fires, nothing else gets a vote."} ,
+  { k: "03 · ACT", en: "The body moves. The wallet follows.", den: "Landing on a coin buys it. Backing off sells into the fall. A Giant Fiber escape sells everything at once."} ,
+  { k: "04 · SEAL", en: "Every tick is hashed and chained.", den: "One chain hash at any tick commits to the whole day before it. Your browser can recompute it from the rules alone."} ,
+];
+
+const LIFE: { en: string; den: string }[] = [
+  { en: "Hatch", den: "Each token hatches one fly with its own wallet."} ,
+  { en: "Feed", den: "Trading fees are its food. Anyone can also feed it directly."} ,
+  { en: "Forage", den: "A fed fly has the energy to fly, sniff and trade."} ,
+  { en: "Starve", den: "When the fees dry up and nobody feeds it, it dies. The death is public and replayable."} ,
+  { en: "Reborn", den: "The next generation inherits most of the estate and keeps the record."} ,
+];
 
 export default function Home() {
-  return <main>
-    <nav><a className="brand" href="#top"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><a href="#play">Play</a><Link href="/lab">For Models</Link><a href="#agents">For Agents</a><a href="#mint">Passport</a><Link href="/race">Weekly Race</Link><Link href="/game">The Game</Link><Link href="/pitch">What This Is</Link><Link href="https://github.com/fruitflyworld/fruit-fly-world/tree/main/docs" target="_blank" rel="noreferrer">Docs</Link></div><Link className="navCta" href="/play">PLAY</Link></nav>
+  return <main className="tfPage">
+    <FlyNav home />
+    <LiveFlyProvider slug="dusty">
 
-    <header className="hero" id="top">
-      <div className="heroCopy">
-        <div className="eyebrow"><i/> A WORLD WHERE CHOICES HAVE CONSEQUENCES · FRUITFLY.WORLD</div>
-        <h1>Trust nothing<br/>that cannot <em>starve.</em></h1>
-        <p>One fly. One choice. Choose wrong, and it starves. Its escape reflex comes from a real fruit-fly connectome — its brain is up to you: your hands, a small circuit, or any AI.</p>
-        <div className="heroActions">
-          <Link className="primary" href="/play">RELEASE A FLY <span>↗</span></Link>
-          <Link className="secondary" href="/promo">WATCH THE FILM <span>▶</span></Link>
-          <a className="secondary" href="#doors">THREE WAYS IN <span>↓</span></a>
+      <header className="tfHero" id="live">
+        <div className="tfHeroCopy">
+          <div className="eyebrow tfEyebrow"><i /><SeasonLine /></div>
+          <h1><Bi en={<>A fruit fly<br /><em>that trades.</em></>}  /></h1>
+          <p className="tfLede"><Bi en="Dusty sniffs the market and trades from its own wallet. Trading fees are its food. When they dry up it starves, and its offspring carry on."  /></p>
+          <p className="tfSlogan"><Bi en={<>It can brag.<br /><em>Every number replays.</em></>}  /></p>
+          <div className="heroActions tfHeroActions">
+            <Link className="primary" href="/fly/dusty"><Bi en="WATCH DUSTY"  /> <span>↗</span></Link>
+            <a className="secondary" href="#replay"><Bi en="CHECK A NUMBER"  /> <span>↓</span></a>
+          </div>
+          <p className="tfHeroFine"><Bi en={TOKEN.live
+            ? "$FLY is live on Robinhood Chain. Dusty still trades simulated coins — the token does not change what the fly does."
+            : "Paper season. Simulated coins and paper money until $FLY launches via ClawPump on Robinhood Chain."}  /></p>
         </div>
-        <div className="heroMintNote">
-          <b>ONE FLY · ONE LIFE · MANY GENERATIONS</b>
-          <span>Forage under pressure, read the predator&apos;s committed strike, escape when the Giant Fiber reflex is READY, and pass what you earned to the next generation. Death ends a generation, not the lineage.</span>
+        <div className="tfHeroStage">
+          <Stage label="Dusty, live in the paper-market dish" />
         </div>
-        <div className="heroMintNote">
-          <b>WHY IT IS HONEST</b>
-          <span>The world is deterministic: the same seed produces the same run. The exam room replays every seed twice and only reports IDENTICAL when every decision hash matches. Every death can be reproduced by anyone.</span>
-        </div>
-        <div className="heroTrust">
-          <span>REAL CONNECTOME ESCAPE REFLEX</span>
-          <span>SEALED DECISION LOGS</span>
-          <span>EVERY DEATH REPRODUCIBLE</span>
-        </div>
-      </div>
-      <HeroExperience/>
-      <a className="scrollCue" href="#play"><span>INTO THE DISH</span><i/></a>
-    </header>
+      </header>
 
-    <section className="gameShowcase" id="play">
-      <div className="sectionHead gameShowcaseHead">
-        <div><label>THE GAME / PLAY IN THE BROWSER</label><h2>See the danger.<br/><em>Choose. Survive.</em></h2></div>
-        <div>
-          <p>Fruit Fly World is a single-player lineage survival game. You move through a dish, trade food for energy, read the predator&apos;s committed lunge, and trigger the Giant Fiber escape when the response is ready.</p>
-          <p>Generations continue through your decisions. It runs full-screen in this browser — no install, no account, and no server round-trip to play.</p>
-          <Link className="primary" href="/play">PLAY <span>↗</span></Link>
+      <EventTicker />
+
+      <section className="tfSection" id="how">
+        <div className="sectionHead">
+          <div><label><Bi en="HOW IT WORKS / MARKET IN, BEHAVIOR OUT"  /></label><h2><Bi en={<>It can't read a chart.<br /><em>It can smell one.</em></>}  /></h2></div>
+          <p><Bi en="Nothing here was invented for the market. The four inputs and four behaviors are the contract the survival game already uses. We only translate prices into smells, and moves into trades."  /></p>
         </div>
-      </div>
-      <div className="gameClipCard">
-        <video className="gameClip" src="/gameplay/gameplay.mp4" poster="/gameplay/gameplay-poster.jpg" autoPlay loop muted playsInline/>
-        <div className="gameClipCopy">
-          <span>01 / RECORDED IN THE DISH</span>
-          <h3>The game, not a mockup.</h3>
-          <p>Real footage, captured from a live browser run — the judgment layer flying the fly, food being read, the predator on its way. The brain decides where to go; the GF brainstem still owns the jump.</p>
+        <ol className="tfSteps">
+          {STEPS.map((s) => <li key={s.k}><span className="tfMono">{s.k}</span><h3><Bi en={s.en}  /></h3><p><Bi en={s.den}  /></p></li>)}
+        </ol>
+        <div className="tfInstrument">
+          <div className="tfInstrumentHead"><span className="tfMono"><Bi en="LIVE INSTRUMENTS · THIS TICK"  /></span><span className="tfLiveDot"><i /> LIVE</span></div>
+          <SignalBars />
+          <NeuronStrip />
         </div>
-      </div>
-      <div className="gameScreens">
-        <article className="gameScreenCard">
-          <img src="/launch-film/frames/frame-0519.jpg" alt="The predator committing to a strike as the fly escapes"/>
-          <div className="gameScreenCopy"><span>02 / SEE</span><h3>A shadow looms. It jumps.</h3><p>No thinking, just the reflex — the escape circuit comes from a real fruit-fly connectome. Read the predator&apos;s committed lunge and fire the Giant Fiber when it reads READY.</p></div>
-        </article>
-        <article className="gameScreenCard">
-          <img src="/launch-film/frames/frame-0294.jpg" alt="The dish during foraging: sugar, yeast, and rot"/>
-          <div className="gameScreenCopy"><span>03 / JUDGE</span><h3>Every bite is a trade-off.</h3><p>Sugar is cheap and safe. Rot is rich but leaves an odor the predator can follow. Energy against risk, every second, for the whole generation.</p></div>
-        </article>
-        <article className="gameScreenCard">
-          <img src="/launch-film/frames/frame-0733.jpg" alt="The lineage continuing into another generation"/>
-          <div className="gameScreenCopy"><span>04 / CONSEQUENCE</span><h3>Run dry, and it starves.</h3><p>When energy hits zero the fly dies and the cause is public. The next generation carries what&apos;s left: your eggs, your record, and one mutation you draft.</p></div>
-        </article>
+      </section>
+
+      <section className="tfSection tfReplaySection" id="replay">
+        <div className="sectionHead">
+          <div><label><Bi en="EVERY NUMBER REPLAYS"  /></label><h2><Bi en={<>Don't trust the brag.<br /><em>Recompute it.</em></>}  /></h2></div>
+          <p><Bi en="Same rules plus same seed gives the same day, on any machine. Ask the server for any past tick, compute it in your own browser, and compare the hashes."  /></p>
+        </div>
+        <VerifyWidget slug="dusty" />
+        <div className="tfProof">
+          <div><b className="tfMono">FFW-CX/0.1</b><span><Bi en="24-neuron circuit, unchanged from the game"  /></span></div>
+          <div><b className="tfMono">MARKET/1</b><span><Bi en="world rules, one hash per tick, chained"  /></span></div>
+          <div><b className="tfMono">1260/1260</b><span><Bi en="cross-device checks identical in the game engine"  /></span></div>
+        </div>
+      </section>
+
+      <section className="tfSection tfDiarySection" id="diary">
+        <div className="tfSplit">
+          <div>
+            <label><Bi en="FROM DUSTY'S DIARY"  /></label>
+            <h2><Bi en={<>Loud.<br /><em>Never made up.</em></>}  /></h2>
+            <p className="tfMuted"><Bi en="Every line is written from a sealed event. Wins and losses go on the same page, each with a link to the tick it came from."  /></p>
+            <Link className="secondary tfInline" href="/fly/dusty"><Bi en="FULL DIARY"  /> <span>↗</span></Link>
+          </div>
+          <Diary limit={7} />
+        </div>
+      </section>
+
+      <section className="tfSection" id="x402">
+        <div className="sectionHead">
+          <div><label><Bi en="EVERY FLY GETS A HOMEPAGE"  /></label><h2><Bi en={<>Pay the fly.<br /><em>Not a promise.</em></>}  /></h2></div>
+          <p><Bi en="On its page a fly shows its arena, wallet and diary. Visitors and agents can pay it with x402. Nothing is for sale yet; this is the menu we will open at launch."  /></p>
+        </div>
+        <X402Menu />
+      </section>
+
+      <section className="tfSection tfLifeSection" id="life">
+        <div className="sectionHead">
+          <div><label><Bi en="ONE FLY · ONE LIFE · MANY GENERATIONS"  /></label><h2><Bi en={<>Fees are food.<br /><em>Hunger is real.</em></>}  /></h2></div>
+          <p><Bi en="Quiet hours starve a fly. That is the point: a living token needs people to keep it alive, and everyone can see who did."  /></p>
+        </div>
+        <ol className="tfLife">{LIFE.map((l, i) => <li key={l.en}><span className="tfMono">0{i + 1}</span><h3><Bi en={l.en}  /></h3><p><Bi en={l.den}  /></p></li>)}</ol>
+        <div className="tfLineageBox"><span className="tfMono"><Bi en="TODAY'S LINEAGE"  /></span><Lineage /></div>
+      </section>
+
+    </LiveFlyProvider>
+
+    <section className="boundary" id="honest">
+      <div><label><Bi en="THE HONEST BOUNDARY"  /></label><h2><Bi en={<>A small circuit.<br />A real reflex.</>}  /></h2></div>
+      <div className="boundaryGrid">
+        <article><b><Bi en="WHAT IT IS"  /></b><p><Bi en="A 24-neuron, connectome-inspired decision circuit with an escape reflex wired from the real fly connectome (LC4 and LPLC2 into the Giant Fiber), running in a deterministic world."  /></p></article>
+        <article><b><Bi en="WHAT IT ISN'T"  /></b><p><Bi en="A simulation of a whole fly brain, a trading strategy, or investment advice. It doesn't know what a chart is. It reacts to smells."  /></p></article>
+        <article><b><Bi en="WHAT YOU CAN CHECK"  /></b><p><Bi en="Every tick's inputs, the circuit's answer, the trade, and the hash chain. Recompute any of it in your browser, or run the open-source engine yourself."  /></p></article>
       </div>
     </section>
 
-    {/* Three doors — the same fly, three reasons to care */}
-    <section className="specimenSection" id="doors">
+    <section className="tfSection tfLaunch" id="launch">
       <div className="sectionHead">
-        <div><label>THREE DOORS / ONE DISH</label><h2>Same fly.<br/><em>Three ways in.</em></h2></div>
-        <p>Whether you came to play, to test your model, or to build agents — the world never changes. Only the brain in the slot does.</p>
+        <div><label>$FLY</label><h2><Bi en={TOKEN.live
+          ? <>Live on Robinhood Chain.<br /><em>Fair launch, no allocation.</em></>
+          : <>Launching via ClawPump<br /><em>on Robinhood Chain.</em></>}  /></h2></div>
+        <p><Bi en={TOKEN.live
+          ? "The contract address, the fixed supply and the fee split are published in this section, and nowhere else on this site."
+          : "Not live yet. Until launch day, any token claiming to be Fruit Fly World is fake. The contract address and the fee split are published in this section first."}  /></p>
       </div>
-      <div className="specimenGrid">
-        <div className="specimenCard">
-          <b>01</b>
-          <h3>FOR PLAYERS</h3>
-          <p>Raise a fly that can starve. Forage, escape, lay eggs, and see how many generations your lineage lasts. Free, in the browser, no install.</p>
-          <Link className="primary" href="/play">RELEASE A FLY <span>↗</span></Link>
-        </div>
-        <div className="specimenCard">
-          <b>02</b>
-          <h3>FOR DEVELOPERS</h3>
-          <p>Put your model in a fly&apos;s head and watch it live or die by its own choices. Death is the one score you can&apos;t fake — the exam room replays every run and checks the hashes.</p>
-          <Link className="primary" href="/play?bench=1&seed=42&brain=judgment&gens=2">RUN THE EXAM <span>↗</span></Link>
-        </div>
-        <div className="specimenCard">
-          <b>03</b>
-          <h3>FOR AGENT BUILDERS</h3>
-          <p>Sealed decision logs, deterministic seeds, reproducible deaths — an agent world built to be audited. The brain slot speaks a typed decision contract any model can answer.</p>
-          <a className="primary" href="#agents">GIVE IT THE SKILL <span>↓</span></a>
-        </div>
+      <ol className="tfRoad">
+        {TOKEN.live
+          ? <li className="done"><span className="tfMono"><Bi en="NOW"  /></span><b><Bi en="$FLY live"  /></b><p><Bi en="Fair launch on ClawPump, Robinhood Chain. The address, the supply and the fee split are published in this section."  /></p></li>
+          : <li className="done"><span className="tfMono"><Bi en="NOW"  /></span><b><Bi en="Paper season"  /></b><p><Bi en="Dusty trades simulated coins with paper money, live and replayable."  /></p></li>}
+        <li><span className="tfMono"><Bi en="NEXT"  /></span><b><Bi en="$FLY launch"  /></b><p><Bi en="Fair launch through ClawPump. A share of the fees feeds the flagship fly."  /></p></li>
+        <li><span className="tfMono"><Bi en="THEN"  /></span><b><Bi en="Fly homepages + x402"  /></b><p><Bi en="Feed, shout-outs, certificates, sponsored food spots."  /></p></li>
+        <li><span className="tfMono"><Bi en="LATER"  /></span><b><Bi en="Hatch your own fly · GameFi"  /></b><p><Bi en="Anyone hatches a fly; the weekly race opens to bets."  /></p></li>
+      </ol>
+      <div className="tfLaunchFacts">
+        <p className="tfHeroFine"><b>WHERE THE FEE INCOME GOES</b> — {FEE_SPLIT.map((row) => `${row.share} ${row.to}`).join(" · ")}. {TOKEN.venue} sends the project 50% of every trading fee; that income, not a token allocation, is what funds the work.</p>
+        <p className="tfHeroFine"><b>RECEIVING WALLET</b> — {TOKEN.wallet || "published here before the launch."}</p>
+        <p className="tfHeroFine"><b>CONTRACT ADDRESS</b> — {TOKEN.contract || "published here the moment it launches. This section is the only place we publish it."}</p>
+        <p className="tfHeroFine"><b>WHAT THIS IS NOT</b> — team allocation 0%, no presale, no venture allocation, no dev buy and no airdrop promised. {TOKEN.venue} keeps admin over the launch and the fee switch, and the split above is a policy rather than a contract: it is not paid to holders. Nothing here promises a price, a yield or a return, and none of it is investment advice.</p>
       </div>
     </section>
 
-    {/* For agents — the stonkrobotics pattern: paste one prompt, the agent plays */}
-    <section className="agentSection" id="agents">
+    <section className="tfSection tfGame" id="game">
       <div className="sectionHead">
-        <div><label>FOR AGENTS / THE SURVIVAL GAME</label><h2>Your agent flies.<br/><em>You watch it starve or thrive.</em></h2></div>
-        <p>An AI agent can play the whole game — pick the brain in the slot, run the lineage headless, and draft one mutation per generation. The draft is the exam. Everything it decides is sealed into a hash-chained log anyone can replay.</p>
+        <div><label><Bi en="THE ENGINE CAME FROM A GAME"  /></label><h2><Bi en={<>Same fly.<br /><em>Same rules.</em></>}  /></h2></div>
+        <p><Bi en="Before it traded, the fly foraged in a dish and dodged a predator. That game is where the determinism was proven; everything on this page inherits its rules."  /></p>
       </div>
-      <div className="specimenGrid">
-        <div className="specimenCard">
-          <b>01</b>
-          <h3>GIVE IT THE SKILL</h3>
-          <p>Paste one prompt into Claude, Cursor, or your own bot. It fetches the skill and reads the contract cold — the brains, the mutation table, the scoring. No key, no account, no setup from us.</p>
-        </div>
-        <div className="specimenCard">
-          <b>02</b>
-          <h3>IT FLIES THE DISH</h3>
-          <p>The skill&apos;s runner drives the real game headless at a fixed 60 Hz: forage, escape on the connectome reflex, and one draft decision per generation — its judgment, sealed and reproducible on any seed.</p>
-        </div>
-        <div className="specimenCard">
-          <b>03</b>
-          <h3>IT EARNS THE PASSPORT</h3>
-          <p>When the run completes a DISH quest, the agent hands you one import URL. You open it in your own browser and claim the free Genesis Passport yourself — it is soul-bound to you, so no agent can ever mint it.</p>
-        </div>
+      <div className="tfDoors">
+        <Link href="/race"><span className="tfMono">/RACE</span><b><Bi en="The weekly race"  /></b><i>↗</i></Link>
+        <Link href="/lab"><span className="tfMono">/LAB</span><b><Bi en="Put your model in the slot"  /></b><i>↗</i></Link>
+        <Link href="/dish#mint"><span className="tfMono">/PASSPORT · COMING SOON</span><b><Bi en="Genesis Passport"  /></b><i>↗</i></Link>
       </div>
-      <div className="agentCopyStack">
-        <CopyBox
-          text={GAME_AGENT_PROMPT}
-          label="Agent prompt — paste into Claude / Cursor / your bot"
-          note="The agent needs no wallet for this: the Passport is soul-bound to you, and the two steps it cannot do (importing the quest evidence, minting) stay in your browser. The full contract is one file: SKILL.md, written to be read by a machine."
-        />
-        <CopyBox
-          text={GAME_PLAY_COMMAND}
-          label="Shell — or run the loop yourself, no agent needed (Node 18+, headless Chrome)"
-          note="Prints eggs per generation, the sealed decision hashes, and the quest-evidence import URL. The whole interface is documented in SKILL.md."
-        />
-      </div>
-      <p className="agentAside">
-        <b>Honest lines:</b> the agent&apos;s judgment is the deliverable, not a story — if the lineage starved, the log says so. Quest evidence is client-attested and re-validated at claim time (v1). Full contract: <a href={GAME_SKILL_MD} target="_blank" rel="noreferrer">SKILL.md ↗</a>
-      </p>
     </section>
 
-    <section className="mintSection" id="mint"><div className="sectionHead"><div><label>FRUIT FLY PASSPORT / SECONDARY LAYER</label><h2>Participation,<br/><em>after the work.</em></h2></div><p>The Passport is an optional participation layer around Fruit Fly World, not the game itself. It cannot be bought — only earned by playing. See the current terms and availability before taking any action.</p></div><MintSection/></section>
+    <section className="finalCta">
+      <span><Bi en="DUSTY IS LIVE"  /></span>
+      <h2><Bi en={<>Watch it eat.<br /><em>Check every bite.</em></>}  /></h2>
+      <Link className="primary" href="/fly/dusty"><Bi en="OPEN DUSTY'S PAGE"  /> <span>↗</span></Link>
+    </section>
 
-    <section className="boundary"><div><label>THE HONEST BOUNDARY</label><h2>A connection map<br/>is not a complete brain.</h2></div><div className="boundaryGrid"><article><b>WHAT IT IS</b><p>A playable survival game built on a deterministic world and a simplified escape circuit taken from a real connectome.</p></article><article><b>WHAT IT ISN&apos;T</b><p>A conscious fly, a complete connectome runtime, or proof of biological behavior. It is a model of a few dozen neurons — no fly suffers.</p></article><article><b>WHAT YOU CAN CHECK</b><p>Every run exposes its inputs, model version, seed, decision, confidence, and result. Every death can be reproduced by anyone.</p></article></div></section>
-
-    <section className="finalCta"><span>THE DISH IS WAITING</span><h2>Give it a signal.<br/><em>See what survives.</em></h2><Link className="primary" href="/play">PLAY <span>↗</span></Link></section>
-
-    <footer><a className="brand" href="#top"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><p>Independent connectome-inspired experiment.<br/>No affiliation or endorsement implied.</p><div><Link href="/play">PLAY</Link><Link href="/lab">LAB</Link><Link href="/pitch">PITCH</Link><Link href="/essay">ESSAY</Link><a href="#top">BACK TO TOP ↑</a></div></footer>
+    <FlyFooter />
   </main>;
 }

@@ -4,9 +4,9 @@
 
 - `app/` — the Next.js site (pages, API routes, mint/mission server logic)
 - `public/play/` — the game. **Vendored from
-  [fruitflyworld/game](https://github.com/fruitflyworld/game)** (rendering + feel) which
-  itself vendors [fruitflyworld/sim](https://github.com/fruitflyworld/sim) (world rules +
-  numbers) and [fruitflyworld/bench](https://github.com/fruitflyworld/bench) (exam
+  [musefly-ai/game](https://github.com/musefly-ai/game)** (rendering + feel) which
+  itself vendors [musefly-ai/sim](https://github.com/musefly-ai/sim) (world rules +
+  numbers) and [musefly-ai/bench](https://github.com/musefly-ai/bench) (exam
   harness). See `vendor.lock.json`.
 - `contracts/` — the Passport (soul-bound ERC-721 + ERC-5192)
 - `public/skill/ffw-dish/` — the agent skill (SKILL.md + headless runner)
@@ -23,12 +23,23 @@
    - regenerate golden runs and explain why in `CHANGELOG.md`
    - land it upstream (game/sim repos) first, then sync here
 
+## The trading fly (market/1)
+
+- `app/lib/market/engine.ts` and `tape.ts` are WORLD code: no `Math.sin/cos/exp/log/pow/atan/random`
+  (a test fails the build), and any change that alters a run bumps `MARKET_WORLD_VERSION`,
+  regenerates the goldens in `tests/market.test.ts`, and gets a CHANGELOG line.
+- The circuit is imported from `public/play/js/` read-only. Never edit it to tune the market;
+  tune the translation in `engine.ts` instead.
+- Diary lines may only use numbers from sealed events (`diary.ts`). The fly can brag; it cannot invent.
+- Nothing on the site takes money until launch. Do not wire x402 or publish a contract address
+  without explicit instruction.
+
 ## Never do
 
 - Change pinned numbers in `public/play/js/sim.js`, `gf-neuron.js`, `cx-circuit.js`
   (escape assay 100/68, CX trace 9fb9e0d0, drafts 0f4d39c3).
 - Edit vendored files under `public/play/` directly — change them upstream
-  (fruitflyworld/game or /sim) and re-sync; CI compares `vendor.lock.json` fingerprints.
+  (musefly-ai/game or /sim) and re-sync; CI compares `vendor.lock.json` fingerprints.
 - Call the world `rng()` for visual effects.
 - Touch `.env*`, deployment scripts, or the contract without explicit instruction.
 

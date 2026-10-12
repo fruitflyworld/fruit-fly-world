@@ -15,7 +15,7 @@ const steps = [
 /** The research layer: everything that used to crowd the homepage, one level down. */
 export default function Lab() {
   return <main>
-    <nav><a className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><Link href="/">Play</Link><a href="#agents">For Agents</a><a href="#specimen">Specimen</a><a href="#experiment">Experiment</a><a href="#world">World</a><Link href="https://github.com/fruitflyworld/fruit-fly-world/tree/main/docs" target="_blank" rel="noreferrer">Docs</Link></div><Link className="navCta" href="/play">PLAY</Link></nav>
+    <nav><a className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><Link href="/">World</Link><a href="#agents">For Agents</a><a href="#specimen">Specimen</a><a href="#experiment">Experiment</a><a href="#world">World</a><Link href="https://github.com/musefly-ai/fruit-fly-world/tree/main/docs" target="_blank" rel="noreferrer">Docs</Link></div><Link className="navCta" href="/fly/dusty">WATCH DUSTY</Link></nav>
 
     <header className="hero" id="top">
       <div className="heroCopy">
@@ -23,7 +23,6 @@ export default function Lab() {
         <h1>The research<br/>layer of the <em>dish.</em></h1>
         <p>The game is the front door. This page is everything behind it: how a model sits in the brain slot, what the signals mean, and how every decision stays inspectable.</p>
         <div className="heroActions">
-          <Link className="primary" href="/play?bench=1&seed=42&brain=judgment&gens=2">RUN THE EXAM <span>↗</span></Link>
           <Link className="secondary" href="/essay">READ THE ESSAY <span>↗</span></Link>
         </div>
       </div>
@@ -34,7 +33,7 @@ export default function Lab() {
     <section className="agentSection" id="agents">
       <div className="sectionHead">
         <div><label>AI AGENTS / THE OTHER LANE</label><h2>Humans steer it.<br/><em>Models fly it too.</em></h2></div>
-        <p>At <Link href="/play">/play</Link> the fly&apos;s brain is a slot. Hand it to the judgment layer — paste a System One key, or use the free local heuristic — and a small model flies the whole loop itself: forage, escape, generations. Every decision is sealed with a content hash and downloadable. Then put any brain in the exam room and starve it.</p>
+        <p>The fly&apos;s brain is a slot. Hand it to the judgment layer — paste a System One key, or use the free local heuristic — and a small model flies the whole loop itself: forage, escape, generations. Every decision is sealed with a content hash and downloadable. Then put any brain in the exam room and starve it.</p>
       </div>
       <div className="specimenGrid">
         <div className="specimenCard">
@@ -106,8 +105,8 @@ export default function Lab() {
 
     <section className="worldSection" id="world"><div className="sectionHead"><div><label>PERSISTENT WORLD / 02</label><h2>Every decision becomes<br/>the next round&apos;s reality.</h2></div><p>The site is not a looping animation. Decisions generate sectors, energy changes, threats, challenges, and an append-only event history.</p></div><WorldMap/></section>
 
-    <section className="finalCta"><span>BACK TO THE DISH</span><h2>You have seen the lab.<br/><em>Now feed the fly.</em></h2><Link className="primary" href="/play">PLAY <span>↗</span></Link></section>
+    <section className="finalCta"><span>BACK TO THE DISH</span><h2>You have seen the lab.<br/><em>Now feed the fly.</em></h2><Link className="primary" href="/dish#mint">THE PASSPORT <span>↗</span></Link></section>
 
-    <footer><a className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><p>Independent connectome-inspired experiment.<br/>No affiliation or endorsement implied.</p><div><Link href="/">HOME</Link><Link href="/play">PLAY</Link><Link href="/essay">ESSAY</Link><Link href="/calibration">CALIBRATION</Link><a href="#top">BACK TO TOP ↑</a></div></footer>
+    <footer><a className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><p>Independent connectome-inspired experiment.<br/>No affiliation or endorsement implied.</p><div><Link href="/">HOME</Link><Link href="/fly/dusty">DUSTY</Link><Link href="/essay">ESSAY</Link><Link href="/calibration">CALIBRATION</Link><a href="#top">BACK TO TOP ↑</a></div></footer>
   </main>;
 }

@@ -28,7 +28,6 @@ export default function EssayPage() {
     <nav className="essayNav">
       <Link className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></Link>
       <div>
-        <Link href="/play">PLAY</Link>
         <Link href="/promo">FILM</Link>
         <Link href="/">← BACK</Link>
       </div>
@@ -50,7 +49,7 @@ export default function EssayPage() {
 
       <section>
         <h2>2 · The dish</h2>
-        <p>At <Link href="/play">fruitfly.world/play</Link> you are not a single fly; you are a <b>lineage</b>. Each generation lasts up to 50 seconds. You forage in a dish where food carries three risk levels — sugar (+12, safe), yeast (+26, on the rim of the predator&apos;s range), rot (+38, but it exposes you for six seconds) — while a predator hunts by vision and commits to a ballistic lunge you can read. Energy above a threshold becomes eggs. At generation&apos;s end you compare eggs with the wild type and draft one mutation for the next fly. Death ends a generation, not the lineage.</p>
+        <p>In the dish you are not a single fly; you are a <b>lineage</b>. Each generation lasts up to 50 seconds. You forage in a dish where food carries three risk levels — sugar (+12, safe), yeast (+26, on the rim of the predator&apos;s range), rot (+38, but it exposes you for six seconds) — while a predator hunts by vision and commits to a ballistic lunge you can read. Energy above a threshold becomes eggs. At generation&apos;s end you compare eggs with the wild type and draft one mutation for the next fly. Death ends a generation, not the lineage.</p>
         <p>The interesting property is not any single mechanic; it is that the mechanics produce exactly the pressures a decision system must survive: <b>metabolic cost</b> (every behavior spends energy), <b>risk gradients</b> (the best food is the most dangerous), <b>committed threats</b> (the lunge is telegraphed, so timing is a skill), and <b>consequence across time</b> (this generation&apos;s draft is the next one&apos;s body). A multiple-choice question has none of these. A chat window has none of these.</p>
       </section>
 
@@ -87,7 +86,7 @@ export default function EssayPage() {
 
       <section>
         <h2>6 · The exam room</h2>
-        <p>Everything above would be theater without determinism. The whole world — food, predator, drafts — derives from one editable seed, and the game ships a room that proves it: <Link href="/play?bench=1&seed=42&brain=judgment&gens=2"><code>?bench=1</code></Link> pauses the render loop, drives the world twice at a fixed 60 Hz on the same seed with the same brain, and compares every decision hash and every generation outcome. Bit-identical runs print <b>IDENTICAL</b>. Anything else prints <b>DIVERGED</b>, and the page says so in plain words: <i>that is a bug report, not a score.</i></p>
+        <p>Everything above would be theater without determinism. The whole world — food, predator, drafts — derives from one editable seed, and the game ships a room that proves it: <code>?bench=1</code> pauses the render loop, drives the world twice at a fixed 60 Hz on the same seed with the same brain, and compares every decision hash and every generation outcome. Bit-identical runs print <b>IDENTICAL</b>. Anything else prints <b>DIVERGED</b>, and the page says so in plain words: <i>that is a bug report, not a score.</i></p>
         <p>Getting there was a lesson in how many ways &quot;deterministic&quot; leaks. Our leaks, all found and fixed in the exam room: a novelty-memory set that survived between runs, the rival&apos;s traits living on the wrong object, predator residue — and the subtlest one, the escape neuron&apos;s <b>membrane potential</b> carrying over between runs, so run B&apos;s reflex fired on a different frame than run A&apos;s. Two more: the wild type&apos;s <b>genes</b> were rolled from the visitor&apos;s saved seed at page load and never re-rolled, so the same exam quietly depended on your save file; and <b>Math.sin/cos/exp themselves</b> differ in the last bit between CPU architectures, so an arm64 browser and an x64 server replayed different worlds from the same seed — fixed with hand-rolled IEEE-exact math kernels. A survival exam you cannot re-run is not an exam. Now it re-runs, bit-identically across machines.</p>
         <p>Two brains, same seed, same paper: on seed 42 the judgment layer finished with 34 eggs, the 24-neuron circuit with 5. Honesty note: the exam room grades deterministic brains only — the judgment brain in a bench run is the free local heuristic, not a remote model (an API cannot be re-run). That is one seed, not a theorem — it is the first row of what this system is for: <b>comparable, replayable survival under identical pressure.</b></p>
       </section>
@@ -107,17 +106,15 @@ export default function EssayPage() {
       <section>
         <h2>9 · Try it</h2>
         <ul>
-          <li><Link href="/play">Play a generation</Link> — no install, no account, no wallet. Try escaping on the reflex; then hand the fly to a circuit.</li>
-          <li><Link href="/play?bench=1&seed=42&brain=judgment&gens=2">Run the exam</Link> — same seed, same brain, twice. Watch it print IDENTICAL.</li>
           <li><Link href="/promo">Watch the 28-second film</Link> — every frame captured from the live game.</li>
-          <li><Link href="/skill/ffw-dish">Point an agent at it</Link> — the skill and the rules are public plain JavaScript.</li>
+          <li><Link href="/skill/ffw-dish/SKILL.md">Point an agent at it</Link> — the skill and the rules are public plain JavaScript.</li>
         </ul>
         <p className="essayOut">The dish is waiting.</p>
       </section>
     </article>
 
     <footer className="essayFooter">
-      <p>Fruit Fly World · <Link href="/">fruitfly.world</Link> · <Link href="/promo">the film</Link> · <Link href="/play">the game</Link> · every decision sealed</p>
+      <p>Fruit Fly World · <Link href="/">fruitfly.world</Link> · <Link href="/promo">the film</Link> · every decision sealed</p>
     </footer>
   </main>;
 }

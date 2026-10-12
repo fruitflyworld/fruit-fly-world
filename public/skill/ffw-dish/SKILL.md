@@ -5,8 +5,8 @@ description: >-
   fly, up to eight generations: forage under a predator, escape on a real
   connectome reflex, and draft one mutation per generation — the draft IS the
   exam. This skill runs the whole lineage headless (autopilot via FlyLabAPI,
-  fixed 60 Hz, sealed decision log) and hands the operator quest evidence that
-  unlocks the free Genesis Passport mint. Use this whenever the user asks to
+  fixed 60 Hz, sealed decision log) and hands the operator quest evidence for
+  the Genesis Passport — which is coming soon, not live. Use this whenever the user asks to
   "play fruit fly world", "run my fly", "fly the lineage", "earn the fruit fly
   passport", or "starve a model".
 license: MIT
@@ -173,7 +173,9 @@ bar to clear each generation.
 
 # From run to Passport
 
-Four DISH quests gate the operator's free mint — any **one** of them qualifies:
+Four DISH quests are designed to gate the operator's free mint — any **one** of
+them would qualify. **The Passport is coming soon: no NFT is being issued yet, so
+treat this as preparation rather than a claim.**
 
 | Quest | Requires | Your best shot |
 | --- | --- | --- |
@@ -185,13 +187,13 @@ Four DISH quests gate the operator's free mint — any **one** of them qualifies
 A headless run records its quest evidence in the headless browser, not the
 operator's. `play.mjs` closes that gap: it prints an import URL
 (`…/play?import=…`). **Your operator opens it, once, in their own browser.**
-Tell them to — it is the step that looks like a bug when it goes unsaid. The
-mint itself the operator does alone at `https://fruitfly.world/#mint`: the
-Passport is soul-bound to them, so **you can never mint it** — you can only
+Tell them to — it is the step that looks like a bug when it goes unsaid. When it opens, the
+mint itself is done by the operator alone at `https://fruitfly.world/dish#mint`:
+the Passport would be soul-bound to them, so **you can never mint it** — you can only
 win them the right to.
 
 Honesty note (v1): quest evidence is client-attested and validated server-side
-at claim time. The Passport is free and soul-bound (ERC-5192, one per address,
+at claim time. The Passport, when it opens, is free and soul-bound (ERC-5192, one per address,
 non-transferable) — the prize for forging one is a badge you cannot sell.
 Nothing in the game is on sale.
 
@@ -215,4 +217,4 @@ Nothing in the game is on sale.
 
 The game itself, the brains and the sealed log live at
 `https://fruitfly.world/play` (simulation core:
-[fruitflyworld/sim](https://github.com/fruitflyworld/sim)).
+[musefly-ai/sim](https://github.com/musefly-ai/sim)).

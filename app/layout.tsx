@@ -3,24 +3,25 @@ import type { ReactNode } from "react";
 import { AuthProvider } from "./components/AuthProvider";
 import "./globals.css";
 
+const TITLE = "Fruit Fly World — A fruit fly that trades";
+const DESC = "A fruit fly sniffs the market and trades from its own wallet. Trading fees are its food; run dry and it starves. It can brag, but every number replays — in your own browser.";
+
 export const metadata: Metadata = {
-  title: "Fruit Fly World — A Playable Lineage of Small Decisions",
-  description: "A single-player fruit-fly lineage game: forage under pressure, read a predator's committed strike, escape with the Giant Fiber reflex, and carry the lineage forward. The research layer around it explains the connectome-inspired model.",
+  title: TITLE,
+  description: DESC,
   metadataBase: new URL("https://fruitfly.world"),
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Fruit Fly World — A Playable Lineage of Small Decisions",
-    description: "Forage, escape, and carry the lineage forward. A single-player game built on a simplified, connectome-inspired escape circuit — with an inspectable world around it.",
+    title: TITLE,
+    description: DESC,
     url: "https://fruitfly.world",
     siteName: "Fruit Fly World",
-    images: [{ url: "/launch-film-poster.jpg", width: 1200, height: 675, alt: "Fruit Fly World playable lineage game world" }],
     type: "website"
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fruit Fly World — A Playable Lineage of Small Decisions",
-    description: "Forage under pressure, read the predator's committed lunge, escape when the GF reflex is ready. Playable in the browser, scored by a model you can inspect.",
-    images: ["/launch-film-poster.jpg"]
+    title: TITLE,
+    description: "It can brag. Every number replays."
   }
 };
 
