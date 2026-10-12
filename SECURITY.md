@@ -19,6 +19,36 @@ description, and a transaction hash or request log helps most of all.
 
 ## Known and by design
 
+### Dependency advisories, stated plainly
+
+The GitHub security tab is not empty, and this is the honest accounting of it (checked
+2026-10-12):
+
+- **`postcss` and `source-map-js` are patched.** Both were reachable only through the build
+  toolchain; `package.json` pins the patched versions with `overrides` and the lockfile carries
+  them (`postcss@8.5.29`, `source-map-js@1.2.2`).
+- **The `next@14.2.35` advisories remain open.** Every one of them is fixed only in `next@15.5.24`,
+  which also means React 18 → 19 and the async request APIs. That is a major upgrade, not a patch,
+  and it is being done on a branch with CI as the gate rather than pushed to main on a Friday.
+
+Dependabot keeps the pull request open so this cannot quietly disappear. What the exposure looks
+like *in this deployment*, which is why it is not an emergency:
+
+- The affected surface is Next's server-side request handling — caching, redirects and
+  request-amplification classes. This app serves static and server-rendered pages through one
+  Next process behind nginx; there is no proxy mode, no image optimizer exposed to untrusted
+  hosts, and no server-side fetching of user-supplied URLs.
+- Every mutating route carries a same-origin check, a per-IP rate limit and an 8 KB body cap.
+- There is no user login to bypass. The only signed surface is the mint rail, and it is switched
+  off while the Passport is unlaunched — `/api/mint/status` answers
+  `{"session":null,"minted":false}` and no page mounts the mint UI.
+
+None of that is a claim that the framework is fine; it is a statement of blast radius while the
+upgrade lands. If you find a way to exploit any of it against the live site, that is exactly what
+the private advisory at the top of this file is for.
+
+### Behaviour that is not a finding
+
 These are documented behaviour, not findings:
 
 - **The map, the seeds and the scoring function are public.** The problem is meant to be
