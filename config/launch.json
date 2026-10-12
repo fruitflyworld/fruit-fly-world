@@ -1,0 +1,50 @@
+{
+  "_comment": "Single source of truth for launch facts. Pages, docs and the README must read from here instead of hard-coding a chain, a venue, an address or a status. Values still written as {{PLACEHOLDER}} are not decided yet: render them as 'to be announced' (the site does this in app/lib/token.ts) and never print the placeholder itself to a visitor. When a value is final, replace the placeholder here, rebuild, and the whole surface follows.",
+
+  "token": {
+    "symbol": "$FLY",
+    "name": "Fruit Fly World",
+    "status": "not-live",
+    "statusNote": "No token exists. Nothing is on sale, nothing is mintable, and no airdrop is promised.",
+    "chain": "{{TOKEN_CHAIN}}",
+    "venue": "{{TOKEN_VENUE}}",
+    "contract": "{{TOKEN_CA}}",
+    "supply": "{{TOKEN_SUPPLY}}",
+    "devWallet": "{{DEV_WALLET}}",
+    "payoutWallet": "{{PAYOUT_WALLET}}",
+    "anchorWallet": "{{ANCHOR_WALLET}}",
+    "teamAllocation": "0%",
+    "presale": false,
+    "ventureAllocation": false,
+    "devBuy": false,
+    "airdropPromised": false
+  },
+
+  "passport": {
+    "status": "not-live",
+    "statusNote": "Coming soon. The mint interface is switched off; nothing is being issued and nothing is claimable.",
+    "chain": "{{TOKEN_CHAIN}}",
+    "testDeployment": "{{PASSPORT_TEST_ADDRESS}}",
+    "sepoliaDeployment": "{{PASSPORT_SEPOLIA_ADDRESS}}",
+    "supply": 4444,
+    "transferable": false
+  },
+
+  "trading": {
+    "mode": "paper",
+    "realMoney": false,
+    "statusNote": "Paper season: the coins are invented and the prices come from a seeded generator. No real money moves anywhere, and the wallet is simulated."
+  },
+
+  "x402": {
+    "open": false,
+    "statusNote": "Not open yet. Opens after launch; prices will be published here first.",
+    "liveItems": []
+  },
+
+  "feeUse": [
+    { "share": "50%", "to": "Dusty, the flagship fly" },
+    { "share": "30%", "to": "Ecosystem and developer fund" },
+    { "share": "20%", "to": "Servers and operations" }
+  ]
+}

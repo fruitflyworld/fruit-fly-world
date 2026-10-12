@@ -23,7 +23,7 @@ are the honest part.
 
 | Surface | Status | Where |
 | --- | --- | --- |
-| **Trading fly (`market/1`)** — Dusty sniffs a deterministic paper tape, trades from its own wallet, starves when the fees dry up | **Live** | [/fly/dusty](https://fruitfly.world/fly/dusty) |
+| **Trading fly (`market/1`)** — Dusty trades a deterministic, invented paper tape from a simulated wallet — no real money moves — and starves when the fees dry up | **Live** | [/fly/dusty](https://fruitfly.world/fly/dusty) |
 | **Sealed record + replay** — every tick hashed and chained; your browser recomputes the chain and compares | **Live** | [/fly/dusty/replay](https://fruitfly.world/fly/dusty/replay?season=0&tick=2000) |
 | **The survival game** — foraging, committed predator lunges, GF escape reflex, mutation drafts | **Parked** | code in `public/play/` and `app/game/`; `/play` redirects to the homepage |
 | **Genesis Passport** — soul-bound ERC-721 + ERC-5192 | **Not live** (coming soon) | `contracts/src/FruitFlyPassport.sol` |
@@ -33,6 +33,18 @@ are the honest part.
 Nothing in this repository is on sale. No token exists today; any token claiming to be Fruit Fly
 World is fake. The $FLY section on [fruitfly.world](https://fruitfly.world) is the only place an
 address will ever be published.
+
+### Current status
+
+**[docs/STATUS.md](docs/STATUS.md) is the single source of truth** for the token, the Passport, the
+trading mode and x402 — statuses, chains, addresses and what is *not* built. The machine-readable
+form is [`config/launch.json`](config/launch.json), and the site renders it through
+[`app/lib/token.ts`](app/lib/token.ts) rather than hard-coding a chain anywhere. If this README and
+STATUS.md ever disagree, STATUS.md is right and the README is a bug.
+
+The undecided facts are stored as `{{PLACEHOLDER}}` values on purpose: they render as "to be
+announced" instead of quietly looking settled. [LIMITATIONS.md](LIMITATIONS.md) lists what is not
+built, and [GOVERNANCE.md](GOVERNANCE.md) says who holds what.
 
 ## Why
 
