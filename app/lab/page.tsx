@@ -37,6 +37,13 @@ export default function Lab() {
       <a className="scrollCue" href="#agents"><span>SCROLL</span><i/></a>
     </header>
 
+    <div className="docNote" style={{ maxWidth: 900, margin: "0 auto 8px" }}>
+      <b>COMING SOON — </b>the survival game itself is parked while the trading fly is the front door.
+      What runs today is the headless skill and the exam protocol it wraps; the missions and the Passport that
+      used to follow a completed run come back later. Nothing that cost money is switched off, because nothing
+      here ever took money.
+    </div>
+
     {/* The agent lane — models fly the game */}
     <section className="agentSection" id="agents">
       <div className="sectionHead">

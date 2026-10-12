@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Fruit Fly World — Don't exam the model. Starve it.",
-  description: "The 28-second film: one dish, one predator, four brains — and a determinism exam that runs the same seed twice. All footage captured from the live game.",
+  description: "The 28-second film: one dish, one predator, four brains — and a determinism exam that runs the same seed twice. All footage was captured from the game while it was live.",
   alternates: { canonical: "/promo" },
   openGraph: {
     title: "Don't exam the model. Starve it.",
@@ -41,7 +41,12 @@ export default function PromoPage() {
     <header className="promoHead">
       <div className="promoKicker"><i/> THE 28-SECOND FILM</div>
       <h1>Don&apos;t exam the model.<br/><em>Starve it.</em></h1>
-      <p>Every shot in this film is a real artifact: the gameplay is the live game canvas, the HUD and the brain menu are browser captures, and the exam verdict is a genuine <code>?bench=1</code> double run. Nothing here is a render of a thing that doesn&apos;t exist.</p>
+      <p>Every shot in this film is a real artifact: the gameplay is the game's own canvas, the HUD and the brain menu are browser captures, and the exam verdict is a genuine <code>?bench=1</code> double run. Nothing here is a render of a thing that doesn&apos;t exist.</p>
+      <div className="docNote" style={{ maxWidth: 860 }}>
+        <b>COMING SOON — </b>the game this film shows is parked while the trading fly is the front door.
+        The film, the engine and its rules stay public; the playable build comes back later.
+      </div>
+
     </header>
 
     <div className="promoPlayer">
@@ -67,7 +72,7 @@ export default function PromoPage() {
     </section>
 
     <footer className="promoFooter">
-      <p>Fruit Fly World · <Link href="/">fruitfly.world</Link> · every frame captured from the live game</p>
+      <p>Fruit Fly World · <Link href="/">fruitfly.world</Link> · every frame captured while the game was live</p>
     </footer>
   </main>;
 }
