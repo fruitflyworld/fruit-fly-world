@@ -42,85 +42,93 @@ function seasonFromDay(day: string): number {
   return season;
 }
 
-const day = arg("day");
-if (!day) {
-  console.error("usage: npx tsx scripts/anchor.ts --day <YYYY-MM-DD|season> [--send] [--write] [--chain solana|solana-devnet]");
-  process.exit(2);
+async function main() {
+  const day = arg("day");
+
+  if (!day) {
+    console.error("usage: npx tsx scripts/anchor.ts --day <YYYY-MM-DD|season> [--send] [--write] [--chain solana|solana-devnet]");
+    process.exit(2);
+  }
+
+  const season = seasonFromDay(day);
+  const chain = arg("chain") || "solana";
+  const rpc = RPC[chain];
+  if (!rpc) { console.error(`unknown --chain ${chain} (expected ${Object.keys(RPC).join(" or ")})`); process.exit(2); }
+
+  // 1. The day must be over. Anchoring a running day would commit to a head that is still moving.
+  const currentSeason = seasonClock(Date.now()).season;
+  if (season >= currentSeason) {
+    console.error(`season ${season} is still running (today is season ${currentSeason}). Wait until 00:00 UTC.`);
+    process.exit(2);
+  }
+
+  // 2. One anchor per day.
+  if (ANCHORS.some((a) => a.season === season)) {
+    console.error(`season ${season} is already anchored (${ANCHORS.find((a) => a.season === season)!.tx}). Anchors are never rewritten.`);
+    process.exit(2);
+  }
+
+  const head = recomputeDay(season);
+  const memo = memoFor(season, head.chainHash);
+
+  console.log(`season  ${head.season}  (${head.date})`);
+  console.log(`format  ${head.worldVersion}`);
+  console.log(`last t  ${head.lastTick} of ${LAST_TICK_OF_SEASON}`);
+  console.log(`head    ${head.chainHash}`);
+  console.log(`memo    ${memo}`);
+  console.log(`chain   ${chain}  via ${rpc}`);
+
+  if (!flag("send")) {
+    console.log("\nDry run — nothing was sent. Add --send to write it on chain.");
+    process.exit(0);
+  }
+
+  const secret = process.env.SOLANA_ANCHOR_SECRET_KEY;
+  if (!secret) {
+    console.error("\nSOLANA_ANCHOR_SECRET_KEY is not set. Refusing to send: the key lives in the server's environment file, never in this repository.");
+    process.exit(2);
+  }
+
+  const payer = Keypair.fromSecretKey(Buffer.from(secret, "base64"));
+  console.log(`\nwallet  ${payer.publicKey.toBase58()}`);
+
+  const connection = new Connection(rpc, "confirmed");
+  const balance = await connection.getBalance(payer.publicKey);
+  console.log(`balance ${balance / 1e9} SOL`);
+  if (balance === 0) { console.error("no balance: a memo transaction needs a fee (a fraction of a cent)."); process.exit(2); }
+
+  const tx = buildMemoTransaction(payer.publicKey, memo);
+  tx.feePayer = payer.publicKey;
+  tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+  signAndVerifyLocally(tx, payer);
+  if (memoFromSerialized(tx) !== memo) throw new Error("the signed transaction does not carry the memo — refusing to send");
+
+  const signature = await connection.sendRawTransaction(tx.serialize(), { skipPreflight: false });
+  await connection.confirmTransaction({ signature, ...(await connection.getLatestBlockhash()) }, "confirmed");
+  console.log(`\nsent    ${signature}`);
+  console.log(`explorer https://explorer.solana.com/tx/${signature}${chain === "solana-devnet" ? "?cluster=devnet" : ""}`);
+
+  if (flag("write")) {
+    const entry: Anchor = {
+      season: head.season,
+      date: head.date,
+      lastTick: head.lastTick,
+      chainHash: head.chainHash,
+      worldVersion: head.worldVersion,
+      tx: signature,
+      chain,
+      anchoredAt: new Date().toISOString()
+    };
+    const manifest = JSON.parse(readFileSync(MANIFEST, "utf8"));
+    manifest.anchors.push(entry);
+    writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n");
+    console.log(`recorded in anchors/anchors.json (${manifest.anchors.length} anchors)`);
+  } else {
+    console.log("not recorded — add --write to append it to anchors/anchors.json");
+  }
 }
 
-const season = seasonFromDay(day);
-const chain = arg("chain") || "solana";
-const rpc = RPC[chain];
-if (!rpc) { console.error(`unknown --chain ${chain} (expected ${Object.keys(RPC).join(" or ")})`); process.exit(2); }
-
-// 1. The day must be over. Anchoring a running day would commit to a head that is still moving.
-const currentSeason = seasonClock(Date.now()).season;
-if (season >= currentSeason) {
-  console.error(`season ${season} is still running (today is season ${currentSeason}). Wait until 00:00 UTC.`);
-  process.exit(2);
-}
-
-// 2. One anchor per day.
-if (ANCHORS.some((a) => a.season === season)) {
-  console.error(`season ${season} is already anchored (${ANCHORS.find((a) => a.season === season)!.tx}). Anchors are never rewritten.`);
-  process.exit(2);
-}
-
-const head = recomputeDay(season);
-const memo = memoFor(season, head.chainHash);
-
-console.log(`season  ${head.season}  (${head.date})`);
-console.log(`format  ${head.worldVersion}`);
-console.log(`last t  ${head.lastTick} of ${LAST_TICK_OF_SEASON}`);
-console.log(`head    ${head.chainHash}`);
-console.log(`memo    ${memo}`);
-console.log(`chain   ${chain}  via ${rpc}`);
-
-if (!flag("send")) {
-  console.log("\nDry run — nothing was sent. Add --send to write it on chain.");
-  process.exit(0);
-}
-
-const secret = process.env.SOLANA_ANCHOR_SECRET_KEY;
-if (!secret) {
-  console.error("\nSOLANA_ANCHOR_SECRET_KEY is not set. Refusing to send: the key lives in the server's environment file, never in this repository.");
-  process.exit(2);
-}
-
-const payer = Keypair.fromSecretKey(Buffer.from(secret, "base64"));
-console.log(`\nwallet  ${payer.publicKey.toBase58()}`);
-
-const connection = new Connection(rpc, "confirmed");
-const balance = await connection.getBalance(payer.publicKey);
-console.log(`balance ${balance / 1e9} SOL`);
-if (balance === 0) { console.error("no balance: a memo transaction needs a fee (a fraction of a cent)."); process.exit(2); }
-
-const tx = buildMemoTransaction(payer.publicKey, memo);
-tx.feePayer = payer.publicKey;
-tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-signAndVerifyLocally(tx, payer);
-if (memoFromSerialized(tx) !== memo) throw new Error("the signed transaction does not carry the memo — refusing to send");
-
-const signature = await connection.sendRawTransaction(tx.serialize(), { skipPreflight: false });
-await connection.confirmTransaction({ signature, ...(await connection.getLatestBlockhash()) }, "confirmed");
-console.log(`\nsent    ${signature}`);
-console.log(`explorer https://explorer.solana.com/tx/${signature}${chain === "solana-devnet" ? "?cluster=devnet" : ""}`);
-
-if (flag("write")) {
-  const entry: Anchor = {
-    season: head.season,
-    date: head.date,
-    lastTick: head.lastTick,
-    chainHash: head.chainHash,
-    worldVersion: head.worldVersion,
-    tx: signature,
-    chain,
-    anchoredAt: new Date().toISOString()
-  };
-  const manifest = JSON.parse(readFileSync(MANIFEST, "utf8"));
-  manifest.anchors.push(entry);
-  writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n");
-  console.log(`recorded in anchors/anchors.json (${manifest.anchors.length} anchors)`);
-} else {
-  console.log("not recorded — add --write to append it to anchors/anchors.json");
-}
+main().catch((err) => {
+  console.error(err instanceof Error ? err.message : err);
+  process.exit(1);
+});
