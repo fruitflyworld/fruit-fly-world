@@ -9,7 +9,66 @@ summarises it in prose.
 
 ## Unreleased
 
+### Changed
+
+- **The site is English-only.** The bilingual `Bi` component now renders its English branch and
+  nothing else; the `zh`/`dzh` attributes, the language switch and the game's `zh` locale are
+  gone. Superseded Chinese-language pages moved to `docs/legacy/` (not served).
+- **The survival game is parked** while the trading fly is the front door: `/play` and `/game`
+  return a 307 to the homepage, and every navigation entry that pointed at them is removed. The
+  game's files and docs are untouched — see `docs/game-guide.md`.
+- **The Passport is stated as not live.** The mint UI is unmounted, `/dish` and `/economics` say
+  "coming soon" instead of quoting a chain, a supply and a price, and the agent prompt no longer
+  promises a claim.
+- **No airdrop is promised anywhere**, and the x402 menu now reads "opens after launch" instead of
+  quoting example prices.
+- **Docs and links tell the same story as the site**: the README leads with the status table, the
+  architecture map lists `market/1` as the live model, and GitHub links point at
+  `musefly-ai/*` (the organisation's current name).
+
 ### Added
+
+- **Flies That Trade (market/1)** — a fruit fly that trades, on the game's own
+  engine. `app/lib/market/`: a deterministic paper tape (six invented coins,
+  regimes, a daily fee rhythm), the market/1 engine that turns prices into the
+  circuit's four inputs (food / threat / light / novelty) and its four
+  behaviors back into a body and a wallet (approach → buy on landing, avoid →
+  sell, Giant Fiber → sell everything), hunger, starvation, rebirth with an
+  estate, and a per-tick sealed record chained by FNV-1a. The decision layer
+  is the unchanged FFW-CX/0.1 circuit; no vendored file was edited. Goldens
+  pinned in `tests/market.test.ts`. Spec: `docs/flies-that-trade.md`
+- **New homepage `/`** — Dusty live in its dish (canvas: scent rings, trades,
+  Giant Fiber escapes, energy ring), the browser replays the day from midnight
+  UTC on load; live instruments (inputs, circuit output, the 24 neurons
+  firing); "Every number replays" check (server chain vs browser chain →
+  IDENTICAL); diary; the x402 menu (opens at launch); lifecycle and today's
+  lineage; the honest boundary; the $FLY plan (ClawPump on Robinhood Chain)
+- **`/fly/[slug]`** — the fly's homepage: wallet, holdings, diary with replay
+  links on every number, sealed log, lineage, x402 menu
+- **`/fly/[slug]/replay?season=&tick=`** — one tick: sealed record, inputs →
+  outputs, and an in-browser recomputation compared with the server
+- **`GET /api/fly/[slug]?season=&tick=`** — the server's replay of one tick
+  (future ticks refused)
+- **`app/opengraph-image.tsx`** — share card: "A fruit fly that trades. It can
+  brag. Every number replays."
+
+### Changed
+
+- **Live stage v2 (feel only, no world change)** — the hero and `/fly/[slug]` now
+  show the whole loop as one instrument: scent plumes rising from each coin
+  (density = scent, colour = sweet → bitter), a price ring wrapped round every
+  coin, an anatomically drawn fly that flies curved paths, lands, feeds, grooms,
+  jumps on a Giant Fiber spike and goes hungry; corner readouts (what it senses
+  → what it decides, clock, wallet, the sealed hash of this tick); the live
+  24-neuron circuit with this generation's real PN→KC wiring and spikes
+  travelling along synapses; a sealed-chain ribbon; and an opening time-lapse
+  while the browser replays the day. Engine adds display-only `scent`/`sweet`;
+  record hashes and goldens unchanged
+- The previous homepage moved to **`/dish`** (agent skill, Passport mint and
+  all anchors intact); `/economics` and `/participate` links updated
+- Site title and description now lead with the trading fly
+
+### Added (earlier, unreleased)
 
 - **P5: Fly NFT + weekly race + token (contracts)** — `contracts/src/`:
   `FlyNFT` (one lineage per token — seed, brain, five gene weights, immutable
