@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import HeroExperience from "../components/HeroExperience";
 import CopyBox from "../components/CopyBox";
 import { GAME_AGENT_PROMPT, GAME_PLAY_COMMAND, GAME_SKILL_MD } from "../lib/agentskill";
+import { announced, PASSPORT } from "../lib/token";
 
 export const metadata: Metadata = {
   title: "The Dish — Fruit Fly World",
@@ -142,7 +143,7 @@ export default function DishPage() {
       </p>
     </section>
 
-    <section className="mintSection" id="mint"><div className="sectionHead"><div><label>FRUIT FLY PASSPORT / SECONDARY LAYER</label><h2>Participation,<br/><em>after the work.</em></h2></div><p>The Passport is an optional participation layer around Fruit Fly World, not the game itself. It cannot be bought — it would be earned by playing.</p></div><div className="docNote"><b>COMING SOON — </b>the Passport is not live. No NFT is being issued, nothing is on sale, and there is nothing to claim today. When it opens, this page will carry the chain, the contract address and the current terms before any action is possible.</div></section>
+    <section className="mintSection" id="mint"><div className="sectionHead"><div><label>FRUIT FLY PASSPORT / SECONDARY LAYER</label><h2>Participation,<br/><em>after the work.</em></h2></div><p>The Passport is an optional participation layer around Fruit Fly World, not the game itself. It cannot be bought — it would be earned by playing.</p></div><div className="docNote"><b>COMING SOON — </b>the Passport is not live. No NFT is being issued, nothing is on sale, and there is nothing to claim today. An early test deployment of the contract exists on chain at <code>{announced(PASSPORT.testDeployment)}</code>; it is not in use, mints nothing, and may not be the final contract. When it opens, this page will carry the chain, the contract address and the current terms before any action is possible.</div></section>
 
     <section className="boundary"><div><label>THE HONEST BOUNDARY</label><h2>A connection map<br/>is not a complete brain.</h2></div><div className="boundaryGrid"><article><b>WHAT IT IS</b><p>A playable survival game built on a deterministic world and a simplified escape circuit taken from a real connectome.</p></article><article><b>WHAT IT ISN&apos;T</b><p>A conscious fly, a complete connectome runtime, or proof of biological behavior. It is a model of a few dozen neurons — no fly suffers.</p></article><article><b>WHAT YOU CAN CHECK</b><p>Every run exposes its inputs, model version, seed, decision, confidence, and result. Every death can be reproduced by anyone.</p></article></div></section>
 

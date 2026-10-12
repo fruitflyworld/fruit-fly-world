@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const connect = useCallback(async () => {
     setError(undefined);
-    if (!window.ethereum) { setError("Install an EVM wallet that supports Robinhood Chain."); setStatus("failed"); return; }
+    if (!window.ethereum) { setError("Install an EVM wallet to continue."); setStatus("failed"); return; }
     setStatus("signing");
     try {
       const chain = configuredChain();

@@ -2,8 +2,8 @@
 
 > **It can brag. Every number replays.**
 
-A fruit fly sniffs the market and trades from its own wallet. Trading fees are
-its food; when they dry up it starves and the next generation carries on. Every
+A fruit fly trades an invented paper market from a simulated wallet — no real money
+moves anywhere. Trading fees are its food; when they dry up it starves and the next generation carries on. Every
 tick is sealed and chained, so any number the fly brags about can be recomputed
 — by the server, by your browser, or by you with the code in this repo.
 
@@ -144,12 +144,16 @@ say so.
 
 ## 7. Token plan
 
-- $FLY launches through **ClawPump on Robinhood Chain** (fair launch; the
-  creator fee share funds the flagship fly's food and the project).
-- Genesis Passport holders (already on Robinhood Chain, chainId 4663) get
-  airdrops and priority hatching first.
-- A launchpad launch is a fair launch, so the old "10% ecosystem reserve" in
-  `FlyToken.sol` does not apply; ecosystem rewards come from fees instead.
+The launch facts live in exactly one place — [`config/launch.json`](../config/launch.json),
+  rendered as [`docs/STATUS.md`](STATUS.md). This section must not restate them.
+
+- Status: **not live**. No token exists, nothing is on sale, and **no airdrop is promised**. The
+  chain and the venue are not final and are stored as placeholders in the config.
+- Allocation: team 0%, no presale, no venture allocation, no dev buy.
+- The project is funded by the fee share it receives from the launch venue; the split is published
+  with the launch facts, not here.
+- `contracts/src/FlyToken.sol` is a design artifact. It is not deployed, and it does not describe
+  the launched token — the old "10% ecosystem reserve" in it does not apply to a launchpad launch.
 - **On launch day:** replace the "any token is fake" lines (README, homepage
   `#launch`, footer) with the real contract address, published here first.
 

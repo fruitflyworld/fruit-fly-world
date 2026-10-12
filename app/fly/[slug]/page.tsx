@@ -21,7 +21,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!fly) return {};
   return {
     title: `${fly.name} — a fruit fly that trades · Fruit Fly World`,
-    description: `${fly.name} sniffs the market and trades from its own wallet. It can brag, but every number replays.`,
+    description: `${fly.name} trades an invented paper market from a simulated wallet. No real money moves. It can brag, but every number replays.`,
     alternates: { canonical: `/fly/${fly.slug}` },
   };
 }

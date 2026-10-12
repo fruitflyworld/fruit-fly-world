@@ -4,7 +4,7 @@ import { AuthProvider } from "./components/AuthProvider";
 import "./globals.css";
 
 const TITLE = "Fruit Fly World — A fruit fly that trades";
-const DESC = "A fruit fly sniffs the market and trades from its own wallet. Trading fees are its food; run dry and it starves. It can brag, but every number replays — in your own browser.";
+const DESC = "A fruit-fly circuit trades an invented paper market, live 24/7. No real money moves. Every decision is hashed, chained and replayable in your browser.";
 
 export const metadata: Metadata = {
   title: TITLE,
