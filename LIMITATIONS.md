@@ -37,11 +37,12 @@ state its own limits cannot be trusted about anything else.
 - `market/2` seasons (3 onward) are sealed with SHA-256, both the per-tick record hash and the chain
   head. The implementation is plain JS in `app/lib/market/hash.ts`, shared by browser and server, and
   asserted against `node:crypto` in the tests.
-- **Anchoring is built but not running.** The writer, the checker, the page and the CI enforcement
+- **Anchoring is running.** The writer, the checker, the page and the CI enforcement
   all exist (`scripts/anchor.ts`, `scripts/verify-anchor.ts`, `/anchors`, `tests/anchors.test.ts`),
-  and the transaction they would send is asserted in the test suite. No anchor has been written yet:
-  that needs a funded Solana wallet, which does not exist. Until the first memo confirms, the
-  guarantee is "the code and the site agree", not "the chain agrees".
+  and the transaction they would send is asserted in the test suite. Two anchors are confirmed on
+  Solana mainnet (seasons 0 and 1), and the daily timer writes the rest. What is proven is that a
+  day this code recomputes equals the memo on chain; what is still trusted is the operator — the
+  wallet is a hot key on the server, and an anchor is written once, by that job, not by consensus.
 
 ## Not built yet
 

@@ -1,5 +1,20 @@
 {
   "_comment": "Written by `npm run verify:anchors -- --write`. The page at /anchors renders this; CI (tests/anchors.test.ts) recomputes every anchor and fails if this file is stale or wrong.",
-  "verifiedAt": "2026-10-12T00:00:00.000Z",
-  "entries": []
+  "verifiedAt": "2026-10-12T09:35:13.307Z",
+  "entries": [
+    {
+      "season": 0,
+      "date": "2026-10-10",
+      "ok": true,
+      "recomputed": "55bdf958",
+      "problem": null
+    },
+    {
+      "season": 1,
+      "date": "2026-10-11",
+      "ok": true,
+      "recomputed": "34c9b98b",
+      "problem": null
+    }
+  ]
 }

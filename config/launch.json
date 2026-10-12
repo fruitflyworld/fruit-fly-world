@@ -12,7 +12,7 @@
     "supply": "{{TOKEN_SUPPLY}}",
     "devWallet": "{{DEV_WALLET}}",
     "payoutWallet": "{{PAYOUT_WALLET}}",
-    "anchorWallet": "{{ANCHOR_WALLET}}",
+    "anchorWallet": "EospJLqJohc5SV9JaSuejTxWb57XyVK3H4ECPw2H7vYF",
     "teamAllocation": "0%",
     "presale": false,
     "ventureAllocation": false,

@@ -78,9 +78,9 @@ only then does the menu stop saying "not open yet".
 | --- | --- |
 | What it is | Each closed UTC day, the day's last chain head is written on chain as an SPL memo: `ffw:1\|season\|date\|lastTick\|chainHash`. |
 | Code | **Built.** `scripts/anchor.ts` (write), `scripts/verify-anchor.ts` (check), `app/anchors/page.tsx` (publish), `tests/anchors.test.ts` (enforce in CI). |
-| Anchors written | **None yet.** `anchors/anchors.json` is empty, and it only ever records a transaction that confirmed. |
-| Why none yet | The daily job needs a funded Solana wallet whose key lives in the server's environment. That wallet is not set up, so nothing has been written — and this page says that instead of implying otherwise. |
-| Wallet | `{{ANCHOR_WALLET}}` — not created |
+| Anchors written | **2** — season 0 (`55bdf958`) and season 1 (`34c9b98b`), both confirmed on Solana mainnet and both verified by reading the memo back from a public RPC. Season 2 (today) closes at 00:00 UTC and is anchored by the daily job. |
+| Daily job | Systemd timer on the site's server: 00:05 UTC, writes yesterday's head, logs to `/var/log/ffw-anchor.log`. Idempotent — it refuses a day it already anchored. |
+| Wallet | `EospJLqJohc5SV9JaSuejTxWb57XyVK3H4ECPw2H7vYF` — funded with 0.02 SOL, holds nothing else |
 | Verified how | `npm run verify:anchors` (local replay) and `npm run verify:anchors -- --all --chain` (also reads the memo back from a public RPC). CI recomputes every anchor on every push. |
 
 The send path is asserted in this repository without a chain: `tests/anchor-send.test.ts` builds the

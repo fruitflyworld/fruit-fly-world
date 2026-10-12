@@ -1,5 +1,26 @@
 {
-  "_comment": "Every daily anchor this project has written on chain, newest last. An entry is added only after the transaction is confirmed on chain — this file records facts, never intentions. `npm run verify:anchors` recomputes each day's chain head from the code and fails if any hash here disagrees, and `tests/anchors.test.ts` does the same in CI. Memo format: ffw:1|<season>|<YYYY-MM-DD>|<lastTick>|<chainHash>",
+  "_comment": "Every daily anchor this project has written on chain, newest last. An entry is added only after the transaction is confirmed on chain \u2014 this file records facts, never intentions. `npm run verify:anchors` recomputes each day's chain head from the code and fails if any hash here disagrees, and `tests/anchors.test.ts` does the same in CI. Memo format: ffw:1|<season>|<YYYY-MM-DD>|<lastTick>|<chainHash>",
   "memoVersion": 1,
-  "anchors": []
+  "anchors": [
+    {
+      "season": 0,
+      "date": "2026-10-10",
+      "lastTick": 28799,
+      "chainHash": "55bdf958",
+      "worldVersion": "market/1",
+      "tx": "aFn3AM5yuBanQkr5L8FfJYo4xUGoetjB3sRvYp41YpHALYRGYtEkgxgXqCeMUqfYTWc86MxMgJ8e1d8NPLmrG8M",
+      "chain": "solana",
+      "anchoredAt": "2026-10-12T09:34:41.420Z"
+    },
+    {
+      "season": 1,
+      "date": "2026-10-11",
+      "lastTick": 28799,
+      "chainHash": "34c9b98b",
+      "worldVersion": "market/1",
+      "tx": "65YTMDijJwkibrNqFgdQXRJadrDkZwfoBXA9aZUJBxXNhA5kLiKH9xuKhD157eZfnqXPmpvr9xKivYmtGjm1uvTP",
+      "chain": "solana",
+      "anchoredAt": "2026-10-12T09:34:29.003Z"
+    }
+  ]
 }
