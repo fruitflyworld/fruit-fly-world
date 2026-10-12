@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Bi } from "../components/Bi";
 import { ANCHORS, explorerUrl, memoFor } from "../lib/anchors";
+import { TOKEN } from "../lib/token";
 import status from "../../anchors/status.json";
 
 export const metadata: Metadata = {
@@ -80,6 +81,11 @@ export default function AnchorsPage() {
         <code> --chain</code> to read the memo back from a public RPC. Both the manifest and the status
         shown here are enforced by CI: <code>tests/anchors.test.ts</code> recomputes every anchor on every push and
         fails if a hash disagrees. A divergence is never silently re-anchored — it is marked here in red.
+      </div>
+      <div className="docNote">
+        <b>ANCHOR WALLET — </b>
+        <code>{TOKEN.anchorWallet}</code> — the only key that writes these memos. It holds a few
+        cents of SOL for fees and nothing else, and every memo it has ever sent is listed above.
       </div>
       <div className="docNote">
         <b>MEMO FORMAT — </b>
