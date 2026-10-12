@@ -37,8 +37,11 @@ state its own limits cannot be trusted about anything else.
 - `market/2` seasons (3 onward) are sealed with SHA-256, both the per-tick record hash and the chain
   head. The implementation is plain JS in `app/lib/market/hash.ts`, shared by browser and server, and
   asserted against `node:crypto` in the tests.
-- **Neither format is anchored to a public chain yet.** Until it is, the guarantee is "the code and
-  the site agree", not "the chain agrees".
+- **Anchoring is built but not running.** The writer, the checker, the page and the CI enforcement
+  all exist (`scripts/anchor.ts`, `scripts/verify-anchor.ts`, `/anchors`, `tests/anchors.test.ts`),
+  and the transaction they would send is asserted in the test suite. No anchor has been written yet:
+  that needs a funded Solana wallet, which does not exist. Until the first memo confirms, the
+  guarantee is "the code and the site agree", not "the chain agrees".
 
 ## Not built yet
 

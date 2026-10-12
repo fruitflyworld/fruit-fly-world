@@ -177,6 +177,7 @@ completed quest is preparation rather than a mint.
 | [docs/game-guide.md](docs/game-guide.md) | The lineage game — loop, food risk, predator, mutations, reproducibility (game parked) |
 | [docs/weekly-race.md](docs/weekly-race.md) | The race protocol — commit/reveal, beacon draw, replay grading (not live) |
 | [docs/economics.md](docs/economics.md) | The incentive layer — a labelled design exercise, no date, nothing on sale |
+| [/anchors](https://fruitfly.world/anchors) | The daily anchor list — one headline per closed UTC day, recomputable from this code ([anchors/README.md](anchors/README.md)) |
 | [/calibration](https://fruitfly.world/calibration) | The death-calibration experiment — do a brain's danger scores predict actual death |
 
 ## Boundaries (read before you plan around it)
@@ -197,6 +198,7 @@ completed quest is preparation rather than a mint.
 - ✅ **Trading fly** — deterministic paper tape, four behaviors, hunger, starvation, rebirth with an estate
 - ✅ **Sealed record** — per-tick content hash chained (FNV-1a in `market/1`, SHA-256 in `market/2`); the browser replays the day and compares
 - ✅ **Live replay verification** — same rules + same seed = the same day, checked in your browser and by the server
+- 🧱 **Daily anchors** — writer, checker, page and CI enforcement built; no anchor written yet, because the funded anchor wallet does not exist (`docs/STATUS.md`)
 - ✅ **The brainstem** — LC4 + LPLC2 → Giant Fiber, published wiring check (100% vs 68% in a simplified two-channel assay)
 - ✅ **Judgment layer** — free local heuristic by default; pinned `jev-1.13.0` via `/api/jev` with visible fallback
 - ✅ **Agent skill** — the lineage headless via `scripts/play.mjs`

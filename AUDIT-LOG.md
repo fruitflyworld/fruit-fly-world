@@ -26,6 +26,7 @@ The rules this log follows:
 | P1-3 | `LIMITATIONS.md` and `GOVERNANCE.md` added — model limits, paper-market properties, unbuilt items, failed experiments, who holds what, what a kill switch would be | `LIMITATIONS.md`, `GOVERNANCE.md` | read both; every claim under "Not built yet" also appears in `docs/STATUS.md` |
 | P2 | `sim` and `bench` shipped the Chinese food/trait labels while the game had already been translated; both now match the English copy | `fruitflyworld/sim@dcdc04f7`, `fruitflyworld/bench@8c1b1e6b` (both `js/sim.js`) | both repositories' CI green after the change; the diff is quoted strings only — no numbers, no ordering, no hash input |
 | P2 | Commit-timezone convention documented (not enforced) | `CONTRIBUTING.md` | the House rules section |
+| P1-2 | Daily anchoring on Solana: writer, verifier, `/anchors` page, manifest + status file, CI enforcement, transaction asserted without a chain | `anchors/`, `scripts/anchor.ts`, `scripts/verify-anchor.ts`, `scripts/solana-memo.ts`, `app/anchors/page.tsx`, `app/lib/anchors.ts`, `tests/anchors.test.ts`, `tests/anchor-send.test.ts` | `npm test` → 147 tests; `npm run verify:anchors`; `npm run anchor -- --day 0` (dry run, sends nothing) |
 | — | This log | `AUDIT-LOG.md` | you are reading it |
 
 ### Not done, and why

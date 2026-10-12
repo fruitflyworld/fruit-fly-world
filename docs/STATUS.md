@@ -72,6 +72,21 @@ wallet and wonder why the site did not mention it.
 When one item opens, it opens here first with its price, its asset and its receiving address, and
 only then does the menu stop saying "not open yet".
 
+## Anchoring
+
+| Field | Value |
+| --- | --- |
+| What it is | Each closed UTC day, the day's last chain head is written on chain as an SPL memo: `ffw:1\|season\|date\|lastTick\|chainHash`. |
+| Code | **Built.** `scripts/anchor.ts` (write), `scripts/verify-anchor.ts` (check), `app/anchors/page.tsx` (publish), `tests/anchors.test.ts` (enforce in CI). |
+| Anchors written | **None yet.** `anchors/anchors.json` is empty, and it only ever records a transaction that confirmed. |
+| Why none yet | The daily job needs a funded Solana wallet whose key lives in the server's environment. That wallet is not set up, so nothing has been written — and this page says that instead of implying otherwise. |
+| Wallet | `{{ANCHOR_WALLET}}` — not created |
+| Verified how | `npm run verify:anchors` (local replay) and `npm run verify:anchors -- --all --chain` (also reads the memo back from a public RPC). CI recomputes every anchor on every push. |
+
+The send path is asserted in this repository without a chain: `tests/anchor-send.test.ts` builds the
+transaction, checks the memo survives the wire format, and verifies the signature. The one thing not
+yet proven is an RPC accepting it, because it needs a funded wallet.
+
 ## What is not built
 
 Stated so that no reader has to guess, and so that no future commit can quietly imply otherwise:

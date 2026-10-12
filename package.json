@@ -8,6 +8,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
+    "anchor": "tsx scripts/anchor.ts",
+    "verify:anchors": "tsx scripts/verify-anchor.ts",
     "check": "npm run typecheck && npm test && npm run build",
     "film:capture": "node scripts/launch-film/capture.mjs",
     "film:render": "node scripts/launch-film/render.mjs",
@@ -22,6 +24,7 @@
     "viem": "2.57.4"
   },
   "devDependencies": {
+    "@solana/web3.js": "^1.99.0",
     "@types/node": "^26.6.4",
     "@types/pg": "8.23.1",
     "@types/react": "18.3.24",

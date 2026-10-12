@@ -11,6 +11,16 @@ summarises it in prose.
 
 ### Added
 
+- **Daily anchors, built end to end — and honest about the one missing piece.** `scripts/anchor.ts`
+  computes a closed UTC day's head and writes it on chain as an SPL memo
+  (`ffw:1|season|date|lastTick|chainHash`); `scripts/verify-anchor.ts` recomputes each day and can
+  read the memo back from a public RPC; `/anchors` publishes the list; `tests/anchors.test.ts` and
+  `tests/anchor-send.test.ts` enforce the manifest and the transaction on every push. No anchor has
+  been written yet because the funded anchor wallet does not exist, and `docs/STATUS.md` says so
+  instead of showing an empty table as if it were a result.
+
+### Added
+
 - **`market/2` — the seal is now SHA-256.** New seasons hash each record with SHA-256 and chain
   them with SHA-256 (`app/lib/market/hash.ts`, plain JS so the browser replay and the server run
   identical code; asserted against `node:crypto` in the tests). Season 0's published heads and the

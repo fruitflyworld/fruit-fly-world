@@ -10,7 +10,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/dish", priority: 0.85 },
     { path: "/pitch", priority: 0.8 },
     { path: "/economics", priority: 0.8 },
-    { path: "/participate", priority: 0.7 }
+    { path: "/participate", priority: 0.7 },
+    { path: "/anchors", priority: 0.6 }
   ];
 
   return routes.map(({ path, priority }) => ({
