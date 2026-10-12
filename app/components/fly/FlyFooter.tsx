@@ -13,7 +13,7 @@ export default function FlyFooter() {
       <Link href="/dish#mint"><Bi en="PASSPORT"  /></Link>
       <Link href="/race"><Bi en="RACE"  /></Link>
       <Link href="/lab">LAB</Link>
-      <Link href="https://github.com/musefly-ai/fruit-fly-world/blob/main/docs/flies-that-trade.md" target="_blank" rel="noreferrer">DOCS</Link>
+      <Link href="https://github.com/fruitflyworld/fruit-fly-world/blob/main/docs/flies-that-trade.md" target="_blank" rel="noreferrer">DOCS</Link>
     </div>
   </footer>;
 }

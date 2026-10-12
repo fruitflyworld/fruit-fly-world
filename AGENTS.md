@@ -4,9 +4,9 @@
 
 - `app/` — the Next.js site (pages, API routes, mint/mission server logic)
 - `public/play/` — the game. **Vendored from
-  [musefly-ai/game](https://github.com/musefly-ai/game)** (rendering + feel) which
-  itself vendors [musefly-ai/sim](https://github.com/musefly-ai/sim) (world rules +
-  numbers) and [musefly-ai/bench](https://github.com/musefly-ai/bench) (exam
+  [fruitflyworld/game](https://github.com/fruitflyworld/game)** (rendering + feel) which
+  itself vendors [fruitflyworld/sim](https://github.com/fruitflyworld/sim) (world rules +
+  numbers) and [fruitflyworld/bench](https://github.com/fruitflyworld/bench) (exam
   harness). See `vendor.lock.json`.
 - `contracts/` — the Passport (soul-bound ERC-721 + ERC-5192)
 - `public/skill/ffw-dish/` — the agent skill (SKILL.md + headless runner)
@@ -39,7 +39,7 @@
 - Change pinned numbers in `public/play/js/sim.js`, `gf-neuron.js`, `cx-circuit.js`
   (escape assay 100/68, CX trace 9fb9e0d0, drafts 0f4d39c3).
 - Edit vendored files under `public/play/` directly — change them upstream
-  (musefly-ai/game or /sim) and re-sync; CI compares `vendor.lock.json` fingerprints.
+  (fruitflyworld/game or /sim) and re-sync; CI compares `vendor.lock.json` fingerprints.
 - Call the world `rng()` for visual effects.
 - Touch `.env*`, deployment scripts, or the contract without explicit instruction.
 

@@ -24,7 +24,7 @@ summarises it in prose.
   quoting example prices.
 - **Docs and links tell the same story as the site**: the README leads with the status table, the
   architecture map lists `market/1` as the live model, and GitHub links point at
-  `musefly-ai/*` (the organisation's current name).
+  `fruitflyworld/*` (the organisation's current name).
 
 ### Added
 

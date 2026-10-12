@@ -17,7 +17,7 @@ const steps = [
 
 export default function RacePage() {
   return <main className="racePage">
-    <nav><a className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><Link href="/">World</Link><Link href="/lab">For Models</Link><Link href="/pitch">What This Is</Link><Link href="https://github.com/musefly-ai/fruit-fly-world/blob/main/docs/weekly-race.md" target="_blank" rel="noreferrer">Protocol</Link></div><Link className="navCta" href="/fly/dusty">WATCH DUSTY</Link></nav>
+    <nav><a className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><Link href="/">World</Link><Link href="/lab">For Models</Link><Link href="/pitch">What This Is</Link><Link href="https://github.com/fruitflyworld/fruit-fly-world/blob/main/docs/weekly-race.md" target="_blank" rel="noreferrer">Protocol</Link></div><Link className="navCta" href="/fly/dusty">WATCH DUSTY</Link></nav>
 
     <header className="raceHero">
       <div className="eyebrow"><i/> THE WEEKLY RACE / COMMIT · DRAW · REVEAL · GRADE</div>
@@ -43,7 +43,7 @@ export default function RacePage() {
           <div className="raceStep" key={n}><b>{n}</b><h3>{t}</h3><p>{d}</p></div>
         ))}
       </div>
-      <p className="raceMuted">Full record, including why policies are ordered trait lists instead of code (no untrusted execution on the grading server): <Link href="https://github.com/musefly-ai/fruit-fly-world/blob/main/docs/weekly-race.md" target="_blank" rel="noreferrer">docs/weekly-race.md</Link>. Honest boundary: no week has been graded yet — until one has, this is a protocol with receipts, not a track record. The grading operator is trusted to run the replay honestly; that trust is auditable (you can re-run every entry) but not yet removed. On-chain grading is the follow-up.</p>
+      <p className="raceMuted">Full record, including why policies are ordered trait lists instead of code (no untrusted execution on the grading server): <Link href="https://github.com/fruitflyworld/fruit-fly-world/blob/main/docs/weekly-race.md" target="_blank" rel="noreferrer">docs/weekly-race.md</Link>. Honest boundary: no week has been graded yet — until one has, this is a protocol with receipts, not a track record. The grading operator is trusted to run the replay honestly; that trust is auditable (you can re-run every entry) but not yet removed. On-chain grading is the follow-up.</p>
     </section>
   </main>;
 }

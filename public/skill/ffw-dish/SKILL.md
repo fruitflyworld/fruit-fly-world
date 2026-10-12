@@ -217,4 +217,4 @@ Nothing in the game is on sale.
 
 The game itself, the brains and the sealed log live at
 `https://fruitfly.world/play` (simulation core:
-[musefly-ai/sim](https://github.com/musefly-ai/sim)).
+[fruitflyworld/sim](https://github.com/fruitflyworld/sim)).

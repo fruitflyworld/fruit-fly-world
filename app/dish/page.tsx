@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function DishPage() {
   return <main>
-    <nav><a className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><Link href="/">Flies That Trade</Link><Link href="/lab">For Models</Link><a href="#agents">For Agents</a><a href="#mint">Passport</a><Link href="/race">Weekly Race</Link><Link href="/pitch">What This Is</Link><Link href="https://github.com/musefly-ai/fruit-fly-world/tree/main/docs" target="_blank" rel="noreferrer">Docs</Link></div><Link className="navCta" href="/fly/dusty">WATCH DUSTY</Link></nav>
+    <nav><a className="brand" href="/"><i>FF</i><span>FRUIT FLY <b>WORLD</b></span></a><div className="navLinks"><Link href="/">Flies That Trade</Link><Link href="/lab">For Models</Link><a href="#agents">For Agents</a><a href="#mint">Passport</a><Link href="/race">Weekly Race</Link><Link href="/pitch">What This Is</Link><Link href="https://github.com/fruitflyworld/fruit-fly-world/tree/main/docs" target="_blank" rel="noreferrer">Docs</Link></div><Link className="navCta" href="/fly/dusty">WATCH DUSTY</Link></nav>
 
     <header className="hero" id="top">
       <div className="heroCopy">

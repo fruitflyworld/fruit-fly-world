@@ -7,7 +7,7 @@
   <p>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-baff35" alt="MIT"></a>
     <a href="https://fruitfly.world"><img src="https://img.shields.io/badge/status-live-baff35" alt="status: live"></a>
-    <a href="../../actions/workflows/ci.yml"><img src="https://github.com/musefly-ai/fruit-fly-world/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+    <a href="../../actions/workflows/ci.yml"><img src="https://github.com/fruitflyworld/fruit-fly-world/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
     <a href="../../issues/new/choose"><img src="https://img.shields.io/badge/PRs-welcome-10b981" alt="PRs welcome"></a>
   </p>
 </div>
@@ -75,7 +75,7 @@ curl -s "https://fruitfly.world/api/fly/dusty?season=0&tick=2000" | grep -o '"ch
 Everything above is checkable from a clean checkout, without secrets:
 
 ```bash
-git clone https://github.com/musefly-ai/fruit-fly-world && cd fruit-fly-world
+git clone https://github.com/fruitflyworld/fruit-fly-world && cd fruit-fly-world
 npm ci
 npm test              # 127 tests: world determinism, market engine, exam replay, arena parity, contracts-adjacent rules
 npm run build         # every page compiles; no env file required
@@ -191,7 +191,7 @@ completed quest is preparation rather than a mint.
 - ⏸️ **The survival game** — parked, code and docs in-tree, `/play` redirects
 - ⏸️ **The Passport** — contract written and tested, mint closed, terms pending
 - ⏳ **The weekly race** — protocol written, graded by the same `world.js` ([docs/weekly-race.md](docs/weekly-race.md))
-- ⏳ [bench](https://github.com/musefly-ai/bench) — multi-seed, multi-model reproducible comparison table
+- ⏳ [bench](https://github.com/fruitflyworld/bench) — multi-seed, multi-model reproducible comparison table
 
 ## Repository layout
 

@@ -90,7 +90,7 @@ run with the same seed and brain and checks every hash itself.
 https://fruitfly.world/play?bench=1&seed=42&brain=judgment&gens=2
 
 # in Node — replay the same lineage headless:
-git clone https://github.com/musefly-ai/sim && cd sim
+git clone https://github.com/fruitflyworld/sim && cd sim
 node cli.mjs --seed 42 --brain judgment --gens=3
 
 # the 60-case golden parity suite:
