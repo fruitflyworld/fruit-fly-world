@@ -24,13 +24,15 @@ The rules this log follows:
 | P0-4A | x402 menu carries no prices; status is "Not open yet. Opens after launch; prices will be published here first." | `app/components/fly/X402Menu.tsx` | `rg -n "e\\.g\\. \\$\\|Price at launch" app` → empty; `/fly/dusty` shows the new line |
 | P0-7 | Oracle mode is labelled experimental and explicitly **not replayable** where it is offered; the agent prompt forbids pasting private keys | `app/lab/page.tsx`, `app/lib/agentskill.ts` | `rg -n "not replayable\|private key" app/lab/page.tsx app/lib/agentskill.ts` |
 | P1-3 | `LIMITATIONS.md` and `GOVERNANCE.md` added — model limits, paper-market properties, unbuilt items, failed experiments, who holds what, what a kill switch would be | `LIMITATIONS.md`, `GOVERNANCE.md` | read both; every claim under "Not built yet" also appears in `docs/STATUS.md` |
+| P2 | `sim` and `bench` shipped the Chinese food/trait labels while the game had already been translated; both now match the English copy | `fruitflyworld/sim@dcdc04f7`, `fruitflyworld/bench@8c1b1e6b` (both `js/sim.js`) | both repositories' CI green after the change; the diff is quoted strings only — no numbers, no ordering, no hash input |
+| P2 | Commit-timezone convention documented (not enforced) | `CONTRIBUTING.md` | the House rules section |
 | — | This log | `AUDIT-LOG.md` | you are reading it |
 
 ### Not done, and why
 
 | Item | Status | Why |
 | --- | --- | --- |
-| P1-2 daily on-chain anchoring + `/anchors` + `verify --day` | **Not built** | Needs a funded anchor wallet, a signing path and a CI job against a public RPC. Tracked in `docs/STATUS.md`; the site does not claim it exists. |
+| P1-2 daily on-chain anchoring + `/anchors` + `verify --day` | **Not built** | Needs a funded anchor wallet, a signing path and a CI job against a public RPC. Tracked in `docs/STATUS.md`; the site does not claim it exists. The record format it would anchor is now SHA-256 (`market/2`), so anchoring is the only piece left. |
 | P1-1 connectome weight rebuild script + test | **Not built** | The weights and their provenance are documented in `docs/neural-model.md`; the rebuild script that proves them from the dataset does not exist yet. |
 | P1-4 signed commits | **Not enabled** | Requires a signing key on the maintainer's machine; GitHub shows the commit signatures, so the absence is visible rather than hidden. |
 | Next.js advisory upgrade | **Deliberately deferred** | Every open advisory clears only in `next@15.5.24`+, which also moves React 18 → 19 and makes the request APIs async. The decision and the blast radius are in `SECURITY.md`; the dependabot PR stays open. |

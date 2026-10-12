@@ -1,5 +1,14 @@
 # Contributing
 
+## House rules
+
+- **English in every tracked file.** The site's own language is a product decision; the repository's
+  working language is not.
+- **Marketing material goes to `ops`, not here.** Drafts, outreach packs, announcement threads and
+  giveaway lists are not part of a public repository. `AGENTS.md` has the detail.
+- **Commit in UTC** (`TZ=UTC git commit …`) when your machine's timezone is not something you want
+  in the public history. It is a convention, not a check — nobody is blocked for skipping it.
+
 ## Before anything else
 
 ```bash
