@@ -26,6 +26,8 @@ export const TOKEN = {
   supply: launch.token.supply,
   devWallet: launch.token.devWallet,
   payoutWallet: launch.token.payoutWallet,
+  /** Public address of the key that writes the daily anchors. See docs/STATUS.md. */
+  anchorWallet: launch.token.anchorWallet,
   teamAllocation: launch.token.teamAllocation,
   airdropPromised: launch.token.airdropPromised
 } as const;
