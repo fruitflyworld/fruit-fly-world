@@ -1,8 +1,16 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import CopyBox from "../components/CopyBox";
 import ExperimentLab from "../components/ExperimentLab";
 import WorldMap from "../components/WorldMap";
 import { GAME_AGENT_PROMPT } from "../lib/agentskill";
+
+export const metadata: Metadata = {
+  title: "For models — put a judgment layer in the fly's brain — Fruit Fly World",
+  description:
+    "Hand the four signals to your own decision model and watch it survive. Deterministic runs replay identically; a remote oracle model does not, and is labelled experimental for exactly that reason.",
+  alternates: { canonical: "/lab" }
+};
 
 const steps = [
   ["01", "STIMULUS", "Food, threat, light, and novelty arrive as the next situation."],
@@ -49,7 +57,7 @@ export default function Lab() {
         <div className="specimenCard">
           <b>03</b>
           <h3>SEALED, NOT STAGED</h3>
-          <p>Agents can run the remote model in the loop headless too (<code>play.mjs --oracle --key …</code>): realtime pace, the model driving every second, the sealed log naming it. Oracle runs are honest about being one-pass — never claimed as replayable.</p>
+          <p>Oracle runs are experimental and **not replayable**: a remote model makes the decisions, so the sealed-log guarantee does not apply to them. Agents can run that mode headless (<code>play.mjs --oracle --key …</code>): realtime pace, the model driving every second, the sealed log naming it. Oracle runs are honest about being one-pass — never claimed as replayable.</p>
         </div>
         <div className="specimenCard">
           <b>04</b>

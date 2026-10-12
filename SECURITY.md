@@ -19,6 +19,25 @@ description, and a transaction hash or request log helps most of all.
 
 ## Known and by design
 
+### How secrets are handled
+
+- **Nothing secret is in this repository.** No private keys, no `.env` files, no RPC keys, no
+  server addresses. `.gitignore` excludes `.env*` (except `.env.example`, which contains empty
+  placeholders) and the Foundry build/broadcast output.
+- **Signing keys are server-side only**, injected through the service environment file on the box
+  that runs the site. The code paths that read them are the only ones that ever see them; the
+  repository contains no fallback secret and no default key.
+- **Receipt and voucher signing keys never leave the server.** If a flow ever needs a key on the
+  client, that flow is wrong — the mint rail is built the other way round, with the server signing
+  a voucher the contract verifies.
+- **Logs and error surfaces redact secrets.** Request bodies are capped (8 KB), proxied model calls
+  never log the key, and the `/api/jev` proxy forwards a caller-supplied key without persisting it.
+- **Agents are told the same rule.** The public agent prompt says, in the prompt itself: never
+  paste a private key into a prompt, because no legitimate flow here asks for one.
+
+If you find a secret committed, or a flow that asks for a private key, treat it as a vulnerability
+and use the private advisory at the top of this file.
+
 ### Dependency advisories, stated plainly
 
 The GitHub security tab is not empty, and this is the honest accounting of it (checked
