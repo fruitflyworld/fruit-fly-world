@@ -27,12 +27,15 @@ The GitHub security tab is not empty, and this is the honest accounting of it (c
 - **`postcss` and `source-map-js` are patched.** Both were reachable only through the build
   toolchain; `package.json` pins the patched versions with `overrides` and the lockfile carries
   them (`postcss@8.5.29`, `source-map-js@1.2.2`).
-- **The `next@14.2.35` advisories remain open.** Every one of them is fixed only in `next@15.5.24`,
-  which also means React 18 → 19 and the async request APIs. That is a major upgrade, not a patch,
-  and it is being done on a branch with CI as the gate rather than pushed to main on a Friday.
+- **The `next@14.2.35` advisories remain open, knowingly.** Every one of them is fixed only in
+  `next@15.5.24`+, which also means React 18 → 19 and the async request APIs — a framework
+  migration, not a patch. The maintainers are deliberately not bundling that migration into a
+  product week: it will land as its own change, with the full suite plus a browser smoke test on a
+  real page, rather than as a dependency bump that quietly changes the request lifecycle.
 
-Dependabot keeps the pull request open so this cannot quietly disappear. What the exposure looks
-like *in this deployment*, which is why it is not an emergency:
+Dependabot keeps its pull request open so the decision stays visible instead of disappearing into
+a dashboard. What the exposure looks like *in this deployment*, which is why it is accepted rather
+than urgent:
 
 - The affected surface is Next's server-side request handling — caching, redirects and
   request-amplification classes. This app serves static and server-rendered pages through one
