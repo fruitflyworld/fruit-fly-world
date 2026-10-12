@@ -9,6 +9,17 @@ summarises it in prose.
 
 ## Unreleased
 
+### Added
+
+- **`market/2` — the seal is now SHA-256.** New seasons hash each record with SHA-256 and chain
+  them with SHA-256 (`app/lib/market/hash.ts`, plain JS so the browser replay and the server run
+  identical code; asserted against `node:crypto` in the tests). Season 0's published heads and the
+  live seasons 1–2 are untouched: `market/1`'s FNV-1a heads stay exactly as served, and the switch
+  happens at the season 3 boundary (2026-10-13 00:00 UTC). A 32-bit head is a checksum, not a
+  commitment — see `LIMITATIONS.md`.
+- **Anchor status, stated where it belongs.** `LIMITATIONS.md` now has a "The seal" section that
+  says plainly that neither format is anchored to a public chain yet.
+
 ### Changed
 
 - **The site is English-only.** The bilingual `Bi` component now renders its English branch and

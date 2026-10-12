@@ -28,6 +28,18 @@ state its own limits cannot be trusted about anything else.
   decisions that cannot be recomputed from the seed; the sealed-log guarantee does not cover it.
   That mode is labelled experimental everywhere it is offered.
 
+## The seal
+
+- `market/1` seasons (0–2) are sealed with 32-bit FNV-1a. That is a checksum, not a commitment: a
+  different record with the same 8-hex head can be ground out on a laptop. Those seasons are kept as
+  published — rewriting a head that has already been replayed by strangers would be the one change a
+  replayable system cannot make.
+- `market/2` seasons (3 onward) are sealed with SHA-256, both the per-tick record hash and the chain
+  head. The implementation is plain JS in `app/lib/market/hash.ts`, shared by browser and server, and
+  asserted against `node:crypto` in the tests.
+- **Neither format is anchored to a public chain yet.** Until it is, the guarantee is "the code and
+  the site agree", not "the chain agrees".
+
 ## Not built yet
 
 - **Daily on-chain anchoring** of the hash chain (planned; no `/anchors` page, no verification CLI).

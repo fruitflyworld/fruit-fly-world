@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { CX_MODEL_VERSION } from "../../../../public/play/js/cx-circuit.js";
-import { MARKET_WORLD_VERSION, equityOf } from "../../../lib/market/engine";
+import { equityOf } from "../../../lib/market/engine";
 import { FLIES, runTo, seasonClock, tickClock, TICKS_PER_SEASON } from "../../../lib/market/fly";
 import { contentHash } from "../../../../public/play/js/brain.js";
 
@@ -34,7 +34,7 @@ export async function GET(req: Request, { params }: { params: { slug: string } }
     const { run, record, chain } = runTo(fly, season, tick, { keepEvents: 1 });
     const s = run.runner.state;
     body = {
-      worldVersion: MARKET_WORLD_VERSION,
+      worldVersion: run.runner.version,
       circuit: CX_MODEL_VERSION,
       mode: fly.mode,
       fly: { slug: fly.slug, name: fly.name },

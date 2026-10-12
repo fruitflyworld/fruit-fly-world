@@ -27,8 +27,33 @@ import { createCircuit, type Circuit } from "../../../public/play/js/cx-circuit.
 import { contentHash } from "../../../public/play/js/brain.js";
 import type { Behavior } from "../../../public/play/js/brain.js";
 import { COINS, COIN_COUNT, mixSeed, round6, type TapeTick } from "./tape";
+import { GENESIS_HASH, marketChainHash, marketRecordHash } from "./hash";
 
+/**
+ * Two record formats live side by side, on purpose.
+ *
+ * `market/1` is what season 0 already published: FNV-1a hashes, 8 hex digits. Those
+ * bytes are pinned by tests and by the live API, so season 0 must keep producing
+ * exactly them — rewriting history to make the seal prettier would be the one
+ * change a replayable system cannot make.
+ *
+ * `market/2` is every season from `MARKET_V2_FROM_SEASON` on: SHA-256 record hashes
+ * and a SHA-256 chain head, 64 hex digits. A 32-bit head is not a commitment (see
+ * ./hash.ts), so new seasons use one that is.
+ */
 export const MARKET_WORLD_VERSION = "market/1";
+export const MARKET_WORLD_VERSION_2 = "market/2";
+/**
+ * Season 3 begins 2026-10-13 00:00 UTC. Everything already served — season 0's
+ * pinned goldens and the live seasons 1–2 — keeps replaying to the market/1 bytes
+ * a visitor may already have checked. A stronger seal starts at a season boundary,
+ * never in the middle of one, and never by rewriting a published head.
+ */
+export const MARKET_V2_FROM_SEASON = 3;
+export type WorldVersion = typeof MARKET_WORLD_VERSION | typeof MARKET_WORLD_VERSION_2;
+
+export const versionForSeason = (season: number): WorldVersion =>
+  season >= MARKET_V2_FROM_SEASON ? MARKET_WORLD_VERSION_2 : MARKET_WORLD_VERSION;
 
 // ---- tuning (part of the world version: change any of these → bump market/N) ----
 export const P = {
@@ -142,6 +167,8 @@ export interface FlyState {
 export interface FlySpec {
   name: string;
   seed: number;
+  /** Which record format this runner seals with. Defaults to market/1. */
+  version?: WorldVersion;
 }
 
 export function circuitSeed(spec: FlySpec, gen: number) {
@@ -191,11 +218,18 @@ function keepInDish(s: FlyState) {
 /** A running fly: owns its circuit, steps one tick at a time. */
 export interface Runner {
   state: FlyState;
+  /** The record format this runner seals with — reported by the API and the replay page. */
+  version: WorldVersion;
   step(tape: TapeTick): TickRecord;
 }
 
 export function createRunner(spec: FlySpec, opts: { keepEvents?: number } = {}): Runner {
+  const version = spec.version ?? MARKET_WORLD_VERSION;
   const state = initialState();
+  if (version === MARKET_WORLD_VERSION_2) {
+    state.chain = GENESIS_HASH;
+    state.lastHash = GENESIS_HASH;
+  }
   let circuit: Circuit = createCircuit({ seed: circuitSeed(spec, 1) });
   const keep = opts.keepEvents ?? 400;
 
@@ -394,7 +428,7 @@ export function createRunner(spec: FlySpec, opts: { keepEvents?: number } = {}):
 
   function seal(t: number, tr: Trade[]): TickRecord {
     const rec: TickRecord = {
-      v: MARKET_WORLD_VERSION,
+      v: version,
       t,
       g: state.gen,
       st: state.status,
@@ -411,12 +445,17 @@ export function createRunner(spec: FlySpec, opts: { keepEvents?: number } = {}):
       eq: r2(equityOf(state)),
       tr: tr.map((x) => (x.pnl === undefined ? { side: x.side, coin: x.coin, qty: x.qty, px: x.px } : { side: x.side, coin: x.coin, qty: x.qty, px: x.px, pnl: x.pnl, ...(x.escape ? { escape: true } : {}) })),
     };
-    state.lastHash = contentHash(rec);
-    state.chain = contentHash({ p: state.chain, r: state.lastHash });
+    if (version === MARKET_WORLD_VERSION_2) {
+      state.lastHash = marketRecordHash(rec);
+      state.chain = marketChainHash(state.chain, state.lastHash);
+    } else {
+      state.lastHash = contentHash(rec);
+      state.chain = contentHash({ p: state.chain, r: state.lastHash });
+    }
     if (state.status !== "alive") { state.spikes = []; }
     state.tick = t + 1;
     return rec;
   }
 
-  return { state, step };
+  return { state, version, step };
 }

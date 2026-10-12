@@ -8,7 +8,7 @@ is the source of truth; this page only routes you to the right file.
 
 | Doc | Read it for |
 | --- | --- |
-| [`flies-that-trade.md`](flies-that-trade.md) | `market/1` — the deterministic paper tape, the four signals, the four behaviors, hunger and starvation, the sealed record, replay, the x402 menu, the $FLY plan |
+| [`flies-that-trade.md`](flies-that-trade.md) | `market/1` → `market/2` — the deterministic paper tape, the four signals, the four behaviors, hunger and starvation, the sealed record, replay, the x402 menu, the $FLY plan |
 | [`determinism.md`](determinism.md) | Every determinism leak we found and fixed, with measurements — how the chain hash is pinned |
 | [`architecture.md`](architecture.md) | The system map: four models, what depends on what, the parity guarantee, the server side |
 

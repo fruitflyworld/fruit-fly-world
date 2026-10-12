@@ -1,4 +1,4 @@
-# Flies That Trade (market/1)
+# Flies That Trade (market/1 → market/2)
 
 > **It can brag. Every number replays.**
 
@@ -82,8 +82,23 @@ Each tick produces a record:
  "x":0.624,"y":0.36,"e":0.45,"eq":1075.47,"tr":[]}
 ```
 
-- `recordHash = FNV-1a(stableStringify(record))` — the same hash as `flyline-log/1`.
-- `chain = FNV-1a({p: previousChain, r: recordHash})`, starting from `00000000`.
+Two formats exist, and the boundary between them is a season boundary on purpose.
+
+| | `market/1` | `market/2` |
+| --- | --- | --- |
+| Seasons | 0, 1, 2 | 3 onward (2026-10-13 00:00 UTC) |
+| `recordHash` | `FNV-1a(stableStringify(record))` | `SHA-256(stableStringify(record))` |
+| `chain` | `FNV-1a({p, r})`, from `00000000` | `SHA-256({p, r})`, from 64 zeros |
+| Head length | 8 hex digits | 64 hex digits |
+
+`market/1` is kept rather than rewritten because those bytes are already
+published — season 0's heads are pinned in tests and served by the API, and a
+replayable system cannot retro-fit its own history to look better. `market/2` is
+what new seasons seal with, because a 32-bit head is a checksum, not a
+commitment: it can be ground to collision on a laptop, and "sealed" should not
+be a word we ask anyone to take on trust. The hash implementation is plain JS in
+`app/lib/market/hash.ts` — browser replay and server must run identical code —
+and `tests/market.test.ts` asserts it against `node:crypto` string by string.
 
 One chain hash at tick N therefore commits to every tick before it. The
 `VerifyWidget` and the replay page ask the server for a chain hash, recompute
@@ -98,8 +113,8 @@ the same tick in the browser from tick 0, and print **IDENTICAL** or
   `dexp` from `dmath.js`.
 - Coin positions are literals, not computed with trigonometry.
 - Rendering (`Arena.tsx`) may use anything; it never feeds back into the engine.
-- Pinned goldens: season 0 tick 0 `3e8de650`, tick 2000 `003ad503`, tick
-  28799 `55bdf958`; season 3 tick 15000 `ab9a2b5f`.
+- Pinned goldens (market/1): season 0 tick 0 `3e8de650`, tick 2000 `003ad503`, tick 28799 `55bdf958`.
+- Pinned goldens (market/2): season 3 tick 0 `826d3475…c452`, tick 15000 `a448374f…1163` (full values in the test).
 
 **Changing anything that changes a run** (tuning in `P`, the tape, signal
 formulas, record fields) is a WORLD change: bump `MARKET_WORLD_VERSION` to
@@ -161,7 +176,8 @@ The launch facts live in exactly one place — [`config/launch.json`](../config/
 
 ```
 app/lib/market/tape.ts       paper tape (deterministic market) + coin menu
-app/lib/market/engine.ts     market/1: senses → FFW-CX/0.1 → body/wallet → sealed record
+app/lib/market/engine.ts     market/1 + market/2: senses → FFW-CX/0.1 → body/wallet → sealed record
+app/lib/market/hash.ts       market/2's SHA-256 seal (plain JS, asserted against node:crypto)
 app/lib/market/fly.ts        flagship profile, season clock, runTo/startSeason
 app/lib/market/diary.ts      brag lines from sealed events (EN/中文), each with its tick
 app/components/fly/          LiveFly (browser replay), Arena (canvas), widgets, nav/footer

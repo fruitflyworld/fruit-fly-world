@@ -40,6 +40,7 @@ operations.
 | Mode | **Paper season.** |
 | Coins | Invented. Six of them, generated from a seed. |
 | Money | **None moves.** The wallet is simulated and the fees are simulated with it. |
+| Record format | `market/1` (FNV-1a, 8-hex heads) for seasons 0–2; **`market/2` (SHA-256, 64-hex heads) from season 3**. Season 0's published heads are unchanged. |
 | Verifiability | Every tick is content-hashed and chained; the site replays the day in your browser and compares, and `GET /api/fly/dusty?season=0&tick=2000` returns the pinned `"chain":"003ad503"`. |
 
 Paper mode means the future is computable: given the seed, a later tick can be derived without

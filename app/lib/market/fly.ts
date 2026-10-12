@@ -4,7 +4,7 @@
 // the same fly in the same place, because the state at tick N is a pure
 // function of (fly seed, season, N): there is no server state to trust.
 
-import { createRunner, type FlySpec, type Runner, type TickRecord } from "./engine";
+import { createRunner, versionForSeason, type FlySpec, type Runner, type TickRecord } from "./engine";
 import { createPaperTape, mixSeed } from "./tape";
 
 export const TICK_MS = 3000;
@@ -36,7 +36,9 @@ export function seasonClock(nowMs: number) {
 }
 
 export function seasonSpec(fly: FlyProfile, season: number): FlySpec {
-  return { name: fly.name, seed: mixSeed(fly.seed, season) };
+  // Season 0 published market/1 hashes and must keep replaying to them; every later
+  // season seals with market/2 (SHA-256). See docs/flies-that-trade.md.
+  return { name: fly.name, seed: mixSeed(fly.seed, season), version: versionForSeason(season) };
 }
 
 export function tapeSeedFor(fly: FlyProfile, season: number) {

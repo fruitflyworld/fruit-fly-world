@@ -23,7 +23,7 @@ are the honest part.
 
 | Surface | Status | Where |
 | --- | --- | --- |
-| **Trading fly (`market/1`)** — Dusty trades a deterministic, invented paper tape from a simulated wallet — no real money moves — and starves when the fees dry up | **Live** | [/fly/dusty](https://fruitfly.world/fly/dusty) |
+| **Trading fly (`market/1`, `market/2` from season 3)** — Dusty trades a deterministic, invented paper tape from a simulated wallet — no real money moves — and starves when the fees dry up | **Live** | [/fly/dusty](https://fruitfly.world/fly/dusty) |
 | **Sealed record + replay** — every tick hashed and chained; your browser recomputes the chain and compares | **Live** | [/fly/dusty/replay](https://fruitfly.world/fly/dusty/replay?season=0&tick=2000) |
 | **The survival game** — foraging, committed predator lunges, GF escape reflex, mutation drafts | **Parked** | code in `public/play/` and `app/game/`; `/play` redirects to the homepage |
 | **Genesis Passport** — soul-bound ERC-721 + ERC-5192 | **Not live** (coming soon) | `contracts/src/FruitFlyPassport.sol` |
@@ -58,7 +58,7 @@ browser game about a fruit fly that can die. It is now a fruit fly that trades: 
 decision loop, the same nine-coin tape every day, and a wallet that goes to zero if it reads the
 market wrong.
 
-## The trading fly (`market/1`)
+## The trading fly (`market/1` → `market/2`)
 
 Dusty runs a deterministic paper market — six invented coins, regimes, a daily fee rhythm — and
 turns prices into the same four signals the circuit was built around:
@@ -74,7 +74,8 @@ The circuit answers with one of four behaviors — approach (buy on landing), av
 fall), explore, freeze — and **one behavior is not the circuit's**: when the Giant Fiber fires, the
 fly sells everything at once, and the brainstem rather than the brain made that call.
 
-Every tick is written to a sealed record and chained by FNV-1a. The rules and the observables are
+Every tick is written to a sealed record and chained — FNV-1a in `market/1` (seasons 0–2), SHA-256 in
+`market/2` (season 3 onward, `app/lib/market/hash.ts`). The rules and the observables are
 in [`docs/flies-that-trade.md`](docs/flies-that-trade.md); the evidence is one endpoint:
 
 ```bash
@@ -170,7 +171,7 @@ completed quest is preparation rather than a mint.
 | --- | --- |
 | [The essay](https://fruitfly.world/essay) | The whole system end to end, with every number measured or linked |
 | [docs/architecture.md](docs/architecture.md) | System map — models, parity guarantees, server, compatibility surfaces |
-| [docs/flies-that-trade.md](docs/flies-that-trade.md) | `market/1` — inputs, behaviors, food and death, sealing, replay, the x402 menu, the token plan |
+| [docs/flies-that-trade.md](docs/flies-that-trade.md) | `market/1` → `market/2` — inputs, behaviors, food and death, sealing, replay, the x402 menu, the token plan |
 | [docs/determinism.md](docs/determinism.md) | Every determinism leak we found and fixed, with measurements |
 | [docs/neural-model.md](docs/neural-model.md) | The GF escape circuit — state, LIF dynamics, the real-vs-swapped wiring check |
 | [docs/game-guide.md](docs/game-guide.md) | The lineage game — loop, food risk, predator, mutations, reproducibility (game parked) |
@@ -194,7 +195,7 @@ completed quest is preparation rather than a mint.
 ## Status & roadmap
 
 - ✅ **Trading fly** — deterministic paper tape, four behaviors, hunger, starvation, rebirth with an estate
-- ✅ **Sealed record** — per-tick content hash chained by FNV-1a; the browser replays the day and compares
+- ✅ **Sealed record** — per-tick content hash chained (FNV-1a in `market/1`, SHA-256 in `market/2`); the browser replays the day and compares
 - ✅ **Live replay verification** — same rules + same seed = the same day, checked in your browser and by the server
 - ✅ **The brainstem** — LC4 + LPLC2 → Giant Fiber, published wiring check (100% vs 68% in a simplified two-channel assay)
 - ✅ **Judgment layer** — free local heuristic by default; pinned `jev-1.13.0` via `/api/jev` with visible fallback
@@ -209,7 +210,7 @@ completed quest is preparation rather than a mint.
 
 ```text
 app/                  Next.js app — /fly/*, /dish, /lab, /race, /economics, /essay, /calibration
-  lib/market/         market/1: the tape, the engine, the fly, the diary
+  lib/market/         market/1 + market/2: the tape, the engine, the fly, the diary, the SHA-256 seal
   components/fly/     the live panel, the circuit canvas, the replay check, the x402 menu
 public/play/          the parked survival game (plain ES modules + Phaser, no build step)
 public/skill/         the ffw-dish agent skill and its runner

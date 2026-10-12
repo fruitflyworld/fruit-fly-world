@@ -16,6 +16,7 @@ The rules this log follows:
 
 | # | Change | Where | Verify |
 | --- | --- | --- | --- |
+| P1 | `market/2`: SHA-256 record and chain hashes for new seasons; `market/1` (seasons 0–2) kept byte-for-byte as published, the switch landing on the season 3 boundary | `app/lib/market/hash.ts` (new), `app/lib/market/engine.ts`, `app/lib/market/fly.ts`, `app/api/fly/[slug]/route.ts`, `tests/market.test.ts` | `npm test` — 134 tests, including the SHA-256 vs `node:crypto` cross-check and the market/2 goldens; `runTo(FLAGSHIP, 0, 2000).chain === "003ad503"` unchanged |
 | P0-1 | Removed every "trades from its own wallet" claim; the site and docs now say the market is invented and the wallet is simulated | `app/layout.tsx`, `app/page.tsx`, `app/fly/[slug]/page.tsx`, `README.md`, `docs/flies-that-trade.md` | `rg -i "own wallet" app docs README.md` → only the *paper wallet* wording and one unrelated e2e fixture |
 | P0-2 | Single source of truth for launch facts: `config/launch.json` + `docs/STATUS.md`; the site reads it through `app/lib/token.ts` | `config/launch.json`, `docs/STATUS.md`, `app/lib/token.ts` | `rg -n "ClawPump\|Robinhood\|4663" docs README.md app` → no settled-chain claims outside history files |
 | P0-2 | README gained a **Current status** section pointing at STATUS.md | `README.md` | open the README's status section |

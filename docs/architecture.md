@@ -20,7 +20,7 @@ app/                        Next.js 14 site (App Router)
   essay/, calibration/      long-form positioning and the death-calibration study
   race/, promo/, launch-film/, experiments/[id]/
   api/                      route handlers (fly, missions, mint, passport metadata, world, …)
-  lib/market/               market/1 — the live model: tape, engine, fly, diary (§2)
+  lib/market/               market/1 + market/2 — the live model: tape, engine, fly, diary, seal (§2)
   lib/                      shared models: experiment.ts, mint.ts, sim/, arena.ts (dormant, see §2)
   lib/server/               db, session, rate limits, vouchers, x-proof
   lib/token.ts              the $FLY launch facts, in one place (not live)
@@ -39,7 +39,7 @@ tests/                      node:test suite, run with tsx (127 tests)
 
 | Model | Location | Grain | Consumers |
 | --- | --- | --- | --- |
-| **Trading fly (`market/1`)** | `app/lib/market/` | deterministic paper tape → four signals → four behaviors → a body and a wallet, sealed per tick | `/fly/*`, `/api/fly/*`, the homepage |
+| **Trading fly (`market/1` → `market/2`)** | `app/lib/market/` | deterministic paper tape → four signals → four behaviors → a body and a wallet, sealed per tick | `/fly/*`, `/api/fly/*`, the homepage |
 | **Playable GF escape circuit** | `public/play/js/gf-neuron.js`, `sim.js` | 2 sensory channels → 1 leaky integrate-and-fire unit | `/play` game loop, `FlyLabAPI` |
 | **Selectable brains** | `public/play/js/cx-circuit.js`, `brain-*.js` | 24-neuron spiking circuit / judgment layer | `/play`, the ffw-dish skill |
 | **Vial population prototype** | `app/lib/sim/` | generational genetics: food, temperature, mating, inheritance | `/experiments`, `/api/world` |
@@ -61,7 +61,7 @@ homepage swarm uses the arena grid as ambience. Do not wire them back into a rou
   (`runExperiment`, the escape assay) so prose and numbers cannot silently diverge.
 - `tests/market.test.ts` pins the trading fly: the same seed has to produce the same tape, the
   same decisions and the same hash chain. The golden vector is `season 0 · tick 2000 →
-  "chain":"003ad503"` — the value CI asserts and the deploy health check reads back from the
+  "chain":"003ad503"` — the market/1 value CI asserts and the deploy health check reads back from the
   live box.
 - The ffw-dish skill drives the real game through `FlyLabAPI.autopilot` at a fixed 60 Hz —
   there is no second implementation to drift from, only the one game.
