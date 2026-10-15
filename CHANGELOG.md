@@ -11,6 +11,21 @@ summarises it in prose.
 
 ### Added
 
+- **FFW-NAND/1 — a fly brain made of 50 NAND gates, ready to tape out on TapeOut.** Seven reflex
+  rules (`app/lib/nand/rules.ts`) compiled to a NAND-only netlist in TapeOut's encoding
+  (`app/lib/nand/ffw-nand-1.netlist.json`, 12 inputs, 3 outputs, depth 9, no LATCH). A new world
+  version, `market/3`, runs the trading fly on that netlist and seals `w: [inputWord, outputWord]`
+  in every record, so any tick can be checked against the on-chain circuit with one read-only
+  `eval()`. No season uses `market/3` yet. Tests check the netlist against the rules on all 4096
+  inputs, pin its bytes and a `market/3` chain head, and rebuild every record's input word from the
+  record alone. `scripts/nand/tapeout.ts verify` compares a taped-out circuit with ours, read-only.
+  Design, method and the closed-loop comparison with FFW-CX/0.1: `docs/nand-brain.md`.
+
+### Changed
+
+- `package-lock.json` resolves packages from the public npm registry (same versions, same
+  integrity hashes).
+
 - **Daily anchors, built end to end — and honest about the one missing piece.** `scripts/anchor.ts`
   computes a closed UTC day's head and writes it on chain as an SPL memo
   (`ffw:1|season|date|lastTick|chainHash`); `scripts/verify-anchor.ts` recomputes each day and can

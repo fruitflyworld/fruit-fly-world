@@ -28,6 +28,7 @@ import { contentHash } from "../../../public/play/js/brain.js";
 import type { Behavior } from "../../../public/play/js/brain.js";
 import { COINS, COIN_COUNT, mixSeed, round6, type TapeTick } from "./tape";
 import { GENESIS_HASH, marketChainHash, marketRecordHash } from "./hash";
+import { createNandBrain, type NandBrain } from "../nand/brain";
 
 /**
  * Two record formats live side by side, on purpose.
@@ -50,7 +51,15 @@ export const MARKET_WORLD_VERSION_2 = "market/2";
  * never in the middle of one, and never by rewriting a published head.
  */
 export const MARKET_V2_FROM_SEASON = 3;
-export type WorldVersion = typeof MARKET_WORLD_VERSION | typeof MARKET_WORLD_VERSION_2;
+/**
+ * `market/3` = market/2's rules and SHA-256 seal, with the decision layer swapped for
+ * FFW-NAND/1: a gate-level brain (NAND gates only) that can be taped out as a TapeOut
+ * circuit and evaluated on chain. Its records add `w: [inputWord, outputWord]`, so any
+ * tick can be checked against the circuit with one read-only eval() call. No season
+ * uses it yet; switching a season over is a launch decision (docs/nand-brain.md).
+ */
+export const MARKET_WORLD_VERSION_3 = "market/3";
+export type WorldVersion = typeof MARKET_WORLD_VERSION | typeof MARKET_WORLD_VERSION_2 | typeof MARKET_WORLD_VERSION_3;
 
 export const versionForSeason = (season: number): WorldVersion =>
   season >= MARKET_V2_FROM_SEASON ? MARKET_WORLD_VERSION_2 : MARKET_WORLD_VERSION;
@@ -121,6 +130,8 @@ export interface TickRecord {
   e: number; // energy
   eq: number; // equity
   tr: Trade[];
+  /** market/3 only: [12-bit input word, 3-bit output word] the gate-level brain evaluated. */
+  w?: [number, number];
 }
 
 export interface FlyState {
@@ -226,7 +237,9 @@ export interface Runner {
 export function createRunner(spec: FlySpec, opts: { keepEvents?: number } = {}): Runner {
   const version = spec.version ?? MARKET_WORLD_VERSION;
   const state = initialState();
-  if (version === MARKET_WORLD_VERSION_2) {
+  const sha = version !== MARKET_WORLD_VERSION;
+  const nand: NandBrain | null = version === MARKET_WORLD_VERSION_3 ? createNandBrain() : null;
+  if (sha) {
     state.chain = GENESIS_HASH;
     state.lastHash = GENESIS_HASH;
   }
@@ -331,7 +344,11 @@ export function createRunner(spec: FlySpec, opts: { keepEvents?: number } = {}):
     state.signals = [r2(food), r2(threat), r2(light), r2(state.novelty)];
 
     // ---- the circuit decides ----
-    const out = circuit.step({ food, threat, light, novelty: state.novelty }, hunger);
+    // FFW-NAND/1 reads exactly the rounded numbers the record seals, so the word it
+    // evaluated can be rebuilt from the record alone.
+    const out = nand
+      ? nand.step({ food: state.signals[0], threat: state.signals[1], light: state.signals[2], novelty: state.signals[3] }, r2(hunger), state.behavior)
+      : circuit.step({ food, threat, light, novelty: state.novelty }, hunger);
     const behavior = out.behavior as Behavior;
     state.behavior = behavior;
     state.confidence = out.confidence;
@@ -445,7 +462,8 @@ export function createRunner(spec: FlySpec, opts: { keepEvents?: number } = {}):
       eq: r2(equityOf(state)),
       tr: tr.map((x) => (x.pnl === undefined ? { side: x.side, coin: x.coin, qty: x.qty, px: x.px } : { side: x.side, coin: x.coin, qty: x.qty, px: x.px, pnl: x.pnl, ...(x.escape ? { escape: true } : {}) })),
     };
-    if (version === MARKET_WORLD_VERSION_2) {
+    if (nand && state.status === "alive") rec.w = [nand.lastIn, nand.lastOut];
+    if (sha) {
       state.lastHash = marketRecordHash(rec);
       state.chain = marketChainHash(state.chain, state.lastHash);
     } else {
