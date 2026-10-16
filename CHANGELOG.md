@@ -30,6 +30,12 @@ summarises it in prose.
   protocol shapes, the BNB Chain addresses and prices, the task bank and mining formula, and the
   two other fruit-fly projects already in the space — with a source for every number.
 
+- **Field notes from playing the other projects.** `docs/tapeout-field-notes.md` records what we
+  learned by running LoomEscape, FlyOut and BARD/21 NAND: the protocol's real numbers (2 of 1,267
+  processors can mine; 36 buyers against 2,492 sellers, ever), the five pain points, the three
+  games on TapeOutScan, and the two gate-level netlists decoded out of FlyOut's shipped JavaScript
+  (`真实计数脑`, 19 NAND, a 4-bit pulse counter; `六路反射脑`, 21 NAND, a depth-7 Braitenberg reflex).
+
 ### Changed
 
 - `package-lock.json` resolves packages from the public npm registry (same versions, same

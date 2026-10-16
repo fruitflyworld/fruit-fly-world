@@ -119,7 +119,9 @@ The BNB tape-out fee and protocol fee are **not confirmed** — see `docs/tapeou
 
 ## 6. The fly projects already in the ecosystem
 
-There are two, and both are worth knowing before we publish anything.
+There are two, and both are worth knowing before we publish anything. What they actually *do* — and
+the two gate-level netlists we decoded out of FlyOut's shipped JavaScript — is in
+[`tapeout-field-notes.md`](tapeout-field-notes.md).
 
 ### LoomEscape — an escape reflex as a circuit
 
