@@ -48,6 +48,12 @@ export default function Home() {
         </div>
       </header>
 
+      <section className="tfBand" id="tapeout">
+        <span className="tfMono tfBandK"><Bi en="TAPEOUT · FFW-NAND/1"  /></span>
+        <p><Bi en={<><b>50 NAND gates</b> — the fly&apos;s decisions, compiled to a circuit twelve bits wide and checked against its rules on all 4096 words. Small enough to read, small enough to tape out to BNB Chain. Built and tested; <b>not taped out yet.</b></>}  /></p>
+        <Link className="tfBandCta" href="/nand"><Bi en="SEE THE CIRCUIT"  /> ↗</Link>
+      </section>
+
       <EventTicker />
 
       <section className="tfSection" id="how">

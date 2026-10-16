@@ -255,6 +255,15 @@
 
 .tfFooter p{max-width:520px}
 
+/* ---------- tapeout status band (links to /nand) ---------- */
+.tfBand{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:24px;align-items:center;padding:18px var(--tfGut);border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#080d08}
+.tfBandK{color:var(--acid);white-space:nowrap}
+.tfBand p{margin:0;color:#8d998a;font-size:14px;line-height:1.6}
+.tfBand p b{color:var(--ink)}
+.tfBandCta{font:800 10px "DM Mono",monospace;letter-spacing:.08em;color:var(--acid);white-space:nowrap;border-bottom:1px solid #baff3550;padding-bottom:3px;transition:border-color .25s}
+.tfBandCta:hover{border-color:var(--acid)}
+@media(max-width:860px){.tfBand{grid-template-columns:1fr;gap:10px;justify-items:start}}
+
 /* ---------- fly page ---------- */
 .tfFlyHead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;padding:clamp(40px,5vw,72px) var(--tfGut) 30px}
 .tfFlyHead h1{font-size:clamp(64px,9vw,150px);line-height:.85;letter-spacing:-.07em;margin:18px 0 0}

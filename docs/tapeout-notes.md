@@ -1,7 +1,11 @@
 # TapeOut notes
 
 What we know about TapeOut's on-chain interface, where each fact comes from, and what is still
-open. Written 2026-10-15. Nothing here has been checked against BNB Chain by this repository yet.
+open. Written 2026-10-15; BNB Chain addresses and prices added 2026-10-16. Nothing here has been
+checked against BNB Chain by this repository directly — the addresses and prices in the last table
+were read from TapeOut's public registry, not from a node. The wider picture — the protocol's
+shapes, its task bank, its cost formula and the two fly projects already in it — is in
+[`tapeout-ecosystem.md`](tapeout-ecosystem.md).
 
 ## Known
 
@@ -23,14 +27,33 @@ open. Written 2026-10-15. Nothing here has been checked against BNB Chain by thi
 `app/lib/nand/netlist.ts` implements exactly these rules, and `tests/nand-brain.test.ts` checks it
 against the MAJ3 example that was evaluated on chain.
 
+## BNB Chain addresses and prices (from the public registry, 2026-10-16)
+
+Read through `tapeout.work/api/v1/processors` (which mirrors `tapeout.net/processors.json`). Not yet
+confirmed against a node by us.
+
+| Fact | Value |
+| --- | --- |
+| Official processor | `0xb1024b89886b9a34aa4ff5f31c411d708b20a14c` |
+| Its transistor token | `0xcc42ba5de07f01b472a5b14cf45abcca79eb8087` |
+| Transistor list price | 0.0005 BNB each; supply 1,000,000, **all minted** (a buy today is secondary market) |
+| Factory / creator | `0x571d447f4f24688ec35ccf07f1d6993655f6af15` |
+| Behemoth processor (mining coefficient 6) | `0x725497a8982caf681615559dd1e52f613ac49d98` |
+| Circuit market | `0x6feebbebc07bcb90bd1ac8b0cf9baa4f0ff2b46f` |
+
+For FFW-NAND/1 that puts the transistor line at 50 × 0.0005 ≈ 0.025 BNB at list price. It says
+nothing about the tape-out fee or the protocol fee, which are still open.
+
 ## Open (settle before taping out)
 
-- **BNB Chain addresses**: the factory, the processor to tape into (an existing public one, or our
-  own via `createCPU`), and its transistor contract.
-- **Prices on BNB Chain**: transistor mint price, tape-out fee, protocol fee. FFW-NAND/1 needs 50
-  NAND, so the total should be small; record the real number.
+- **Tape-out fee and protocol fee on BNB Chain.** Not in the registry. Record the real number from
+  the transaction that tapes out the official brain.
+- **Which processor to tape into**: the official one (coefficient 1, transistors sold out) or
+  Behemoth (coefficient 6, higher price). This is an economics choice, not a change to the circuit.
 - **`mint(uint256, uint256)` arguments**: the X Layer script passes `(0, count)`; confirm what the
   first argument selects (likely the transistor kind, NAND = 0).
+- **The per-circuit gate cap** (community says ≈ 25,000) and whether a circuit this small can be
+  pointed at a task, given that a `REF` record zeroes a circuit's mining weight.
 - **Input byte order for more than 8 pins**: we send bits 0–7 in the first byte. The first
   `npm run nand:verify` run settles it (`--msb-first` for the other order).
 - **How LATCH behaves in a `view` call** (state per block versus per call). FFW-NAND/1 avoids the

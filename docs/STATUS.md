@@ -100,10 +100,14 @@ Stated so that no reader has to guess, and so that no future commit can quietly 
   does not exist yet.
 - **Real trading** — not built by design. See [LIMITATIONS.md](../LIMITATIONS.md).
 - **WeeklyRace on-chain settlement** — written and tested, not deployed.
-- **FFW-NAND/1 on TapeOut** — built and tested, not taped out, and no season runs on it. The
+- **FFW-NAND/1 on TapeOut** — built and tested, **not taped out**, and no season runs on it. The
   50-gate brain, its `market/3` world and a read-only on-chain checker are in the repository
-  ([`nand-brain.md`](nand-brain.md)); the BNB Chain addresses and prices it needs are still open
-  ([`tapeout-notes.md`](tapeout-notes.md)).
+  ([`nand-brain.md`](nand-brain.md)), and it is published at [`/nand`](../app/nand/page.tsx), which
+  runs the whole circuit in the reader's browser and says plainly that it is not on chain. The BNB
+  Chain processor address and the transistor list price are now known
+  ([`tapeout-notes.md`](tapeout-notes.md)); the tape-out fee, the protocol fee and the input byte
+  order past bit 7 are still open. The wider ecosystem is mapped in
+  [`tapeout-ecosystem.md`](tapeout-ecosystem.md).
 - **FlyNFT / FlyToken** — design artifacts, not deployed.
 
 ## Keeping this page true

@@ -21,10 +21,22 @@ summarises it in prose.
   record alone. `scripts/nand/tapeout.ts verify` compares a taped-out circuit with ours, read-only.
   Design, method and the closed-loop comparison with FFW-CX/0.1: `docs/nand-brain.md`.
 
+- **`/nand` — the circuit, published.** A page that draws the whole 50-gate netlist and lets a
+  reader feed it any of the 4096 input words and watch every wire and gate answer, next to the
+  seven rules it encodes and the tape-out ladder (local replay ✓ · silicon — · on-chain `eval()` —).
+  It says plainly that the circuit is built and tested but **not taped out yet** (`app/nand/`).
+
+- **The TapeOut ecosystem, mapped.** `docs/tapeout-ecosystem.md` collects what TapeOut is, its
+  protocol shapes, the BNB Chain addresses and prices, the task bank and mining formula, and the
+  two other fruit-fly projects already in the space — with a source for every number.
+
 ### Changed
 
 - `package-lock.json` resolves packages from the public npm registry (same versions, same
   integrity hashes).
+
+- **`docs/tapeout-notes.md`** moves the BNB Chain addresses and prices out of "open" and into a
+  sourced table; the tape-out fee, the protocol fee and the input byte order past bit 7 stay open.
 
 - **Daily anchors, built end to end — and honest about the one missing piece.** `scripts/anchor.ts`
   computes a closed UTC day's head and writes it on chain as an SPL memo

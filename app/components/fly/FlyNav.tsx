@@ -9,6 +9,7 @@ export default function FlyNav({ home = false }: { home?: boolean }) {
       <a href={h("live")}><Bi en="Live"  /></a>
       <a href={h("how")}><Bi en="How it works"  /></a>
       <a href={h("replay")}><Bi en="Replay"  /></a>
+      <Link href="/nand"><Bi en="TapeOut"  /></Link>
       <Link href="/fly/dusty"><Bi en="Dusty's page"  /></Link>
       <a href={h("launch")}>$FLY</a>
       <Link href="/dish#mint"><Bi en="Passport"  /></Link>
