@@ -12,6 +12,16 @@ The rules this log follows:
 
 ---
 
+## 2026-10-16 — the circuit page
+
+| # | Change | Where | Verify |
+| --- | --- | --- | --- |
+| — | **`/nand`** publishes FFW-NAND/1: the whole 50-gate netlist drawn, any of the 4096 input words feedable, every wire and gate shown answering. The page says plainly the circuit is **built and tested but not taped out yet** — the ladder reads local replay ✓ · silicon — · on-chain `eval()` — | `app/nand/page.tsx`, `app/nand/NandLab.tsx`, `app/nand/nand.css` | open `/nand`; `npm test` → 157 tests; the netlist is the committed `app/lib/nand/ffw-nand-1.netlist.json` |
+| — | **TapeOut ecosystem mapped**, with a source for every number | `docs/tapeout-ecosystem.md`, `docs/tapeout-notes.md`, `docs/STATUS.md` | read the two docs; the BNB Chain addresses come from `tapeout.work/api/v1/processors` |
+| — | Homepage status band, nav link and sitemap entry point at the new page | `app/page.tsx`, `app/components/fly/FlyNav.tsx`, `app/sitemap.ts`, `app/flies.css` | `npm run build`; `/sitemap.xml` lists `/nand` |
+
+Commit: `26468b2` (branch `nand-tapeout-site`).
+
 ## 2026-10-12 — pre-launch remediation
 
 | # | Change | Where | Verify |
